@@ -210,11 +210,6 @@ h6,
     background-repeat: no-repeat;
 }
 
-.edit-bg-primary{
-    background-color: var(--primary);
-}
-
-
 /*** Section Title ***/
 .section-title::before {
     position: absolute;
@@ -539,4 +534,86 @@ h6,
     margin-right: 0;
     padding-right: 0;
     border-right: none;
+}
+
+/* Edit classes */
+
+.edit-bg-primary{
+    background-color: var(--primary);
+}
+
+.edit-bg-secondry{
+    background-color: var(--secondary);
+}
+
+.edit-text-primary{
+    color: var(--primary);
+}
+
+.edit-text-secondry{
+    color: var(--secondary);
+}
+
+.dropdown-toggle::after {
+    margin-right: 0.255em;
+}
+
+.input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu),
+ .input-group:not(.has-validation)>.dropdown-toggle:nth-last-child(n+3) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.input-group>:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+    margin-right: -1px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.section-title h6::before, .section-title h6::after {
+    right: 0;
+    background: #09263586;
+}
+
+.section-title h6::after {
+    top: 5px;
+    right: 3px;
+}
+
+.section-title::before {
+    right: 0;
+}
+
+.section-title::after {
+    right: 50px;
+}
+
+.section-title.text-center::before {
+    right: 50%;
+    margin-right: -25px;
+}
+
+.section-title.text-center::after {
+    right: 50%;
+    margin-right: 25px;
+}
+
+#portfolio-flters .btn::after {
+    left: -1px;
+    right: auto;
+    border-right: 20px solid transparent;
+    border-left: 0 solid transparent;
+}
+
+.footer .btn.btn-link::before {
+    content: "\f105";
+    margin-left: 10px;
+}
+
+.footer .btn.btn-link {
+    text-align: right;
 }

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>إنجاز</title>
+    <title>{{$pageName}}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -55,7 +55,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav me-auto py-0">
-                        <a href="{{route('gustes.index')}}" class="nav-item nav-link active">الرئيسية</a>
+                        <a href="{{route('gustes.index')}}" class="nav-item nav-link">الرئيسية</a>
                         <a href="{{route('gustes.about')}}" class="nav-item nav-link">عن أنجاز</a>
                         <a href="{{route('gustes.services')}}" class="nav-item nav-link">الخدمات</a>
                         <a href="{{route('gustes.project')}}" class="nav-item nav-link">مشاريع</a>
@@ -67,9 +67,9 @@
                                 <a href="404.html" class="dropdown-item">404 Page</a>
                             </div>
                         </div>
-                        <a href="{{'gustes.contact'}}" class="nav-item nav-link">تواصل معنا</a>
+                        <a href="{{route('gustes.contact')}}" class="nav-item nav-link">تواصل معنا</a>
                     </div>
-                    <butaton type="button" class="btn edit-text-secondary me-3" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fa fa-search"></i></butaton>
+                    <button type="button" class="btn edit-text-secondary me-3" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fa fa-search"></i></button>
                 </div>
             </nav>
             @yield('homehero')
@@ -95,9 +95,10 @@
             </div>
         </div>
         <!-- Full Screen Search End -->
+        <main>
+            @yield('content')  
+        </main>
 
-        @yield('content')
-        
 
         <!-- Footer Start -->
         <div class="container-fluid text-light footer mt-5 pt-5 wow fadeIn edit-bg-primary" data-wow-delay="0.1s">
@@ -200,6 +201,12 @@
 
     <!-- Template Javascript -->
     <script src="{{asset('assets/js/gustmain.js')}}"></script>
+    <script>
+        // Corrected script to add 'active' class to the active link
+        $(document).ready(function() {
+            $('.navbar-nav .nav-link').eq({{ $activeLink - 1 }}).addClass('active');
+        });
+    </script>
 </body>
 
 </html>

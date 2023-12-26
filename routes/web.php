@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('gustes.index');
+    return view('gustes.index',['activeLink'=>'1','pageName'=>'الرئيسية']);
 })->name('gustes.index');
 
 Route::get('/dashboard', function () {
@@ -34,25 +34,25 @@ Route::get('/register',function(){
 })->name('front.register');
 
 Route::get('/about',function(){
-    return view('gustes.about');
+    return view('gustes.about',['activeLink'=>'2','pageName'=>'عن إنجاز']);
 })->name('gustes.about');
 
 Route::get('/contact',function(){
-    return view('gustes.contact');
+    return view('gustes.contact',['activeLink'=>'6','pageName'=>'تواصل معنا']);
 })->name('gustes.contact');
 
 Route::get('/project',function(){
-    return view('gustes.project');
+    return view('gustes.project',['activeLink'=>'4','pageName'=>'المشاريع']);
 })->name('gustes.project');
 
 Route::get('/services',function(){
-    return view('gustes.services');
+    return view('gustes.services',['activeLink'=>'3','pageName'=>'الخدمات']);
 })->name('gustes.services');
 
 Route::get('/team',function(){
-    return view('gustes.team');
+    return view('gustes.team',['activeLink'=>'5','pageName'=>'الأعضاء']);
 })->name('gustes.team');
 
 Route::get('/testimonial',function(){
-    return view('gustes.testimonial');
+    return view('gustes.testimonial',['activeLink'=>'5','pageName'=>'عملائنا']);
 })->name('gustes.testimonial');

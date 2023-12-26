@@ -13,7 +13,7 @@
                         <p class="mb-4 text-end">هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها. ولذلك يتم استخدام طريقة لوريم إيبسوم لأنها تعطي توزيعاَ طبيعياَ -إلى حد ما- للأحرف عوضاً عن استخدام "هنا يوجد  </p>
                         <div class="row g-3">
                             <div class="col-sm-6">
-                                <h6 class="mb-3"><i class="fa fa-check edit-text-primary ms-2"></i>الحائو على جائزة</h6>
+                                <h6 class="mb-3"><i class="fa fa-check edit-text-primary ms-2"></i>الحائز على جائزة</h6>
                                 <h6 class="mb-0"><i class="fa fa-check edit-text-primary ms-2"></i>الطاقم المحترف</h6>
                             </div>
                             <div class="col-sm-6">

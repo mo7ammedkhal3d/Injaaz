@@ -21,6 +21,11 @@ Route::get('/dashboard', function () {
     return view('dashboard.index');
 })->name('dashboard.index');
 
+
+Route::get('/dashboard/board', function () {
+    return view('dashboard.board');
+})->name('dashboard.board');
+
 Route::fallback(FUNCTION(){
     return view('errors.404');
 })->name('errors.404');

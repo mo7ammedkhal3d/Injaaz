@@ -10,12 +10,15 @@
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="assets/img/favicon.ico" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="{{asset('assets/img/favicon.ico')}}" rel="icon">
+  <link href="{{asset('assets/img/apple-touch-icon.png')}}" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!--fontawosme-->
+  <script src="https://kit.fontawesome.com/16f6ba35a2.js" crossorigin="anonymous"></script>
 
   <!-- Vendor CSS Files -->
   {{-- <script src="https://kit.fontawesome.com/16f6ba35a2.js" crossorigin="anonymous"></script> --}}
@@ -29,6 +32,7 @@
 
   <!-- Template Main CSS File -->
   <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
+  <link href="{{asset('assets/css/custom.css')}}" rel="stylesheet">
   <link href="{{asset('assets/css/main.css')}}" rel="stylesheet">
   <!-- =======================================================
   * Template Name: NiceAdmin
@@ -39,7 +43,7 @@
   ======================================================== -->
 </head>
 
-<body>
+<body class="toggle-sidebar">
 
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
@@ -506,13 +510,15 @@
 
   </aside><!-- End Sidebar-->
 
-  <main id="main" class="main">
+
+    <!--Start Main-->
 
     @yield('content')
 
-  </main><!-- End #main -->
+    <!--End Main-->
 
-  <!-- ======= Footer ======= -->
+
+  {{-- <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">
       &copy; <strong><span>إنجاز</span></strong>. جميع الحقوق محفوضة
@@ -524,7 +530,7 @@
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
       تم التصميم بواسطة <a href="https://github.com/mo7ammedkhal3d">MK187</a>
     </div>
-  </footer><!-- End Footer -->
+  </footer><!-- End Footer --> --}}
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 

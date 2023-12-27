@@ -49,7 +49,7 @@
   <!--#endregion Edit Modal -->
     <section class="section">
         <div class="row">
-          <div class="col-lg-6">
+          <div class="col-lg-6" role=button>
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">المشروع النهائي</h5>
@@ -73,7 +73,6 @@
       </section>
   </main>
 @endsection
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
 
 function addConfirm(){

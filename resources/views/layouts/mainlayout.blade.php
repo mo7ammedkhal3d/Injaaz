@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Dashboard</title>
+  <title>{{ config('app.name', 'Laravel') }}</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -263,10 +263,15 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Sign Out</span>
-              </a>
+              <a class="dropdown-item" href="{{ route('logout') }}"
+              onclick="event.preventDefault();
+                            document.getElementById('logout-form').submit();">
+               {{ __('Logout') }}
+           </a>
+
+           <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+               @csrf
+           </form>
             </li>
 
           </ul><!-- End Profile Dropdown Items -->

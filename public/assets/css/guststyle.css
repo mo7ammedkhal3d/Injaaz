@@ -539,6 +539,10 @@ h6,
     background-color: var(--secondary);
 }
 
+.edit-bg-secondry:hover{
+    background-color: var(--primary);
+}
+
 .edit-text-primary{
     color: var(--primary);
 }

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Board;
 use App\Http\Requests\StoreBoardRequest;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UpdateBoardRequest;
 
 class BoardController extends Controller
@@ -11,9 +14,11 @@ class BoardController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($userId)
     {
-        //
+        $boards = Board::where('user_id', $userId)->get();
+
+        return view('dashboard.index', ['boards' => $boards]);
     }
 
     /**

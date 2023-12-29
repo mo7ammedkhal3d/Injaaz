@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\BoardController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,10 +19,7 @@ Route::get('/', function () {
     return view('gustes.index',['activeLink'=>'1','pageName'=>'الرئيسية']);
 })->name('gustes.index');
 
-Route::get('/dashboard', function () {
-    return view('dashboard.index');
-})->name('dashboard.index');
-
+Route::get('/dashboard/{userId}', [BoardController::class, 'index'])->name('dashboard.index');
 
 Route::get('/dashboard/board', function () {
     return view('dashboard.board');
@@ -64,4 +63,4 @@ Route::get('/testimonial',function(){
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');

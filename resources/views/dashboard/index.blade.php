@@ -49,26 +49,18 @@
   <!--#endregion Edit Modal -->
     <section class="section">
         <div class="row">
-          <div class="col-lg-6" role=button>
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">المشروع النهائي</h5>
-                <p>مساحة للوصف المشروع</p>
+          @if ($boards->count() > 0)
+            @foreach ($boards as $board)
+              <div class="col-lg-6" role=button>
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ $board->name }}</h5>
+                    <p>مساحة للوصف المشروع</p>
+                  </div>
+                </div> 
               </div>
-            </div>
-  
-          </div>
-  
-          <div class="col-lg-6">
-  
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">نظام أرشفة</h5>
-                <p>مساحة للوصف المشروع</p>
-              </div>
-            </div>
-  
-          </div>
+            @endforeach
+          @endif
         </div>
       </section>
   </main>

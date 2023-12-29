@@ -31,12 +31,12 @@ Route::fallback(FUNCTION(){
 })->name('errors.404');
 
 Route::get('/login',function(){
-    return view('front.login');
-})->name('front.login');
+    return view('auth.login');
+})->name('auth.login');
 
 Route::get('/register',function(){
-    return view('front.register');
-})->name('front.register');
+    return view('auth.register');
+})->name('auth.register');
 
 Route::get('/about',function(){
     return view('gustes.about',['activeLink'=>'2','pageName'=>'عن إنجاز']);
@@ -61,3 +61,7 @@ Route::get('/team',function(){
 Route::get('/testimonial',function(){
     return view('gustes.testimonial',['activeLink'=>'5','pageName'=>'عملائنا']);
 })->name('gustes.testimonial');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

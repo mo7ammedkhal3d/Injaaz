@@ -6,7 +6,7 @@
             <h6 class="fw-bold">أسم اللوحة</h4>
         </div>
     </div>
-    <div class="row my-2 gap-5 mx-0 board-body">
+    <div class="row my-2 gap-5 mx-0 board-body algin-itmes-center justify-content-center">
         <div class="col-3 rounded board-list p-0">
             <div class="list-header p-3">
                 <div class="list-title">
@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="list-body custom-scrollbar">
-                <div class="list-body-conetnt mkmk custom-scrollbar px-2">
+                <div class="list-body-conetnt mkmk custom-scrollbar px-3">
                     <div class="card bg-white p-2">
                         <h6>تحليل</h6>
                     </div>
@@ -87,7 +87,7 @@
                 </div>
             </div>
             <div class="list-body custom-scrollbar">
-                <div class="list-body-conetnt mkmk custom-scrollbar px-2">
+                <div class="list-body-conetnt mkmk custom-scrollbar px-3">
                     <div class="card bg-white p-2">
                         <h6>تحليل</h6>
                     </div>
@@ -160,7 +160,7 @@
                 </div>
             </div>
             <div class="list-body custom-scrollbar">
-                <div class="list-body-conetnt mkmk custom-scrollbar px-2">
+                <div class="list-body-conetnt mkmk custom-scrollbar px-3">
                     <div class="card bg-white p-2">
                         <h6>تحليل</h6>
                     </div>

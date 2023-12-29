@@ -26,6 +26,18 @@ body {
     background-color: var(--white-color);
 }
 
+.in-bg-primary{
+    background-color: var(--primary-color);
+}
+
+.in-bg-secondry{
+    background-color: var(--onprimary-color);
+}
+
+.in-text-primary{
+    color: var(--primary-color);
+}
+
 /*#endregion */
 
 /*#region dashboard.index*/
@@ -112,13 +124,21 @@ body {
 
 /*#endregion*/
 
+/*#region front.login*/
 
+.edit-border-raduis{
+    border-top-right-radius: 5px !important;
+    border-bottom-right-radius: 5px !important;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
 
-
-
-
-
-/*#region */
+.edit-input-border-raduis{
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: 5px !important;
+    border-bottom-left-radius: 5px !important;
+}
 
 /*#endregion*/
 

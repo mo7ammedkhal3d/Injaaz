@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Board;
+use App\Models\BoardList;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,15 +11,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class BoardListFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
+    protected $model = BoardList::class;
+
+    public function definition()
     {
         return [
-            //
+            'title' => $this->faker->word,
+            'board_id' => Board::factory(),
         ];
     }
 }

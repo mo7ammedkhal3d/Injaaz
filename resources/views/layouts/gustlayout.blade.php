@@ -50,6 +50,11 @@
                 <a href="" class="navbar-brand p-0">
                     <img src="{{asset('assets/img/logo.png')}}" alt="">
                 </a>
+                <div class="sinup px-4 me-5">
+                    <a class="btn btn-primary edit-bg-secondry" href="{{asset(route('front.login'))}}">
+                        تسجيل الدخول
+                    </a>
+                </div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="fa fa-bars"></span>
                 </button>

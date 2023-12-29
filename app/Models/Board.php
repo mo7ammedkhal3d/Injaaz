@@ -8,4 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class Board extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['name', 'description', 'user_id'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function lists()
+    {
+        return $this->hasMany(BoardList::class);
+    }
+
+    public function boardMembers()
+    {
+        return $this->belongsToMany(User::class, 'board_members')->withTimestamps();
+    }
 }

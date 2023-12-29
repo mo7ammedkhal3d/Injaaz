@@ -1,4 +1,4 @@
-@extends('layouts.auth')
+@extends('layouts.secondry')
 
 @section('content')
 <div class="row justify-content-center">
@@ -6,8 +6,7 @@
 
       <div class="d-flex justify-content-center py-4">
         <a href="index.html" class="logo d-flex align-items-center w-auto">
-          <img src="assets/img/logo.png" alt="">
-          <span class="d-none d-lg-block">NiceAdmin</span>
+          <img style="filter: invert();  height: 4rem !important;" src="{{asset('assets/img/logo.png')}}" alt="">
         </a>
       </div><!-- End Logo -->
 
@@ -16,64 +15,58 @@
         <div class="card-body">
 
           <div class="pt-4 pb-2">
-            <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
-            <p class="text-center small">Enter your personal details to create account</p>
+            <h5 class="card-title text-center pb-0 fs-4 in-text-primary">أنشاء حساب</h5>
+            <p class="text-center small">قم بأدخال معلوماتك الشخصية لأنشاء حساب</p>
           </div>
 
           <form class="row g-3 needs-validation" novalidate="">
             <div class="col-12">
-              <label for="yourName" class="form-label">Your Name</label>
+              <label for="yourName" class="form-label">اسمك الكامل</label>
               <input type="text" name="name" class="form-control" id="yourName" required="">
-              <div class="invalid-feedback">Please, enter your name!</div>
+              <div class="invalid-feedback">قم بادخال اسمك</div>
             </div>
 
             <div class="col-12">
-              <label for="yourEmail" class="form-label">Your Email</label>
+              <label for="yourName" class="form-label">رقم الهاتف</label>
+              <input type="text" name="name" class="form-control" id="yourName" required="">
+              <div class="invalid-feedback">قم بادخال رقم هاتفك</div>
+            </div>
+
+            <div class="col-12">
+              <label for="yourEmail" class="form-label">ايميلك</label>
               <input type="email" name="email" class="form-control" id="yourEmail" required="">
-              <div class="invalid-feedback">Please enter a valid Email adddress!</div>
+              <div class="invalid-feedback">قم بادخال الايميل الخاص بك</div>
             </div>
 
             <div class="col-12">
-              <label for="yourUsername" class="form-label">Username</label>
-              <div class="input-group has-validation">
-                <span class="input-group-text" id="inputGroupPrepend">@</span>
-                <input type="text" name="username" class="form-control" id="yourUsername" required="">
-                <div class="invalid-feedback">Please choose a username.</div>
-              </div>
-            </div>
-
-            <div class="col-12">
-              <label for="yourPassword" class="form-label">Password</label>
+              <label for="yourPassword" class="form-label">كلمة السر</label>
               <input type="password" name="password" class="form-control" id="yourPassword" required="">
-              <div class="invalid-feedback">Please enter your password!</div>
+              <div class="invalid-feedback">قم بادخال كلمة السر</div>
+            </div>
+
+            <div class="col-12">
+              <label for="yourPassword" class="form-label">تأكيد كلمة السر</label>
+              <input type="password" name="password" class="form-control" id="yourPassword" required="">
+              <div class="invalid-feedback">قم بادخال تأكيد كلمة السر</div>
             </div>
 
             <div class="col-12">
               <div class="form-check">
-                <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required="">
-                <label class="form-check-label" for="acceptTerms">I agree and accept the <a href="#">terms and conditions</a></label>
-                <div class="invalid-feedback">You must agree before submitting.</div>
+                <input class="float-end form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required="">
+                <label class="me-4 form-check-label" for="acceptTerms">اوافق على جميع  <a href="#">الاحكام والشروط</a></label>
+                <div class="invalid-feedback">يجيب عليك الموافقة قبل انشاء الحساب</div>
               </div>
             </div>
             <div class="col-12">
-              <button class="btn btn-primary w-100" type="submit">Create Account</button>
+              <button class="btn btn-primary w-100 in-bg-primary" type="submit">أنشاء الحساب</button>
             </div>
             <div class="col-12">
-              <p class="small mb-0">Already have an account? <a href="pages-login.html">Log in</a></p>
+              <p class="small mb-0">املك حساب ؟ <a href="{{route('front.login')}}">تسجيل </a></p>
             </div>
           </form>
 
         </div>
       </div>
-
-      <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-      </div>
-
     </div>
   </div>
 @endsection

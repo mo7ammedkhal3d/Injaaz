@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Board;
+use App\Models\BoardList;
+use App\Models\Card;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,15 +12,16 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CardFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
+    protected $model = Card::class;
+
+    public function definition()
     {
         return [
-            //
+            'title' => $this->faker->sentence,
+            'description' => $this->faker->paragraph,
+            'board_id' => BoardList::factory(),
+            'due_date' => $this->faker->date,
+            'start_date' => $this->faker->date,
         ];
     }
 }

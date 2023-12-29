@@ -42,6 +42,17 @@ body {
 
 /*#region dashboard.index*/
 
+.header-nav .profile .dropdown-item i {
+    margin-left: 10px;
+}
+
+@media (min-width: 768px){
+.dropdown-menu-arrow::before {
+    left: 20px;
+    right: auto;
+}
+}
+
 /*#endregion*/
 
 /*#region dashboard.board*/

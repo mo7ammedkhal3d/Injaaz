@@ -38,6 +38,17 @@ body {
     color: var(--primary-color);
 }
 
+.injaaz-btn{
+    background-color: var(--primary-color);
+    color: var(--onprimary-color);
+}
+
+.injaaz-btn:hover{
+    background-color: var(--primary-color);
+    color: var(--white-color);
+}
+
+
 /*#endregion */
 
 /*#region dashboard.index*/
@@ -85,19 +96,39 @@ body {
     direction: ltr;
 }
 
+.custom-scrollbar-x{
+    scrollbar-width: thin; 
+}
+
 .custom-scrollbar::-webkit-scrollbar {
     width: 5px;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb {
+.custom-scrollbar-x::-webkit-scrollbar{
+    width: 5rem;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb ,.custom-scrollbar-x::-webkit-scrollbar-thumb {
     background-color: var(--primary-color);
     border-radius: 10px; 
 }
 
-.custom-scrollbar::-webkit-scrollbar-track {
+.custom-scrollbar-x::-webkit-scrollbar-thumb{
+    border-radius: 5px; 
+}
+
+
+.custom-scrollbar::-webkit-scrollbar-track , .custom-scrollbar-x::-webkit-scrollbar-track {
     background-color: var(--onprimary-color);
     border-radius: 10px; 
 }
+
+.custom-scrollbar-x::-webkit-scrollbar-track{
+    border-radius: 2px;  
+}
+
+
+
 
 .list-footer .plus-icon{
     margin-left: 0.7vw;
@@ -119,7 +150,6 @@ body {
     border: none;
     height: 6rem;
     width: 92.8%;
-    margin: 0 0.8vw;
     border-radius: 0.2rem;
     text-align: right;
 }
@@ -131,6 +161,31 @@ body {
 .card{
     direction: rtl;
     cursor:pointer;
+}
+
+.new-list{
+    background-color: var(--onprimary-color);
+    height: fit-content;
+}
+
+.new-list .new-list-conetnt{
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+}
+
+.new-list .new-list-conetnt input{
+    border: none;
+    height: 4rem;
+    border-radius: 5px;
+}
+
+.new-list .new-list-conetnt input:focus{
+    outline: none;
+}
+
+.new-list .plus-icon{
+    margin-left: 0.7vw;
 }
 
 /*#endregion*/

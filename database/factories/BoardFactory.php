@@ -15,6 +15,7 @@ class BoardFactory extends Factory
 
     public function definition()
     {
+        $this->faker->locale();
         return [
             'name' => $this->faker->word,
             'description' => $this->faker->sentence,

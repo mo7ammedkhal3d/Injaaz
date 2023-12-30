@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
 
             // Each list has 5 cards
             $lists->each(function ($list) {
-                $cards = Card::factory(5)->create(['board_id' => $list->board_id]);
+                $cards = Card::factory(5)->create(['board_list_id' => $list->id]);
 
                 // Each card has comments
                 $cards->each(function ($card) {

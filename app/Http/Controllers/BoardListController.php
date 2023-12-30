@@ -11,9 +11,11 @@ class BoardListController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($board_id)
     {
-        //
+        $lists = BoardList::where('board_id', $board_id)->get();
+
+        return view('dashboard.board', ['lists' => $lists]);
     }
 
     /**

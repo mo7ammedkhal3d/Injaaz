@@ -16,6 +16,7 @@ class UserFactory extends Factory
 
     public function definition()
     {
+        $this->faker->locale();
         return [
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,

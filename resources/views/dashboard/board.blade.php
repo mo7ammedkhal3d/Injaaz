@@ -3,72 +3,27 @@
     <main id="main" class="main p-0">
     <div class="py-3 px-3 board-header">
         <div class="col mb-3">
-            <h6 class="fw-bold">أسم اللوحة</h4>
+            <h6 class="fw-bold">{{$board->name}}</h4>
         </div>
     </div>
     <div class="row my-2 gap-5 mx-0 board-body algin-itmes-center justify-content-center">
-        <div class="col-3 rounded board-list p-0">
-            <div class="list-header p-3">
-                <div class="list-title">
-                    <h5>المنجز</h5>
+        @if ($board->lists->count()>0)
+            @foreach ($board->lists as $list)
+            <div class="col-3 rounded board-list p-0">
+                <div class="list-header p-3">
+                    <div class="list-title">
+                        <h5>{{$list->title}}</h5>
+                    </div>
                 </div>
-            </div>
-            <div class="list-body custom-scrollbar">
-                <div class="list-body-conetnt mkmk custom-scrollbar px-3">
-                    <div class="card bg-white p-2">
-                        <h6>تحليل</h6>
-                    </div>
-                    <div class="card bg-white p-2">
-                        <h6>تحليل</h6>
-                    </div>
-                    <div class="card bg-white p-2">
-                        <h6>تحليل</h6>
-                    </div>
-                    <div class="card bg-white p-2">
-                        <h6>تحليل</h6>
-                    </div>
-                    <div class="card bg-white p-2">
-                        <h6>تحليل</h6>
-                    </div>
-                    <div class="card bg-white p-2">
-                        <h6>تحليل</h6>
-                    </div>
-                    <div class="card bg-white p-2">
-                        <h6>تحليل</h6>
-                    </div>
-                    <div class="card bg-white p-2">
-                        <h6>تحليل</h6>
-                    </div>
-                    <div class="card bg-white p-2">
-                        <h6>تحليل</h6>
-                    </div>
-                    <div class="card bg-white p-2">
-                        <h6>تحليل</h6>
-                    </div>
-                    <div class="card bg-white p-2">
-                        <h6>تحليل</h6>
-                    </div>
-                    <div class="card bg-white p-2">
-                        <h6>تحليل</h6>
-                    </div>
-                    <div class="card bg-white p-2">
-                        <h6>تحليل</h6>
-                    </div>
-                    <div class="card bg-white p-2">
-                        <h6>تحليل</h6>
-                    </div>
-                    <div class="card bg-white p-2">
-                        <h6>تحليل</h6>
-                    </div>
-                    <div class="card bg-white p-2">
-                        <h6>تحليل</h6>
-                    </div>
-                    <div class="card bg-white p-2">
-                        <h6>تحليل</h6>
-                    </div>
-                    <div class="card bg-white p-2">
-                        <h6>تحليل</h6>
-                    </div>
+                <div class="list-body custom-scrollbar">
+                    <div class="list-body-conetnt mkmk custom-scrollbar px-3">
+                    @if ($list->cards && $list->cards->count() > 0)
+                        @foreach ($list->cards as $card)
+                            <div class="card bg-white p-2">
+                                <h6>{{$card->title}}</h6>
+                            </div>
+                        @endforeach
+                    @endif
                 </div>
                 <div class="list-footer">
                     <input class="title-card d-none" type="text" name="" id="" placeholder="أدخل عنوان المهمة">
@@ -78,9 +33,13 @@
                         <button class="btn my-2 px-3 text-end btn-add">أضافة</button>
                     </div>
                 </div>
-            </div>
         </div>
-        <div class="col-3 rounded board-list p-0">
+            </div>
+            @endforeach
+        @endif
+
+
+        {{-- <div class="col-3 rounded board-list p-0">
             <div class="list-header p-3">
                 <div class="list-title">
                     <h5>جاري العمل</h5>
@@ -225,7 +184,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
     </main>
     <script>

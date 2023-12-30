@@ -16,6 +16,7 @@ class CardCommentFactory extends Factory
 
     public function definition()
     {
+        $this->faker->locale();
         return [
             'user_id' => User::factory(),
             'card_id' => Card::factory(),

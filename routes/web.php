@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\BoardController;
+use App\Http\Controllers\BoardListController;
+use App\Http\Controllers\CardController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +22,7 @@ Route::get('/', function () {
 })->name('gustes.index');
 
 Route::get('/dashboard/{userId}', [BoardController::class, 'index'])->name('dashboard.index');
+Route::get('/dashboard/{board_id}/lists', [BoardController::class, 'show'])->name('dashboard.lists');
 
 Route::get('/dashboard/board', function () {
     return view('dashboard.board');

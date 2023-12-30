@@ -16,6 +16,7 @@ class BoardMemberFactory extends Factory
 
     public function definition()
     {
+        $this->faker->locale();
         return [
             'user_id' => User::factory(),
             'board_id' => Board::factory(),

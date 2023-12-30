@@ -51,13 +51,15 @@
         <div class="row">
           @if ($boards->count() > 0)
             @foreach ($boards as $board)
-              <div class="col-lg-6" role=button>
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">{{ $board->name }}</h5>
-                    <p>مساحة للوصف المشروع</p>
-                  </div>
-                </div> 
+              <div class="col-lg-4" role=button>
+                <a href="{{ route('dashboard.lists', ['board_id' => $board->id]) }}">
+                  <div class="card">
+                    <div class="card-body p-3 in-bg-secondry rounded">
+                      <h5 class="card-title">{{ $board->name }}</h5>
+                      <p>{{ $board->description }}</p>
+                    </div>
+                  </div>  
+                </a>
               </div>
             @endforeach
           @endif

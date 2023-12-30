@@ -67,7 +67,7 @@ body {
 
 .board-list{
     background-color: var(--onprimary-color);
-    height: auto;
+    height: fit-content;
 }
 
 .list-body{

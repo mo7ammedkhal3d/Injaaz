@@ -15,6 +15,7 @@ class BoardListFactory extends Factory
 
     public function definition()
     {
+        $this->faker->locale();
         return [
             'title' => $this->faker->word,
             'board_id' => Board::factory(),

@@ -16,10 +16,11 @@ class CardFactory extends Factory
 
     public function definition()
     {
+        $this->faker->locale();
         return [
             'title' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
-            'board_id' => BoardList::factory(),
+            'board_list_id' => BoardList::factory(),
             'due_date' => $this->faker->date,
             'start_date' => $this->faker->date,
         ];

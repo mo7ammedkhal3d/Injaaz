@@ -11,9 +11,9 @@ class Card extends Model
 
     protected $fillable = ['title', 'description', 'board_id', 'due_date', 'start_date'];
 
-    public function board()
+    public function boardList()
     {
-        return $this->belongsTo(Board::class);
+        return $this->belongsTo(BoardList::class);
     }
 
     public function boardMembers()

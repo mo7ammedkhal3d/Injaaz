@@ -11,11 +11,14 @@ use App\Http\Requests\UpdateBoardRequest;
 
 class BoardController extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      */
     public function index($userId)
     {
+        // DB::table('')->where
         $boards = Board::where('user_id', $userId)->get();
 
         return view('dashboard.index', ['boards' => $boards]);

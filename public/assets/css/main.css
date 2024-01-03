@@ -38,12 +38,47 @@ body {
     color: var(--primary-color);
 }
 
+.in-text-secondry{
+    color: var(--contaianer-color);
+}
+
 .injaaz-btn{
     background-color: var(--primary-color);
     color: var(--onprimary-color);
 }
 
+.injaaz-btn-secondry{
+    background-color: var(--onprimary-color);
+    color: var(--primary-color);
+}
+
 .injaaz-btn:hover , .injaaz-btn:focus{
+    background-color: var(--primary-color);
+    color: var(--white-color);
+}
+
+.injaaz-btn-secondry:hover , .injaaz-btn-secondry:focus{
+    background-color: var(--onprimary-color);
+    color: var(--white-color);
+}
+
+
+.injaaz-btn-close{
+    background: transparent;
+    border: none;
+    height: 2rem;
+    justify-content: center;
+    align-items: center;
+    color: var(--primary-color);
+    border-radius: 0.5rem;
+    display: flex;
+    font-weight: bold;
+    width: 2rem;
+    font-size: 2rem;
+    transition: all 0.5s ease;
+}
+
+.injaaz-btn-close:hover{
     background-color: var(--primary-color);
     color: var(--white-color);
 }
@@ -200,6 +235,11 @@ body {
 .card-modal .modal-content{
     overflow: visible;
     height: 30rem;
+    direction: rtl;
+}
+
+.card-modal .modal-header{
+    height: 4rem;
 }
 
 .card-modal .modal-body{
@@ -210,8 +250,29 @@ body {
 
 .card-modal .modal-center{
     top: 42% !important;
-    max-width: 38rem;
-    transform: translateY(-50%) !important;
+    max-width: 75rem;
+    transform: translateY(-50%) !important
+}
+
+.card-modal-title{
+    color: black;
+    width: auto;
+    border: none;
+    user-select: none;
+    font-size: 1.3rem;
+    padding: 0.2rem 1rem;
+}
+
+.card-modal-title:hover{
+    outline-style: dashed;
+    outline-width: 0.2rem;
+    outline-color: var(--contaianer-color);
+}
+
+.card-modal-title:focus{
+    outline-style: solid;
+    outline-width: 0.1rem;
+    outline-color: var(--contaianer-color);
 }
 
 .new-list{
@@ -259,6 +320,83 @@ body {
     height: auto;
 }
 
+.comment-img{
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 50%;
+}
+
+.comments .comment-owner-name{
+    font-size: 1rem;
+}
+.comments .comment-date{
+    font-size: 0.8rem;
+}
+
+.comments input{
+    font-size: 1.4rem;
+    color: var(--contaianer-color);
+    padding: 0;
+}
+
+.card-info td{
+    padding: 1rem 0;
+}
+
+.card-info h5{
+    font-size: 1.1rem;
+}
+
+.card-info .card-owner input{
+    font-size: 1rem;
+    padding: 0;
+}
+
+.card-info .dates input{
+    font-size: 0.8rem;
+    padding: 0;
+    cursor: pointer;
+}
+
+.card-info .progrss-rate input{
+    font-size: 1.1rem;
+    width: 2.5rem;
+    padding: 0;
+}
+
+.card-info .card-member img{
+    margin-left: -20%;
+}
+
+/*#region add-member-modal */
+
+.add-member-modal .modal-center{
+    top: 20% !important;
+    max-width: 30rem;
+}
+
+.add-member-modal .modal-content{
+    overflow: visible;
+    height: 16rem;
+    direction: rtl;
+}
+
+.add-member-modal .modal-body{
+    overflow-y: auto;
+    position: static;
+}
+
+.add-member-modal .add-member-details input{
+    padding: 0.5rem;
+    border: 0.1rem solid var(--primary-color);
+}
+
+.add-member-modal .add-member-details input:focus{
+    outline: none;
+}
+
+/*#endregion add-member-modal */
+
 /*#endregion*/
 
 /*#region front.login & front.register*/
@@ -275,6 +413,15 @@ body {
     border-bottom-right-radius: 0;
     border-top-left-radius: 5px !important;
     border-bottom-left-radius: 5px !important;
+}
+
+.member-details .delete-member-icon{
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+.member-details .delete-member-icon:hover{
+    color: red;
 }
 
 /*#endregion*/

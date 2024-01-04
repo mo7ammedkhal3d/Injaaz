@@ -19,14 +19,29 @@
                         <div class="col-7 p-2">
                             <div class="description-section my-2">
                                 <label for="description" class="fw-bold w-100 in-text-secondry my-2">الوصف</label>
-                                <input id="description" type="text" class="card-modal-title w-100" placeholder="الوصف" role="button">
+                                <div id="description-confirm" class="card-modal-description w-100"  contenteditable="true" data-placeholder="الوصف" role="button"></div>
+                                <div id="input-description" class="d-none">
+                                    <textarea class="form-control" id="description-text" placeholder="أضف وصف" cols="4" rows="5" name="body"></textarea>
+                                    <div class="d-flex gap-2 justify-content-end my-2">
+                                        <button class="btn injaaz-btn-secondry" onclick="cancelAddDescription()">إلغاء</button>
+                                        <button class="btn injaaz-btn" onclick="saveDescription()">حفظ</button>
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="comments-section my-2">
-                                <label for="description" class="btn injaaz-btn my-2 fw-bold">التعليقات</label>
-                                <label for="description" class="btn in-bg-secondry injaaz-btn-secondry my-2 fw-bold">التغييرات</label>
+                                <button class="btn injaaz-btn my-2 fw-bold">التعليقات</button>
+                                <button  class="btn in-bg-secondry injaaz-btn-secondry my-2 fw-bold">التغييرات</button>
                                 <div class="add-comment d-flex p-3 gap-2">
                                     <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
-                                    <input id="description" type="text" class="card-modal-title w-100" placeholder="تعليق" role="button">
+                                    <div id="comment-confirm" class="card-modal-comment w-100" contenteditable="true" data-placeholder="تعليق" role="button"></div>
+                                    <div id="input-comment" class="d-none">
+                                        <textarea class="form-control" id="comment-text" placeholder="أضف تعليق" rows="5"  name="body"></textarea>
+                                        <div class="d-flex gap-2 justify-content-end my-2">
+                                            <button class="btn injaaz-btn-secondry" onclick="cancelAddComment()">إلغاء</button>
+                                            <button class="btn injaaz-btn" onclick="saveComment()">حفظ</button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="comments">
                                     <div class="d-flex gap-3 p-3">
@@ -36,7 +51,7 @@
                                                 <h6 class="m-0 comment-owner-name">Mohammed Khaled</h6>
                                                 <h6 class="comment-date m-0" dir="ltr">{{date('Y/m/d h:m A')}}</h6>
                                             </div>
-                                            <input id="description" type="text" class="card-modal-title w-100 my-1" value="تمت اضافة هذا التعليق للمهمة" role="button">
+                                            <div class="card-comment-item w-100 my-1" role="button">تمت أضافة هذا التعليق الى المهمة</div>
                                         </div>
                                     </div>
                                     <div class="d-flex gap-3 p-3">
@@ -46,7 +61,7 @@
                                                 <h6 class="m-0 comment-owner-name">Mohammed Khaled</h6>
                                                 <h6 class="comment-date m-0" dir="ltr">{{date('Y/m/d h:m A')}}</h6>
                                             </div>
-                                            <input id="description" type="text" class="card-modal-title w-100 my-1" value="تمت اضافة هذا التعليق للمهمة" role="button">
+                                            <div class="card-comment-item w-100 my-1" role="button">تمت أضافة هذا التعليق الى المهمة</div>
                                         </div>
                                     </div>
                                     <div class="d-flex gap-3 p-3">
@@ -56,7 +71,7 @@
                                                 <h6 class="m-0 comment-owner-name">Mohammed Khaled</h6>
                                                 <h6 class="comment-date m-0" dir="ltr">{{date('Y/m/d h:m A')}}</h6>
                                             </div>
-                                            <input id="description" type="text" class="card-modal-title w-100 my-1" value="تمت اضافة هذا التعليق للمهمة" role="button">
+                                            <div class="card-comment-item w-100 my-1" role="button">تمت أضافة هذا التعليق الى المهمة</div>
                                         </div>
                                     </div>
                                     <div class="d-flex gap-3 p-3">
@@ -66,7 +81,7 @@
                                                 <h6 class="m-0 comment-owner-name">Mohammed Khaled</h6>
                                                 <h6 class="comment-date m-0" dir="ltr">{{date('Y/m/d h:m A')}}</h6>
                                             </div>
-                                            <input id="description" type="text" class="card-modal-title w-100 my-1" value="تمت اضافة هذا التعليق للمهمة" role="button">
+                                            <div class="card-comment-item w-100 my-1" role="button">تمت أضافة هذا التعليق الى المهمة</div>
                                         </div>
                                     </div>
                                 </div>
@@ -84,7 +99,6 @@
                                             <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
                                             <input id="description" type="text" class="card-modal-title w-100" value="Mohammed khaled" role="button">
                                         </div>
-
                                     </td>
                                 </tr>
                                 <tr class="dates">
@@ -134,7 +148,7 @@
                                     <td>
                                     </td>
                                     <td>
-                                        <div class="d-flex flex-column gap-3">
+                                        <div class="d-flex flex-column gap-3 card-member-list custom-scrollbar" dir="rtl">
                                             <div class="d-flex gap-3 align-items-center justify-content-center">
                                                 <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
                                                 <h6 class="m-0">Mohammed Khaled</h6>
@@ -170,7 +184,9 @@
                                                 <h6 class="m-0">Mohammed Khaled</h6>
                                                 <i class="fa-solid fa-trash delete-member-icon"></i>
                                             </div>
-                                            <button class="btn injaaz-btn" data-toggle="modal" data-target="#add-card-member"> أضافة عضو</button>
+                                            <div class="d-flex justify-content-center">
+                                                <button class="btn injaaz-btn w-50" data-toggle="modal" data-target="#add-card-member"><i class="fa-solid fa-plus ms-2"></i> أضافة عضو </button>
+                                            </div> 
                                         </div>                                     
                                         </div>
                                     </td>
@@ -287,11 +303,25 @@
     </div>
     </main>
     <script>
+        var descriptionText = null;
+        var commentText = null;
 
-        function editCardtitle(inputTitle) {
-            $(inputTitle).prop('readonly', false);
-            $(inputTitle).focus();
-        }
+        ClassicEditor.create(document.querySelector('#description-text'))
+            .then(ckEditor => {
+                descriptionText = ckEditor;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+        ClassicEditor.create( document.querySelector( '#comment-text' ) )
+            .then(ckEditor => {
+                    commentText = ckEditor;
+                })
+            .catch( error => {
+                console.error( error );
+            } );
+
 
         function showCard(button) {      
             const Closebuttons = document.querySelectorAll('.btn-close-modal');
@@ -339,7 +369,107 @@
             listBody.find('.add-card-confirm').removeClass('d-none');
         }
 
-        $(document).ready(function() {
+        function cancelAddDescription(){
+            $('#description-confirm').removeClass('d-none');
+            $('#input-description').addClass('d-none');
+        }
+
+        function cancelAddComment(){
+            $('#comment-confirm').removeClass('d-none');
+            $('#input-comment').addClass('d-none');
+        }
+
+        function saveDescription(){
+            if(descriptionText.getData().trim() != ""){
+                $('#description-confirm').html(descriptionText.getData());
+                $('#description-confirm').removeClass('d-none');
+                $('#input-description').addClass('d-none');
+            } else {
+                $('#description-confirm').text($('#description-confirm').data('placeholder'));
+                $('#input-description').addClass('d-none');
+                $('#description-confirm').removeClass('d-none');
+            }
+        }
+
+        function saveComment(){
+            if(commentText.getData().trim() !=""){
+                $('#comment-confirm').html(commentText.getData());
+                $('#comment-confirm').removeClass('d-none');
+                $('#input-comment').addClass('d-none');
+            }else{
+                $('#comment-confirm').text($('#comment-confirm').data('placeholder'));
+                $('#comment-confirm').removeClass('d-none');
+                $('#input-comment').addClass('d-none');
+            }
+        }
+
+        $(document).ready(function(){
+
+            var $descriptionDev = $('#description-confirm');
+            var $commentdev = $('#comment-confirm');
+
+            // Set initial placeholder
+            if (!$descriptionDev.text().trim() && $descriptionDev.data('placeholder')) {
+                $descriptionDev.text($descriptionDev.data('placeholder'));
+            }
+
+            if (!$commentdev.text().trim() && $commentdev.data('placeholder')) {
+                $commentdev.text($commentdev.data('placeholder'));
+            }
+
+            // Remove placeholder on focus
+            $descriptionDev.on('focus', function() {
+                if ($descriptionDev.text().trim() === $descriptionDev.data('placeholder')) {
+                    $descriptionDev.text('');
+                }
+            });
+
+            $commentdev.on('focus', function() {
+                if ($commentdev.text().trim() === $commentdev.data('placeholder')) {
+                    $commentdev.text('');
+                }
+            });
+
+            // Restore placeholder if content is empty on blur
+            $descriptionDev.on('blur', function() {
+                if (!$descriptionDev.text().trim()) {
+                    $descriptionDev.text($descriptionDev.data('placeholder'));
+                }
+            });
+
+            $commentdev.on('blur', function() {
+                if (!$commentdev.text().trim()) {
+                    $commentdev.text($commentdev.data('placeholder'));
+                }
+            });
+
+
+
+
+            $('#description-confirm').on('click', function(){
+                if (descriptionText){
+                    descriptionText.setData($('#description-confirm').html());
+                } else {
+                    console.error('CKEditor instance not initialized');
+                }
+                $('#description-confirm').addClass('d-none');
+                $('#input-description').removeClass('d-none');
+            });
+
+            $('#comment-confirm').on('click', function(){
+                if(commentText){
+                    commentText.setData($('#comment-confirm').html());
+                } else{
+                    console.error('CKEditor instance not initialized');
+                }
+                $('#comment-confirm').addClass('d-none');
+                $('#input-comment').removeClass('d-none');
+            })
+
+            $('#input-description').on('blur', function () {
+                $('#description-confirm').removeClass('d-none');
+                $('#input-description').addClass('d-none');
+            });
   
             $('.new-list').on('click','.add-list-confirm' , function(){
                 $('.add-list-confirm').addClass('d-none');

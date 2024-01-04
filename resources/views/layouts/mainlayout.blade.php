@@ -39,6 +39,7 @@
 
   <!-- jquery -->
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
 
   <!-- =======================================================
   * Template Name: NiceAdmin

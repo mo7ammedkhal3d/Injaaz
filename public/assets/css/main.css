@@ -174,8 +174,6 @@ body {
 }
 
 
-
-
 .list-footer .plus-icon{
     margin-left: 0.7vw;
 }
@@ -203,6 +201,8 @@ body {
 .list-footer input:focus{
     outline: none;
 }
+
+/*#region Card Modal*/
 
 .card{
     direction: rtl;
@@ -250,11 +250,14 @@ body {
 
 .card-modal .modal-center{
     top: 42% !important;
-    max-width: 75rem;
+    max-width: 80rem;
     transform: translateY(-50%) !important
 }
 
-.card-modal-title{
+.card-modal-title , 
+.card-modal-description ,
+.card-modal-comment ,
+.card-comment-item{
     color: black;
     width: auto;
     border: none;
@@ -263,16 +266,31 @@ body {
     padding: 0.2rem 1rem;
 }
 
-.card-modal-title:hover{
+.card-modal-title:hover ,
+.card-modal-description:hover ,
+.card-modal-comment:hover{
     outline-style: dashed;
     outline-width: 0.2rem;
     outline-color: var(--contaianer-color);
 }
 
-.card-modal-title:focus{
+.card-modal-title:focus ,
+ .card-modal-description:focus
+ .card-modal-comment:focus{
     outline-style: solid;
     outline-width: 0.1rem;
     outline-color: var(--contaianer-color);
+}
+
+.card-comment-item{
+    font-size: 1.3rem;
+    color: var(--contaianer-color);
+    padding: 0;
+}
+
+
+.card-modal-description , .card-modal-comment{
+    height: 2.5rem;
 }
 
 .new-list{
@@ -333,12 +351,6 @@ body {
     font-size: 0.8rem;
 }
 
-.comments input{
-    font-size: 1.4rem;
-    color: var(--contaianer-color);
-    padding: 0;
-}
-
 .card-info td{
     padding: 1rem 0;
 }
@@ -368,6 +380,17 @@ body {
     margin-left: -20%;
 }
 
+.card-info .card-member-list{
+    background-color: #ebebeb;
+    border-radius: 0.5rem;
+    padding: 1rem 0;
+    overflow-y: auto;
+    direction: rtl;
+    height: 20rem;
+}
+
+/*#endregion Card Modal  */
+
 /*#region add-member-modal */
 
 .add-member-modal .modal-center{
@@ -394,6 +417,11 @@ body {
 .add-member-modal .add-member-details input:focus{
     outline: none;
 }
+
+.ck-editor__main p{
+    text-align: end;
+}
+
 
 /*#endregion add-member-modal */
 

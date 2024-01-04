@@ -23,6 +23,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard/{userId}', [BoardController::class, 'index'])->name('dashboard.index');
 Route::get('/dashboard/{board_id}/lists', [BoardController::class, 'show'])->name('dashboard.lists');
+Route::get('/dashboard/{userId}/card/{card_id}', [CardController::class, 'index'])->name('dashboard.getCardDetails');
 
 Route::get('/dashboard/board', function () {
     return view('dashboard.board');

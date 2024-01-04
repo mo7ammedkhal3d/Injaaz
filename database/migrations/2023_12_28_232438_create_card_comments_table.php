@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('card_comments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('board_member_id')->constrained();
             $table->foreignId('card_id')->constrained();
             $table->text('text');
             $table->timestamps();

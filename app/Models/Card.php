@@ -9,7 +9,7 @@ class Card extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'board_id', 'due_date', 'start_date'];
+    protected $fillable = ['title', 'description', 'board_list_id', 'due_date', 'start_date'];
 
     public function boardList()
     {

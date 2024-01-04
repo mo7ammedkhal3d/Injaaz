@@ -9,15 +9,20 @@ class CardComment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'card_id', 'text'];
+    protected $fillable = ['board_member_id', 'card_id', 'text'];
 
-    public function user()
+    public function boardMember()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(BoardMember::class);
     }
 
     public function card()
     {
         return $this->belongsTo(Card::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\BoardMember;
 use App\Models\Card;
 use App\Models\CardComment;
 use App\Models\User;
@@ -18,7 +19,7 @@ class CardCommentFactory extends Factory
     {
         $this->faker->locale();
         return [
-            'user_id' => User::factory(),
+            'board_member_id' => BoardMember::factory(),
             'card_id' => Card::factory(),
             'text' => $this->faker->paragraph,
         ];

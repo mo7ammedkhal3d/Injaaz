@@ -18,7 +18,7 @@ class Card extends Model
 
     public function boardMembers()
     {
-        return $this->belongsToMany(BoardMember::class, 'card_assigned')->withTimestamps();
+        return $this->belongsToMany(BoardMember::class, 'card_assigned')->withPivot([]); 
     }
 
     public function cardComments()

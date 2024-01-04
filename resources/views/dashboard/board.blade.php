@@ -43,7 +43,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="comments">
+                                <div id="card-comments" class="comments">
                                     <div class="d-flex gap-3 p-3">
                                         <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
                                         <div class="w-100">
@@ -107,9 +107,9 @@
                                     </td>
                                     <td class="py-1 px-4">
                                         <div class="d-flex gap-2 align-items-center">
-                                            <input class="card-modal-title" type="date">
+                                            <input id="card-start-date" class="card-modal-title" type="date">
                                             <i class="fa-solid fa-arrow-left"></i>
-                                            <input class="card-modal-title" type="date">
+                                            <input id="card-due-date" class="card-modal-title" type="date">
                                         </div>
                                     </td>
                                 </tr>
@@ -148,7 +148,7 @@
                                     <td>
                                     </td>
                                     <td>
-                                        <div class="d-flex flex-column gap-3 card-member-list custom-scrollbar" dir="rtl">
+                                        <div id="card_assigneds" class="d-flex flex-column gap-3 card-member-list custom-scrollbar" dir="rtl">
                                             <div class="d-flex gap-3 align-items-center justify-content-center">
                                                 <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
                                                 <h6 class="m-0">Mohammed Khaled</h6>
@@ -255,7 +255,8 @@
                     <div class="list-body-conetnt mkmk custom-scrollbar px-3">
                     @if ($list->cards && $list->cards->count() > 0)
                         @foreach ($list->cards as $card)
-                            <div class="card bg-white p-2 d-flex flex-row justify-content-between" data-toggle="modal" data-target="#card-modal" data-backdrop="static" data-keyboard="false"> 
+                            {{-- <div class="card bg-white p-2 d-flex flex-row justify-content-between" data-toggle="modal" data-target="#card-modal" data-backdrop="static" data-keyboard="false">  --}}
+                            <div class="card bg-white p-2 d-flex flex-row justify-content-between" onclick="showCard($card->id)"> 
                                 <div class="">
                                     <h6>{{$card->title}}</h6>
                                     <div class="d-flex gap-3 align-items-center">
@@ -301,8 +302,76 @@
             </div> 
         </div>
     </div>
+
     </main>
-    <script>
+    <script>  
+
+    // Get Card Details
+
+        function showCard(cardId) {      
+            // const Closebuttons = document.querySelectorAll('.btn-close-modal');
+            // Closebuttons.forEach(function (btnClose) {
+            //     btnClose.addEventListener('click', function(){
+            //         $('form')[0].reset();
+            //         $('#card-modal').modal('hide');
+            //     });
+            // });
+            
+            fetch(`http://127.0.0.1:8000/card/${cardId}`, {
+                method: 'GET',
+            })
+            .then(response => {  
+                if (!response.ok) {
+                throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(cardDetails => { 
+                    $('#card-title').val(cardDetails.card_title);
+                    $('#description-confirm').html(cardDetails.card_description);
+                    $('#card-start-date').val(cardDetails.start_date);
+                    $('#card-due-date').val(cardDetails.due_date);
+
+                    cardDetails.card_comments.forEach(comment => {
+                        $('#card-comments').append(`
+                            <div class="d-flex gap-3 p-3">
+                                <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
+                                <div class="w-100">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="m-0 comment-owner-name">${comment.user_name}</h6>
+                                        <h6 class="comment-date m-0" dir="ltr">${comment.comment_date}</h6>
+                                    </div>
+                                    <div class="card-comment-item w-100 my-1" role="button">${comment.comment_text}</div>
+                                </div>
+                            </div>                
+                        `)
+                    });
+
+                    cardDetails.card_assigneds.forEach(card_assigned => {
+                        $('#card_assigneds').append(`
+                            <div class="d-flex gap-3 align-items-center justify-content-center">
+                                <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
+                                <h6 class="m-0">${card_assigned.user_name}</h6>
+                                <i class="fa-solid fa-trash delete-member-icon"></i>
+                            </div>              
+                        `)
+                    });
+
+
+            })
+            .catch(error => {
+                console.error('Error during fetch operation:', error);
+            });
+
+            $('#card-modal').modal('show');     
+        }
+
+    // end Get Card Details
+
+
+
+    //deal Define Class of ckeditr
+
         var descriptionText = null;
         var commentText = null;
 
@@ -321,19 +390,10 @@
             .catch( error => {
                 console.error( error );
             } );
+    //end 
 
 
-        function showCard(button) {      
-            const Closebuttons = document.querySelectorAll('.btn-close-modal');
-            Closebuttons.forEach(function (btnClose) {
-                btnClose.addEventListener('click', function(){
-                    $('form')[0].reset();
-                    $('#card-modal').modal('hide');
-                });
-            });
-            $('#card-modal').modal('show');     
-        }
-
+    // Add Card 
         function addCardConfirm(button){
             var listBody = $(button).closest('.list-body');
             listBody.find('.mkmk').removeClass('list-body-conetnt');
@@ -369,41 +429,67 @@
             listBody.find('.add-card-confirm').removeClass('d-none');
         }
 
-        function cancelAddDescription(){
-            $('#description-confirm').removeClass('d-none');
-            $('#input-description').addClass('d-none');
-        }
+    // end
 
-        function cancelAddComment(){
-            $('#comment-confirm').removeClass('d-none');
-            $('#input-comment').addClass('d-none');
-        }
 
-        function saveDescription(){
-            if(descriptionText.getData().trim() != ""){
-                $('#description-confirm').html(descriptionText.getData());
+    // Card Operation 
+
+        // Saved Card Description & send Comments
+
+            function saveDescription(){
+                if(descriptionText.getData().trim() != ""){
+                    $('#description-confirm').html(descriptionText.getData());
+                    $('#description-confirm').removeClass('d-none');
+                    $('#input-description').addClass('d-none');
+                } else {
+                    $('#description-confirm').text($('#description-confirm').data('placeholder'));
+                    $('#input-description').addClass('d-none');
+                    $('#description-confirm').removeClass('d-none');
+                }
+            }
+
+            function saveComment(){
+                if(commentText.getData().trim() !=""){
+                    $('#comment-confirm').html(commentText.getData());
+                    $('#comment-confirm').removeClass('d-none');
+                    $('#input-comment').addClass('d-none');
+                }else{
+                    $('#comment-confirm').text($('#comment-confirm').data('placeholder'));
+                    $('#comment-confirm').removeClass('d-none');
+                    $('#input-comment').addClass('d-none');
+                }
+            }
+
+        // end Saved Card Description & send Comments
+        
+        // Cancel Saved Card Description & send Comments
+
+            function cancelAddDescription(){
                 $('#description-confirm').removeClass('d-none');
                 $('#input-description').addClass('d-none');
-            } else {
-                $('#description-confirm').text($('#description-confirm').data('placeholder'));
-                $('#input-description').addClass('d-none');
-                $('#description-confirm').removeClass('d-none');
             }
-        }
 
-        function saveComment(){
-            if(commentText.getData().trim() !=""){
-                $('#comment-confirm').html(commentText.getData());
-                $('#comment-confirm').removeClass('d-none');
-                $('#input-comment').addClass('d-none');
-            }else{
-                $('#comment-confirm').text($('#comment-confirm').data('placeholder'));
+            function cancelAddComment(){
                 $('#comment-confirm').removeClass('d-none');
                 $('#input-comment').addClass('d-none');
             }
-        }
+
+        //end Cancel Saved Card Description & send Comments
+
+        // show member Details 
+
+            function showMemberDetails() {
+            $('.member-details').toggleClass('d-none');
+            
+            }
+        // end show member Details
+
+    // end Card Operation
+
 
         $(document).ready(function(){
+
+        // Deal with placeholder of div and ckeditr
 
             var $descriptionDev = $('#description-confirm');
             var $commentdev = $('#comment-confirm');
@@ -443,6 +529,7 @@
                 }
             });
 
+        // Deal with placeholder of div and ckeditr
 
 
 
@@ -538,23 +625,20 @@
 
         });
 
-        function showDescriptionArea(button){
-            $(button).addClass('d-none');
-            $('.discription-area').removeClass('d-none');
-        }
+        // function showDescriptionArea(button){
+        //     $(button).addClass('d-none');
+        //     $('.discription-area').removeClass('d-none');
+        // }
 
-        function hideDescriptionArea(button){
-            $('.description-label').removeClass('d-none');
-            $('.discription-area').addClass('d-none')
-        }
+        // function hideDescriptionArea(button){
+        //     $('.description-label').removeClass('d-none');
+        //     $('.discription-area').addClass('d-none')
+        // }
 
         function showSelectedDate(){
             $('#select-date-modal').modal('show'); 
         }
 
-        function showMemberDetails() {
-            $('.member-details').toggleClass('d-none');
-        }
 
     </script>
 @endsection

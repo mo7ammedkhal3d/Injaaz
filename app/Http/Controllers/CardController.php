@@ -15,40 +15,50 @@ class CardController extends Controller
 
     public function index($user_id,$card_id)
     {   
+
         $card = Card::find($card_id);
 
-        $cardComments = CardComment::with('boardMember')
+        $cardComments = [];
+        $assignedUsers = [];
+
+        $cardCommentsCollection = CardComment::with('boardMember.user')
             ->where('card_id', $card->id)
-            ->get()->first();
+            ->get();
 
-        // $cardComment= CardComment::
-            
-        dd($cardComments->boardMember->user);
+        $boardMembers = $card->boardMembers()->with('user')->get();
 
-        // dd($cardComments);
+        foreach ($cardCommentsCollection as $comment) {
+            $user = $comment->boardMember->user;
+            $newComment = [
+                'user_name' => $user->name,
+                'user_email' => $user->email,
+                'comment_text' => $comment->text,
+                'comment_date' => $comment->created_at
+            ];
+            $cardComments[] = $newComment;
+        }
 
-        // Now, you can access the user names for each comment
-            foreach ($cardComments as $comment){
-                foreach ($comment->boardMember as $boardMember) {
-                    foreach ($boardMember->users as $user) {
-                        echo $user->name;
-                        echo $cardComments->text;
-                    }
-                }
-            }
+        foreach ($boardMembers as $boardMember) {
+            $user = $boardMember->user;
 
-        // $cardDetails=[
-        //    'card_title' => $card->title,
-        //    'card_description' => $card->description,
-        //    'start_date'=>$card->start_date,
-        //    'due_date'=>$card->due_date,
-        //    'card_comment'=>[
-        //     'user_name'=>$cardComments->user_id,
-        //     'text'=>$card->text
-        //    ],
-        // ];
+            $assignedUser = [
+                'user_name' => $user->name,
+                'user_email' => $user->email,
+            ];
 
-        // return json_encode($cardDetails);
+            $assignedUsers[] = $assignedUser;
+        }
+
+            $cardDetails=[
+               'card_title' => $card->title,
+               'card_description' => $card->description,
+               'start_date'=>$card->start_date,
+               'due_date'=>$card->due_date,
+               'card_comments'=>$cardComments,
+               'card_assigneds' => $assignedUsers,
+            ];
+
+            return json_encode($cardDetails);
     }
 
     /**

@@ -7,6 +7,11 @@
      <div class="modal card-modal" id="card-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
      <div class="modal-dialog modal-center" role="document">
          <div class="modal-content">
+            <div id="loadingSpinner">
+                <div  class="spinner-border in-text-secondry" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
              <div class="modal-header px-4">
                  <input id="card-title" readonly class="modal-title me-2 rounded no-border card-modal-title" type="text"  role="button">
                  <button id="close-card-modal" type="button" class="close injaaz-btn-close" data-dismiss="modal" aria-label="Close">
@@ -32,7 +37,7 @@
                              <button class="btn injaaz-btn my-2 fw-bold">التعليقات</button>
                              <button  class="btn in-bg-secondry injaaz-btn-secondry my-2 fw-bold">التغييرات</button>
                              <div class="add-comment d-flex p-3 gap-2">
-                                 <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
+                                 <img class="comment-img" src="{{"https://www.gravatar.com/avatar/" . md5(strtolower(trim(Auth::user()->email))) . "?d=mp"}}" alt="loadding">
                                  <div id="comment-confirm" class="card-modal-comment w-100" contenteditable="true" data-placeholder="تعليق" role="button"></div>
                                  <div id="input-comment" class="d-none">
                                      <textarea class="form-control" id="comment-text" placeholder="أضف تعليق" rows="5"  name="body"></textarea>
@@ -56,7 +61,7 @@
                                  </td>
                                  <td class="py-3 px-3">
                                      <div class="d-flex gap-1">
-                                         <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
+                                         <img class="comment-img" src="{{"https://www.gravatar.com/avatar/" . md5(strtolower(trim(Auth::user()->email))) . "?d=mp"}}" alt="loadding">
                                          <input id="description" type="text" class="card-modal-title w-100" value="Mohammed khaled" role="button">
                                      </div>
                                  </td>
@@ -94,12 +99,7 @@
                                      <h5 class="m-0">الاعضاء</h5> 
                                  </td>
                                  <td class="d-flex gap-2 py-3 px-3">
-                                     <div class="member-photos position-relative w-50">
-                                         <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
-                                         <img class="comment-img" src="{{asset('assets/img/testimonial-3.jpg')}}" alt="loadding">
-                                         <img class="comment-img" src="{{asset('assets/img/testimonial-2.jpg')}}" alt="loadding">
-                                         <img class="comment-img" src="{{asset('assets/img/team-3.jpg')}}" alt="loadding">
-                                         <img class="comment-img" src="{{asset('assets/img/testimonial-4.jpg')}}" alt="loadding">
+                                     <div id="member-photos" class="member-photos position-relative w-50">
                                      </div>
                                      <button class="btn injaaz-btn" onclick="showMemberDetails()">عرض التفاصيل</button>
                                  </td>
@@ -236,6 +236,7 @@
                     $('#member-email').val("");
                     $('#add-card-member').modal('hide'); 
                 });
+                $('#member-email').focus();
             $('#add-card-member').modal('show'); 
         }
     // showAddMember
@@ -250,8 +251,12 @@
                     $('#card-due-date').val("");
                     $('#card-comments').html("");
                     $('#card_assigneds').html("");
+                    $('#member-photos').html("");
                     $('#card-modal').modal('hide'); 
                 });
+            $('#loadingSpinner').fadeIn(100);
+            $('#card-modal').modal('show'); 
+            
             
             fetch(`http://127.0.0.1:8000/dashboard/${userId}/card/${cardId}`, {
                 method: 'GET',
@@ -263,13 +268,15 @@
                 return response.json();
             })
             .then(cardDetails => { 
-
+                setTimeout(() => {
+                    $('#loadingSpinner').fadeOut(500);
                     $('#card-title').val("");
                     $('#description-confirm').html("");
                     $('#card-start-date').val("");
                     $('#card-due-date').val("");
                     $('#card-comments').html("");
                     $('#card_assigneds').html("");
+                    $('#member-photos').html("");
 
                     $('#card-title').val(cardDetails.card_title);
                     $('#description-confirm').html(cardDetails.card_description);
@@ -277,9 +284,13 @@
                     $('#card-due-date').val(cardDetails.due_date);
 
                     cardDetails.card_comments.forEach(comment => {
+                        const email = comment.user_email.toLowerCase().trim();
+                        const md5Hash = CryptoJS.MD5(email).toString();
+                        const gravatarUrl = `https://www.gravatar.com/avatar/${md5Hash}?d=mp`;
+
                         $('#card-comments').append(`
                             <div class="d-flex gap-3 p-3">
-                                <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
+                                <img class="comment-img" src="${gravatarUrl}" alt="loadding">
                                 <div class="w-100">
                                     <div class="d-flex justify-content-between">
                                         <h6 class="m-0 comment-owner-name">${comment.user_name}</h6>
@@ -288,17 +299,25 @@
                                     <div class="card-comment-item w-100 my-1" role="button">${comment.comment_text}</div>
                                 </div>
                             </div>                
-                        `)
+                        `);
                     });
 
                     cardDetails.card_assigneds.forEach(card_assigned => {
+                        const email = card_assigned.user_email.toLowerCase().trim();
+                        const md5Hash = CryptoJS.MD5(email).toString();
+                        const gravatarUrl = `https://www.gravatar.com/avatar/${md5Hash}?d=mp`;
+
+                        $('#member-photos').append(`
+                                <img class="comment-img" src="${gravatarUrl}" alt="loadding">
+                            `);
+
                         $('#card_assigneds').append(`
                             <div class="d-flex gap-3 align-items-center justify-content-between px-5">
-                                <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
+                                <img class="comment-img" src="${gravatarUrl}" alt="loading">
                                 <h6 class="m-0">${card_assigned.user_name}</h6>
                                 <i class="fa-solid fa-trash delete-member-icon"></i>
                             </div>              
-                        `)
+                        `);
                     });
 
                     $('#card_assigneds').append(`
@@ -306,15 +325,25 @@
                             <button class="btn injaaz-btn w-50" onclick="showAddMember()"><i class="fa-solid fa-plus ms-2"></i> أضافة عضو </button>
                         </div> 
                     `)
+                }, 400);
             })
 
             .catch(error => {
-                console.error('Error during fetch operation:', error);
+                console.error('Error fetching card details:', error);
+
+                // Hide the spinner in case of an error after a 1-second delay
+                setTimeout(() => {
+                    $('#loadingSpinner').addClass('d-none');
+
+                    // Handle the error, e.g., show an error message
+                    alert('Failed to fetch card details. Please try again.');
+                }, 1000);
             });
 
-            $('#card-modal').data('backdrop', 'static');
-            $('#card-modal').data('keyboard', false); 
-            $('#card-modal').modal('show');    
+            // $('#loadingSpinner').addClass('d-none');
+            // $('#card-modal').data('backdrop', 'static');
+            // $('#card-modal').data('keyboard', false); 
+            // $('#card-modal').modal('show');    
         }
 
     // end Get Card Details

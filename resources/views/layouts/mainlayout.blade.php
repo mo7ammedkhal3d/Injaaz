@@ -40,6 +40,7 @@
   <!-- jquery -->
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 
   <!-- =======================================================
   * Template Name: NiceAdmin
@@ -222,7 +223,7 @@
         <li class="nav-item dropdown pe-3 me-4">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="{{asset('assets/img/profile-img.jpg')}}" alt="Profile" class="rounded-circle">
+            <img src="{{"https://www.gravatar.com/avatar/" . md5(strtolower(trim(Auth::user()->email))) . "?d=mp"}}" alt="Profile" class="rounded-circle">
             <span class="d-none d-md-block dropdown-toggle pe-2">{{ Auth::user()->name }}</span>
           </a><!-- End Profile Iamge Icon -->
 

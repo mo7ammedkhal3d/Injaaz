@@ -33,7 +33,7 @@ class CardController extends Controller
                 'user_name' => $user->name,
                 'user_email' => $user->email,
                 'comment_text' => $comment->text,
-                'comment_date' => $comment->created_at
+                'comment_date' => $comment->created_at->format('Y/m/d h:i A'),
             ];
             $cardComments[] = $newComment;
         }

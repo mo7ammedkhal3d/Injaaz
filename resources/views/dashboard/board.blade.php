@@ -177,34 +177,33 @@
                 </div>
                 <div class="list-body custom-scrollbar">
                     <div class="list-body-conetnt mkmk custom-scrollbar px-3">
-                    @if ($list->cards && $list->cards->count() > 0)
-                        @foreach ($list->cards as $card)
-                            {{-- <div class="card bg-white p-2 d-flex flex-row justify-content-between" data-toggle="modal" data-target="#card-modal" data-backdrop="static" data-keyboard="false">  --}}
-                            <div class="card bg-white p-2 d-flex flex-row justify-content-between" onclick="showCard({{Auth::user()->id}},{{$card->id}})"> 
-                                <div class="">
-                                    <h6>{{$card->title}}</h6>
-                                    <div class="d-flex gap-3 align-items-center">
-                                        <small style="background-color: red ;color:white" title="أنجز بسرعة" class="fw-bold rounded p-1">تنتهي قريبا <i class="fa-regular fa-clock me-2"></i></small>
-                                        <i title="هذه الكارد تحتوي على وصف" class="fa-solid fa-align-left"></i>
-                                    </div>  
-                                </div>                               
-                                
-                                <div class="edit-confirm d-flex align-items-start">
-                                    <i class="fa-solid fa-marker edit-card-title"></i>
+                        @if ($list->cards && $list->cards->count() > 0)
+                            @foreach ($list->cards->sortBy('created_at') as $card)
+                                <div class="card bg-white p-2 d-flex flex-row justify-content-between" onclick="showCard({{Auth::user()->id}},{{$card->id}})"> 
+                                    <div class="">
+                                        <h6>{{$card->title}}</h6>
+                                        <div class="d-flex gap-3 align-items-center">
+                                            <small style="background-color: red ;color:white" title="أنجز بسرعة" class="fw-bold rounded p-1">تنتهي قريبا <i class="fa-regular fa-clock me-2"></i></small>
+                                            <i title="هذه الكارد تحتوي على وصف" class="fa-solid fa-align-left"></i>
+                                        </div>  
+                                    </div>                               
+                                    
+                                    <div class="edit-confirm d-flex align-items-start">
+                                        <i class="fa-solid fa-marker edit-card-title"></i>
+                                    </div>
+                                            
                                 </div>
-                                          
-                            </div>
-                        @endforeach
-                    @endif
-                </div>
-                <div class="list-footer px-3">
-                    <input class="title-card d-none w-100 px-2" type="text" name="" id="" placeholder="أدخل عنوان المهمة">
-                    <button class="btn my-2 w-100 px-3 text-end injaaz-btn add-card-confirm" onclick="addCardConfirm(this)"> أضافة مهمة<i class="fa-solid fa-plus plus-icon"></i></button>
-                    <div class="add-confirm p-2 d-flex align-items-center justify-content-between d-none">
-                        <i class="fa-solid fa-xmark close-icon btn-cancel-add" onclick="cancelAdd(this)" ></i>
-                        <button class="btn my-2 px-3 text-end injaaz-btn btn-add" onclick="addCard(this)">أضافة</button>
+                            @endforeach
+                        @endif
                     </div>
-                </div>
+                    <div class="list-footer px-3">
+                        <input class="title-card d-none w-100 px-2" type="text" name="" id="" placeholder="أدخل عنوان المهمة">
+                        <button class="btn my-2 w-100 px-3 text-end injaaz-btn add-card-confirm" onclick="addCardConfirm(this)"> أضافة مهمة<i class="fa-solid fa-plus plus-icon"></i></button>
+                        <div class="add-confirm p-2 d-flex align-items-center justify-content-between d-none">
+                            <i class="fa-solid fa-xmark close-icon btn-cancel-add" onclick="cancelAdd(this)" ></i>
+                            <button class="btn my-2 px-3 text-end injaaz-btn btn-add" onclick="addCard(this,{{Auth::user()->id}},{{$list->id}})">أضافة</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             @endforeach
@@ -217,7 +216,7 @@
             <div class="new-list-body mx-3">
                 <input class="w-100 px-2 list-title d-none" type="text" placeholder="عنوان القائمة ">
                 <div class="new-list-conetnt my-2 d-flex align-items-center justify-content-between d-none">
-                    <button class="btn injaaz-btn add-list">أضافة</button>
+                    <button class="btn injaaz-btn add-list" onclick="addList(this,{{Auth::user()->id}},{{$board->id}})">أضافة</button>
                     <i class="fa-solid fa-xmark close-icon btn-cancel-add"></i>
                 </div>
                 <div class="my-2">
@@ -384,22 +383,51 @@
             listBody.scrollTop(listBody.prop('scrollHeight'));
         }
 
-        function addCard(button){
+        function addCard(button,userId,listId){
             var listBody = $(button).closest('.list-body');
                 var newCardTitle = listBody.find('.title-card').val();
                 if (newCardTitle.trim() !== "") {
-                    listBody.find('.mkmk').append(`
-                            <div class="card bg-white p-2 d-flex flex-row justify-content-between">
-                                <h6>${newCardTitle}</h6>
+                    const formData = new FormData();
+                    formData.append('title', newCardTitle);
+                    formData.append('board_list_id',listId);
+                    fetch(`http://127.0.0.1:8000/dashboard/${userId}/card/create`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        },
+                        body: formData,
+                    })
+                    .then(response => {  
+                        if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data) {
+                            listBody.find('.mkmk').append(`
+                            <div class="card bg-white p-2 d-flex flex-row justify-content-between" onclick="showCard({{Auth::user()->id}},${data.card.id})"> 
+                                <div class="">
+                                    <h6>${data.card.title}</h6>
+                                </div>                               
+                                
                                 <div class="edit-confirm d-flex align-items-start">
                                     <i class="fa-solid fa-marker edit-card-title"></i>
                                 </div>
+                                          
                             </div>
-                    `);
-                    listBody.scrollTop(listBody.prop('scrollHeight'));
-                    listBody.find('.title-card').val("");
+                            `);
+                            listBody.scrollTop(listBody.prop('scrollHeight'));
+                            listBody.find('.title-card').val("");
+                        }
+                    })
+
+                    .catch(error => {
+                        console.error('Error fetching card details:', error);
+                    });
                 }
         }
+
 
         function cancelAdd(button){
             var listBody = $(button).closest('.list-body');
@@ -411,7 +439,85 @@
 
     // end
 
+    // Add List & other operation 
 
+        $('.new-list').on('click','.add-list-confirm' , function(){
+            $('.add-list-confirm').addClass('d-none');
+            $('.new-list-conetnt').removeClass('d-none');
+            $('.list-title').removeClass('d-none');
+            $('.new-list').find('input').focus();
+        })
+
+        function addList(button,userId,boardId){ 
+            var newListTitle = $('.new-list').find('input').val()
+            if (newListTitle.trim() !== "") {
+                const formData = new FormData();
+                formData.append('title', newListTitle);
+                formData.append('board_id',boardId);
+                fetch(`http://127.0.0.1:8000/dashboard/${userId}/list/create`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    },
+                    body: formData,
+                })
+                .then(response => {  
+                    if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then( data => { 
+                    if (data) {
+                        $('.new-list').before(`
+                            <div class="col-3 rounded board-list p-0">
+                                <div class="list-header p-3">
+                                    <div class="list-title d-flex align-items-center justify-content-between" role="button">
+                                        <h5>${data.boardList.title}</h5>
+                                        <i class="fa-solid fa-ellipsis"></i>
+                                    </div>
+                                </div>
+                                <div class="list-body custom-scrollbar">
+                                    <div class="list-body-conetnt mkmk custom-scrollbar px-3">
+                                    </div>
+                                    <div class="list-footer px-3">
+                                        <input class="title-card d-none w-100 px-2" type="text" name="" id="" placeholder="أدخل عنوان المهمة">
+                                        <button class="btn my-2 w-100 px-3 text-end injaaz-btn add-card-confirm" onclick="addCardConfirm(this)"> أضافة مهمة<i class="fa-solid fa-plus plus-icon"></i></button>
+                                        <div class="add-confirm p-2 d-flex align-items-center justify-content-between d-none">
+                                            <i class="fa-solid fa-xmark close-icon btn-cancel-add" onclick="cancelAdd(this)" ></i>
+                                            <button class="btn my-2 px-3 text-end injaaz-btn btn-add" onclick="addCard(this,{{Auth::user()->id}},${data.boardList.id})">أضافة</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `)
+                        $('.new-list').find('input').val("")
+                        $('.new-list-header').removeClass('d-none');
+                        $('.add-list-confirm').removeClass('d-none');
+                        $('.new-list-conetnt').addClass('d-none');
+                        $('.new-list').find('input').addClass('d-none');
+                    }
+                })
+
+                .catch(error => {
+                    console.error('Error fetching card details:', error);
+                });
+            }
+        }
+
+                
+
+        $('.new-list').on('click','.btn-cancel-add' , function(){
+            $('.new-list').find('input').val("")
+            $('.new-list-header').removeClass('d-none');
+            $('.add-list-confirm').removeClass('d-none');
+            $('.new-list-conetnt').addClass('d-none');
+            $('.new-list').find('input').addClass('d-none');
+        })
+
+    // End Add List & other operation 
+
+    
     // Card Operation 
 
         // Saved Card Description & send Comments
@@ -536,50 +642,6 @@
                 $('#input-description').addClass('d-none');
             });
   
-            $('.new-list').on('click','.add-list-confirm' , function(){
-                $('.add-list-confirm').addClass('d-none');
-                $('.new-list-conetnt').removeClass('d-none');
-                $('.list-title').removeClass('d-none');
-                $('.new-list').find('input').focus();
-            })
-
-            $('.new-list').on('click','.add-list' , function(){
-                $('.new-list').before(`
-                    <div class="col-3 rounded board-list p-0">
-                        <div class="list-header p-3">
-                            <div class="list-title d-flex align-items-center justify-content-between" role="button">
-                                <h5>${$('.new-list').find('input').val()}</h5>
-                                <i class="fa-solid fa-ellipsis"></i>
-                            </div>
-                        </div>
-                        <div class="list-body custom-scrollbar">
-                            <div class="list-body-conetnt mkmk custom-scrollbar px-3">
-                            </div>
-                            <div class="list-footer px-3">
-                                <input class="title-card d-none w-100 px-2" type="text" name="" id="" placeholder="أدخل عنوان المهمة">
-                                <button class="btn my-2 w-100 px-3 text-end injaaz-btn add-card-confirm" onclick="addCardConfirm(this)"> أضافة مهمة<i class="fa-solid fa-plus plus-icon"></i></button>
-                                <div class="add-confirm p-2 d-flex align-items-center justify-content-between d-none">
-                                    <i class="fa-solid fa-xmark close-icon btn-cancel-add" onclick="cancelAdd(this)" ></i>
-                                    <button class="btn my-2 px-3 text-end injaaz-btn btn-add" onclick="addCard(this)">أضافة</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `)
-                $('.new-list').find('input').val("")
-                $('.new-list-header').removeClass('d-none');
-                $('.add-list-confirm').removeClass('d-none');
-                $('.new-list-conetnt').addClass('d-none');
-                $('.new-list').find('input').addClass('d-none');
-            })
-
-            $('.new-list').on('click','.btn-cancel-add' , function(){
-                $('.new-list').find('input').val("")
-                $('.new-list-header').removeClass('d-none');
-                $('.add-list-confirm').removeClass('d-none');
-                $('.new-list-conetnt').addClass('d-none');
-                $('.new-list').find('input').addClass('d-none');
-            })
 
 
             $('#card-title').on('click', function(){

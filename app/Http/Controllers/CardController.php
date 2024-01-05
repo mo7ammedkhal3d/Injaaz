@@ -66,7 +66,7 @@ class CardController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -74,7 +74,14 @@ class CardController extends Controller
      */
     public function store(StoreCardRequest $request)
     {
-        //
+        $validatedData = $request->validate([
+            'title' => 'required|string',
+            'board_list_id' => 'required|exists:board_lists,id',
+        ]);
+    
+        $card = Card::create($validatedData);
+    
+        return response()->json(['card' => $card], 201);
     }
 
     /**

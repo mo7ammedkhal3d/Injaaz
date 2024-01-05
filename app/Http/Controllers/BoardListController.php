@@ -31,7 +31,14 @@ class BoardListController extends Controller
      */
     public function store(StoreBoardListRequest $request)
     {
-        //
+        $validatedData = $request->validate([
+            'title' => 'required|string',
+            'board_id' => 'required|exists:boards,id',
+        ]);
+    
+        $boardList = BoardList::create($validatedData);
+    
+        return response()->json(['boardList' => $boardList], 201);
     }
 
     /**

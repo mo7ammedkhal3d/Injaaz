@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('cards', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->foreignId('board_list_id')->constrained();
-            $table->date('due_date')->nullable();
-            $table->date('start_date')->nullable();
+            $table->date('due_date')->nullable()->nullable();
+            $table->date('start_date')->nullable()->nullable();
             $table->timestamps();
         });
     }

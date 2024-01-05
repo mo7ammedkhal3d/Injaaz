@@ -24,7 +24,8 @@ Route::get('/', function () {
 Route::get('/dashboard/{userId}', [BoardController::class, 'index'])->name('dashboard.index');
 Route::get('/dashboard/{board_id}/lists', [BoardController::class, 'show'])->name('dashboard.lists');
 Route::get('/dashboard/{userId}/card/{card_id}', [CardController::class, 'index'])->name('dashboard.getCardDetails');
-
+Route::post('/dashboard/{userId}/card/create', [CardController::class, 'store'])->name('dashboard.createCard');
+Route::post('/dashboard/{userId}/list/create', [BoardListController::class, 'store'])->name('dashboard.createList');
 Route::get('/dashboard/board', function () {
     return view('dashboard.board');
 })->name('dashboard.board');

@@ -283,14 +283,15 @@ body {
 }
 
 .card-comment-item{
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     color: var(--contaianer-color);
     padding: 0;
 }
 
 
 .card-modal-description , .card-modal-comment{
-    height: 2.5rem;
+    height: auto;
+    min-height: 2.5rem;
 }
 
 .new-list{
@@ -386,7 +387,8 @@ body {
     padding: 1rem 0;
     overflow-y: auto;
     direction: rtl;
-    height: 20rem;
+    height: auto;
+    max-height: 20rem;
 }
 
 /*#endregion Card Modal  */

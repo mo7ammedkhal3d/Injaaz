@@ -1,221 +1,145 @@
 @extends('layouts.mainlayout')
 @section('content')
     <main id="main" class="main p-0">
+        
+     <!--#region card-modal Modal -->
 
-        <!--#region card-modal Modal -->
+     <div class="modal card-modal" id="card-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal-dialog modal-center" role="document">
+         <div class="modal-content">
+             <div class="modal-header px-4">
+                 <input id="card-title" readonly class="modal-title me-2 rounded no-border card-modal-title" type="text"  role="button">
+                 <button id="close-card-modal" type="button" class="close injaaz-btn-close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                 </button>                        
+             </div>
+             <div class="modal-body custom-scrollbar">
+                 <div class="row m-0 p-0"  dir="rtl">    
+                     <div class="col-7 p-2">
+                         <div class="description-section my-2">
+                             <label for="description" class="fw-bold w-100 in-text-secondry my-2">الوصف</label>
+                             <div id="description-confirm" class="card-modal-description w-100"  contenteditable="true" data-placeholder="الوصف" role="button"></div>
+                             <div id="input-description" class="d-none">
+                                 <textarea class="form-control" id="description-text" placeholder="أضف وصف" cols="4" rows="5" name="body"></textarea>
+                                 <div class="d-flex gap-2 justify-content-end my-2">
+                                     <button class="btn injaaz-btn-secondry" onclick="cancelAddDescription()">إلغاء</button>
+                                     <button class="btn injaaz-btn" onclick="saveDescription()">حفظ</button>
+                                 </div>
+                             </div>
 
-        <div class="modal card-modal" id="card-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-center" role="document">
-            <div class="modal-content">
-                <div class="modal-header px-4">
-                    <input id="card-title" readonly class="modal-title me-2 rounded no-border card-modal-title" type="text" value="أسم الكارد" role="button" onclick="editCardtitle(this)">
-                    <button type="button" class="close injaaz-btn-close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>                        
-                </div>
-                <div class="modal-body custom-scrollbar">
-                    <div class="row m-0 p-0"  dir="rtl">    
-                        <div class="col-7 p-2">
-                            <div class="description-section my-2">
-                                <label for="description" class="fw-bold w-100 in-text-secondry my-2">الوصف</label>
-                                <div id="description-confirm" class="card-modal-description w-100"  contenteditable="true" data-placeholder="الوصف" role="button"></div>
-                                <div id="input-description" class="d-none">
-                                    <textarea class="form-control" id="description-text" placeholder="أضف وصف" cols="4" rows="5" name="body"></textarea>
-                                    <div class="d-flex gap-2 justify-content-end my-2">
-                                        <button class="btn injaaz-btn-secondry" onclick="cancelAddDescription()">إلغاء</button>
-                                        <button class="btn injaaz-btn" onclick="saveDescription()">حفظ</button>
-                                    </div>
-                                </div>
+                         </div>
+                         <div class="comments-section my-2">
+                             <button class="btn injaaz-btn my-2 fw-bold">التعليقات</button>
+                             <button  class="btn in-bg-secondry injaaz-btn-secondry my-2 fw-bold">التغييرات</button>
+                             <div class="add-comment d-flex p-3 gap-2">
+                                 <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
+                                 <div id="comment-confirm" class="card-modal-comment w-100" contenteditable="true" data-placeholder="تعليق" role="button"></div>
+                                 <div id="input-comment" class="d-none">
+                                     <textarea class="form-control" id="comment-text" placeholder="أضف تعليق" rows="5"  name="body"></textarea>
+                                     <div class="d-flex gap-2 justify-content-end my-2">
+                                         <button class="btn injaaz-btn-secondry" onclick="cancelAddComment()">إلغاء</button>
+                                         <button class="btn injaaz-btn" onclick="saveComment()">اضافة</button>
+                                     </div>
+                                 </div>
+                             </div>
+                             <div id="card-comments" class="comments">
 
-                            </div>
-                            <div class="comments-section my-2">
-                                <button class="btn injaaz-btn my-2 fw-bold">التعليقات</button>
-                                <button  class="btn in-bg-secondry injaaz-btn-secondry my-2 fw-bold">التغييرات</button>
-                                <div class="add-comment d-flex p-3 gap-2">
-                                    <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
-                                    <div id="comment-confirm" class="card-modal-comment w-100" contenteditable="true" data-placeholder="تعليق" role="button"></div>
-                                    <div id="input-comment" class="d-none">
-                                        <textarea class="form-control" id="comment-text" placeholder="أضف تعليق" rows="5"  name="body"></textarea>
-                                        <div class="d-flex gap-2 justify-content-end my-2">
-                                            <button class="btn injaaz-btn-secondry" onclick="cancelAddComment()">إلغاء</button>
-                                            <button class="btn injaaz-btn" onclick="saveComment()">حفظ</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="card-comments" class="comments">
-                                    <div class="d-flex gap-3 p-3">
-                                        <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
-                                        <div class="w-100">
-                                            <div class="d-flex justify-content-between">
-                                                <h6 class="m-0 comment-owner-name">Mohammed Khaled</h6>
-                                                <h6 class="comment-date m-0" dir="ltr">{{date('Y/m/d h:m A')}}</h6>
-                                            </div>
-                                            <div class="card-comment-item w-100 my-1" role="button">تمت أضافة هذا التعليق الى المهمة</div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex gap-3 p-3">
-                                        <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
-                                        <div class="w-100">
-                                            <div class="d-flex justify-content-between">
-                                                <h6 class="m-0 comment-owner-name">Mohammed Khaled</h6>
-                                                <h6 class="comment-date m-0" dir="ltr">{{date('Y/m/d h:m A')}}</h6>
-                                            </div>
-                                            <div class="card-comment-item w-100 my-1" role="button">تمت أضافة هذا التعليق الى المهمة</div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex gap-3 p-3">
-                                        <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
-                                        <div class="w-100">
-                                            <div class="d-flex justify-content-between">
-                                                <h6 class="m-0 comment-owner-name">Mohammed Khaled</h6>
-                                                <h6 class="comment-date m-0" dir="ltr">{{date('Y/m/d h:m A')}}</h6>
-                                            </div>
-                                            <div class="card-comment-item w-100 my-1" role="button">تمت أضافة هذا التعليق الى المهمة</div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex gap-3 p-3">
-                                        <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
-                                        <div class="w-100">
-                                            <div class="d-flex justify-content-between">
-                                                <h6 class="m-0 comment-owner-name">Mohammed Khaled</h6>
-                                                <h6 class="comment-date m-0" dir="ltr">{{date('Y/m/d h:m A')}}</h6>
-                                            </div>
-                                            <div class="card-comment-item w-100 my-1" role="button">تمت أضافة هذا التعليق الى المهمة</div>
-                                        </div>
-                                    </div>
-                                </div>
-                               
-                            </div>
-                        </div>
-                        <div class="col-5">
-                            <table class="card-info">
-                                <tr class="card-owner">
-                                    <td>
-                                        <h5 class="m-0">المالك</h5>
-                                    </td>
-                                    <td class="py-1 px-4">
-                                        <div class="d-flex gap-1">
-                                            <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
-                                            <input id="description" type="text" class="card-modal-title w-100" value="Mohammed khaled" role="button">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="dates">
-                                    <td>
-                                       <h5 class="m-0">التواريخ</h5> 
-                                    </td>
-                                    <td class="py-1 px-4">
-                                        <div class="d-flex gap-2 align-items-center">
-                                            <input id="card-start-date" class="card-modal-title" type="date">
-                                            <i class="fa-solid fa-arrow-left"></i>
-                                            <input id="card-due-date" class="card-modal-title" type="date">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="progrss-rate">
-                                    <td>
-                                        <h5 class="m-0">نسبة الأنجاز</h5> 
-                                    </td>
-                                    <td class="py-1 px-4">
-                                        <div class="d-flex gap-2 align-items-center">
-                                            <label for="rate"><input id="rate" type="text" class="card-modal-title" value="50" role="button">%</label>
-                                            <div class="d-flex gap-2 align-items-center">
-                                                <i class="fa-solid fa-circle-half-stroke"></i>
-                                                <i class="fa-solid fa-circle-half-stroke"></i>
-                                                <i class="fa-solid fa-circle-half-stroke"></i>
-                                                <i class="fa-solid fa-circle-half-stroke"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="card-member">
-                                    <td>
-                                        <h5 class="m-0">الاعضاء</h5> 
-                                    </td>
-                                    <td class="py-1 d-flex px-4 gap-2">
-                                        <div class="member-photos position-relative w-50">
-                                            <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
-                                            <img class="comment-img" src="{{asset('assets/img/testimonial-3.jpg')}}" alt="loadding">
-                                            <img class="comment-img" src="{{asset('assets/img/testimonial-2.jpg')}}" alt="loadding">
-                                            <img class="comment-img" src="{{asset('assets/img/team-3.jpg')}}" alt="loadding">
-                                            <img class="comment-img" src="{{asset('assets/img/testimonial-4.jpg')}}" alt="loadding">
-                                        </div>
-                                        <button class="btn injaaz-btn" onclick="showMemberDetails()">عرض التفاصيل</button>
-                                    </td>
-                                </tr>
-                                <tr class="member-details d-none">
-                                    <td>
-                                    </td>
-                                    <td>
-                                        <div id="card_assigneds" class="d-flex flex-column gap-3 card-member-list custom-scrollbar" dir="rtl">
-                                            <div class="d-flex gap-3 align-items-center justify-content-center">
-                                                <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
-                                                <h6 class="m-0">Mohammed Khaled</h6>
-                                                <i class="fa-solid fa-trash delete-member-icon"></i>
-                                            </div>
-                                            <div class="d-flex gap-3 align-items-center justify-content-center">
-                                                <img class="comment-img" src="{{asset('assets/img/testimonial-3.jpg')}}" alt="loadding">
-                                                <h6 class="m-0">Mohammed Khaled</h6>
-                                                <i class="fa-solid fa-trash delete-member-icon"></i>
-                                            </div>
-                                            <div class="d-flex gap-3 align-items-center justify-content-center">
-                                                <img class="comment-img" src="{{asset('assets/img/testimonial-2.jpg')}}" alt="loadding">
-                                                <h6 class="m-0">Mohammed Khaled</h6>
-                                                <i class="fa-solid fa-trash delete-member-icon"></i>
-                                            </div>
-                                            <div class="d-flex gap-3 align-items-center justify-content-center">
-                                                <img class="comment-img" src="{{asset('assets/img/team-3.jpg')}}" alt="loadding">
-                                                <h6 class="m-0">Mohammed Khaled</h6>
-                                                <i class="fa-solid fa-trash delete-member-icon"></i>
-                                            </div>
-                                            <div class="d-flex gap-3 align-items-center justify-content-center">
-                                                <img class="comment-img" src="{{asset('assets/img/testimonial-4.jpg')}}" alt="loadding">
-                                                <h6 class="m-0">Mohammed Khaled</h6>
-                                                <i class="fa-solid fa-trash delete-member-icon"></i>
-                                            </div>
-                                            <div class="d-flex gap-3 align-items-center justify-content-center">
-                                                <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
-                                                <h6 class="m-0">Mohammed Khaled</h6>
-                                                <i class="fa-solid fa-trash delete-member-icon"></i>
-                                            </div>
-                                            <div class="d-flex gap-3 align-items-center justify-content-center">
-                                                <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
-                                                <h6 class="m-0">Mohammed Khaled</h6>
-                                                <i class="fa-solid fa-trash delete-member-icon"></i>
-                                            </div>
-                                            <div class="d-flex justify-content-center">
-                                                <button class="btn injaaz-btn w-50" data-toggle="modal" data-target="#add-card-member"><i class="fa-solid fa-plus ms-2"></i> أضافة عضو </button>
-                                            </div> 
-                                        </div>                                     
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
+                             </div>
+                            
+                         </div>
+                     </div>
+                     <div class="col-5">
+                         <table class="card-info">
+                             <tr class="card-owner">
+                                 <td>
+                                     <h5 class="m-0">المالك</h5>
+                                 </td>
+                                 <td class="py-3 px-3">
+                                     <div class="d-flex gap-1">
+                                         <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
+                                         <input id="description" type="text" class="card-modal-title w-100" value="Mohammed khaled" role="button">
+                                     </div>
+                                 </td>
+                             </tr>
+                             <tr class="dates">
+                                 <td>
+                                    <h5 class="m-0">التواريخ</h5> 
+                                 </td>
+                                 <td class="py-3 px-3">
+                                     <div class="d-flex gap-2 align-items-center">
+                                         <input id="card-start-date" class="card-modal-title" type="date">
+                                         <i class="fa-solid fa-arrow-left"></i>
+                                         <input id="card-due-date" class="card-modal-title" type="date">
+                                     </div>
+                                 </td>
+                             </tr>
+                             <tr class="progrss-rate">
+                                 <td>
+                                     <h5 class="m-0">نسبة الأنجاز</h5> 
+                                 </td>
+                                 <td class="py-3 px-3">
+                                     <div class="d-flex gap-2 align-items-center">
+                                         <label for="rate"><input id="rate" type="text" class="card-modal-title" value="50" role="button">%</label>
+                                         <div class="d-flex gap-2 align-items-center">
+                                             <i class="fa-solid fa-circle-half-stroke"></i>
+                                             <i class="fa-solid fa-circle-half-stroke"></i>
+                                             <i class="fa-solid fa-circle-half-stroke"></i>
+                                             <i class="fa-solid fa-circle-half-stroke"></i>
+                                         </div>
+                                     </div>
+                                 </td>
+                             </tr>
+                             <tr class="card-member">
+                                 <td>
+                                     <h5 class="m-0">الاعضاء</h5> 
+                                 </td>
+                                 <td class="d-flex gap-2 py-3 px-3">
+                                     <div class="member-photos position-relative w-50">
+                                         <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
+                                         <img class="comment-img" src="{{asset('assets/img/testimonial-3.jpg')}}" alt="loadding">
+                                         <img class="comment-img" src="{{asset('assets/img/testimonial-2.jpg')}}" alt="loadding">
+                                         <img class="comment-img" src="{{asset('assets/img/team-3.jpg')}}" alt="loadding">
+                                         <img class="comment-img" src="{{asset('assets/img/testimonial-4.jpg')}}" alt="loadding">
+                                     </div>
+                                     <button class="btn injaaz-btn" onclick="showMemberDetails()">عرض التفاصيل</button>
+                                 </td>
+                             </tr>
+                             <tr class="member-details d-none">
+                                 <td>
+                                 </td>
+                                 <td>
+                                     <div id="card_assigneds" class="d-flex flex-column gap-3 card-member-list custom-scrollbar px-3" dir="rtl">
+                                        {{-- <div class="d-flex justify-content-center">
+                                            <button class="btn injaaz-btn w-50" data-toggle="modal" data-target="#add-card-member"><i class="fa-solid fa-plus ms-2"></i> أضافة عضو </button>
+                                        </div>                        --}} 
+                                     </div>
+                                 </td>
+                             </tr>
+                         </table>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+     </div>
 
-    <!--#endregion Card Modal -->
+ <!--#endregion Card Modal -->
 
     <!--#region Add Memeber Modal-->
 
-    <div class="modal add-member-modal" id="add-card-member" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div id="add-card-member" class="modal add-member-modal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-center" role="document">
             <div class="modal-content">
                 <div class="modal-header px-4">
                     <h5 class="m-0 text-center">أضافة عضو</h5>
-                    <button type="button" class="close injaaz-btn-close" data-dismiss="modal" aria-label="Close">
+                    <button id="close-add-member-modal" type="button" class="close injaaz-btn-close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>                        
                 </div>
                 <div class="modal-body">
                     <div class=" px-5 d-flex justify-content-center h-100 align-items-center gap-3 flex-column add-member-details">
-                        <label for="member-name">الأسم</label>
-                        <input class="add-member-name w-100 rounded" type="text">
+                        <label for="member-email">الأسم</label>
+                        <input id="member-email" class="add-member-name w-100 rounded" type="text">
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-center">
@@ -256,7 +180,7 @@
                     @if ($list->cards && $list->cards->count() > 0)
                         @foreach ($list->cards as $card)
                             {{-- <div class="card bg-white p-2 d-flex flex-row justify-content-between" data-toggle="modal" data-target="#card-modal" data-backdrop="static" data-keyboard="false">  --}}
-                            <div class="card bg-white p-2 d-flex flex-row justify-content-between" onclick="showCard($card->id)"> 
+                            <div class="card bg-white p-2 d-flex flex-row justify-content-between" onclick="showCard({{Auth::user()->id}},{{$card->id}})"> 
                                 <div class="">
                                     <h6>{{$card->title}}</h6>
                                     <div class="d-flex gap-3 align-items-center">
@@ -306,18 +230,30 @@
     </main>
     <script>  
 
+    // showAddMember
+        function showAddMember(){
+                $('#close-add-member-modal').on('click', function(){
+                    $('#member-email').val("");
+                    $('#add-card-member').modal('hide'); 
+                });
+            $('#add-card-member').modal('show'); 
+        }
+    // showAddMember
+
     // Get Card Details
 
-        function showCard(cardId) {      
-            // const Closebuttons = document.querySelectorAll('.btn-close-modal');
-            // Closebuttons.forEach(function (btnClose) {
-            //     btnClose.addEventListener('click', function(){
-            //         $('form')[0].reset();
-            //         $('#card-modal').modal('hide');
-            //     });
-            // });
+        function showCard(userId,cardId) {      
+            $('#close-card-modal').on('click', function(){
+                    $('#card-title').val("");
+                    $('#description-confirm').html("");
+                    $('#card-start-date').val("");
+                    $('#card-due-date').val("");
+                    $('#card-comments').html("");
+                    $('#card_assigneds').html("");
+                    $('#card-modal').modal('hide'); 
+                });
             
-            fetch(`http://127.0.0.1:8000/card/${cardId}`, {
+            fetch(`http://127.0.0.1:8000/dashboard/${userId}/card/${cardId}`, {
                 method: 'GET',
             })
             .then(response => {  
@@ -327,6 +263,14 @@
                 return response.json();
             })
             .then(cardDetails => { 
+
+                    $('#card-title').val("");
+                    $('#description-confirm').html("");
+                    $('#card-start-date').val("");
+                    $('#card-due-date').val("");
+                    $('#card-comments').html("");
+                    $('#card_assigneds').html("");
+
                     $('#card-title').val(cardDetails.card_title);
                     $('#description-confirm').html(cardDetails.card_description);
                     $('#card-start-date').val(cardDetails.start_date);
@@ -349,7 +293,7 @@
 
                     cardDetails.card_assigneds.forEach(card_assigned => {
                         $('#card_assigneds').append(`
-                            <div class="d-flex gap-3 align-items-center justify-content-center">
+                            <div class="d-flex gap-3 align-items-center justify-content-between px-5">
                                 <img class="comment-img" src="{{asset('assets/img/profile-img.jpg')}}" alt="loadding">
                                 <h6 class="m-0">${card_assigned.user_name}</h6>
                                 <i class="fa-solid fa-trash delete-member-icon"></i>
@@ -357,13 +301,20 @@
                         `)
                     });
 
-
+                    $('#card_assigneds').append(`
+                        <div class="d-flex justify-content-center">
+                            <button class="btn injaaz-btn w-50" onclick="showAddMember()"><i class="fa-solid fa-plus ms-2"></i> أضافة عضو </button>
+                        </div> 
+                    `)
             })
+
             .catch(error => {
                 console.error('Error during fetch operation:', error);
             });
 
-            $('#card-modal').modal('show');     
+            $('#card-modal').data('backdrop', 'static');
+            $('#card-modal').data('keyboard', false); 
+            $('#card-modal').modal('show');    
         }
 
     // end Get Card Details
@@ -531,8 +482,6 @@
 
         // Deal with placeholder of div and ckeditr
 
-
-
             $('#description-confirm').on('click', function(){
                 if (descriptionText){
                     descriptionText.setData($('#description-confirm').html());
@@ -604,41 +553,30 @@
             })
 
 
-            $('#card-title').on('blur', function () {
-                saveAndSendToServer();
-            });
+            $('#card-title').on('click', function(){
+                $('#card-title').focus();
 
-            // Attach keypress event handler to the input element
-            $('#card-title').on('keypress', function (event) {
-                // Check if the pressed key is Enter (key code 13)
-                if (event.which === 13) {
+                $('#card-title').on('blur', function () {
                 saveAndSendToServer();
-                return;
+                });
+
+                // Attach keypress event handler to the input element
+                $('#card-title').on('keypress', function (event) {
+                    // Check if the pressed key is Enter (key code 13)
+                    if (event.which === 13) {
+                    saveAndSendToServer();
+                    return;
+                    }
+                });
+
+                // Function to save and send the value to the server
+                function saveAndSendToServer() {
+                    var inputValue = $('#card-title').val();
+                    alert('Saving and sending to server:', inputValue);
                 }
-            });
-
-            // Function to save and send the value to the server
-            function saveAndSendToServer() {
-                var inputValue = $('#card-title').val();
-                alert('Saving and sending to server:', inputValue);
-            }
+                });
 
         });
-
-        // function showDescriptionArea(button){
-        //     $(button).addClass('d-none');
-        //     $('.discription-area').removeClass('d-none');
-        // }
-
-        // function hideDescriptionArea(button){
-        //     $('.description-label').removeClass('d-none');
-        //     $('.discription-area').addClass('d-none')
-        // }
-
-        function showSelectedDate(){
-            $('#select-date-modal').modal('show'); 
-        }
-
 
     </script>
 @endsection

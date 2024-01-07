@@ -114,6 +114,13 @@ body {
 
 /*#region dashboard.board*/
 
+/* this for row of listes */
+
+.custom-row-padding{
+    padding-bottom: 2.2rem!important;
+}
+
+
 .board-header{
     background-color: var(--onprimary-color);
 }
@@ -125,6 +132,7 @@ body {
 .board-list{
     background-color: var(--onprimary-color);
     height: fit-content;
+    user-select: none;
 }
 
 .list-body{
@@ -291,6 +299,10 @@ body {
     outline-style: solid;
     outline-width: 0.1rem;
     outline-color: var(--contaianer-color);
+}
+
+.card-modal-title{
+    width: fit-content;
 }
 
 .card-comment-item{

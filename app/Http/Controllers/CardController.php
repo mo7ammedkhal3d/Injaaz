@@ -23,6 +23,7 @@ class CardController extends Controller
 
         $cardCommentsCollection = CardComment::with('boardMember.user')
             ->where('card_id', $card->id)
+            ->orderBy('created_at', 'desc')
             ->get();
 
         $boardMembers = $card->boardMembers()->with('user')->get();
@@ -50,6 +51,7 @@ class CardController extends Controller
         }
 
             $cardDetails=[
+               'card_id'=>$card->id,
                'card_title' => $card->title,
                'card_description' => $card->description,
                'start_date'=>$card->start_date,
@@ -103,9 +105,34 @@ class CardController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCardRequest $request, Card $card)
+    public function update(UpdateCardRequest $request)
     {
-        //
+        $card = Card::find($request->card_id);
+
+        if (!$card) {
+            return response()->json(['error' => 'Card not found'], 404);
+        }
+
+        switch ($request->update_type) {
+            case 'card_title':
+                $card->title = $request->new_title;
+                break;
+            case 'card_description':
+                $card->description = $request->new_description;
+                break;
+            case 'card_start_date':
+                $card->start_date = $request->date;
+                break;
+            case 'card_due_date':
+                $card->due_date = $request->date;
+                break;
+            default:
+                return response()->json(['error' => 'Invalid update type'], 400);
+        }
+
+        $card->save();
+
+        return response()->json([true]);
     }
 
     /**

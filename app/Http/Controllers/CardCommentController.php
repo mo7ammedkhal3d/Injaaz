@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BoardMember;
 use App\Models\CardComment;
 use App\Http\Requests\StoreCardCommentRequest;
 use App\Http\Requests\UpdateCardCommentRequest;
+use App\Models\User;
 
 class CardCommentController extends Controller
 {
@@ -29,7 +31,20 @@ class CardCommentController extends Controller
      */
     public function store(StoreCardCommentRequest $request)
     {
-        //
+        $board_member_id = BoardMember::where('user_id', $request->user_id)
+        ->where('board_id', $request->board_id)
+        ->pluck('id')
+        ->first();
+
+        $comment = new CardComment();
+        $comment->board_member_id = $board_member_id;
+        $comment->card_id = $request->card_id;
+        $comment->text = $request->comment_text;
+        $comment->save();
+
+        $user = User::find($request->user_id);
+
+        return response()->json(['user_name' => $user->name,'user_email'=>$user->email,'comment_date'=>$comment->created_at->format('Y/m/d h:i A'),'comment_text'=>$comment->text], 201);
     }
 
     /**

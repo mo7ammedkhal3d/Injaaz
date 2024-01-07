@@ -12,8 +12,7 @@ class StoreBoardListRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // return Auth::check();
-        return true;
+        return Auth::check();
     }
 
     /**

@@ -13,7 +13,10 @@
                 </div>
             </div>
              <div class="modal-header px-4">
-                 <input id="card-title" readonly class="modal-title me-2 rounded no-border card-modal-title" type="text"  role="button">
+                 <div class="ms-5 w-100">
+                    <p id="card-title" class="m-0 modal-title me-2 rounded no-border card-modal-title" role="button" onclick="makeEditable(this,{{Auth::user()->id}})"></p>
+                    <input id="card-id" type="hidden">
+                 </div>
                  <button id="close-card-modal" type="button" class="close injaaz-btn-close" data-dismiss="modal" aria-label="Close">
                      <span aria-hidden="true">&times;</span>
                  </button>                        
@@ -23,12 +26,12 @@
                      <div class="col-7 p-2">
                          <div class="description-section my-2">
                              <label for="description" class="fw-bold w-100 in-text-secondry my-2">الوصف</label>
-                             <div id="description-confirm" class="card-modal-description w-100"  contenteditable="true" data-placeholder="الوصف" role="button"></div>
+                             <div id="description-confirm" class="card-modal-description w-100"  contenteditable="true" data-placeholder="الوصف" role="button" onclick="editCardDescription(this,{{Auth::user()->id}})"></div>
                              <div id="input-description" class="d-none">
                                  <textarea class="form-control" id="description-text" placeholder="أضف وصف" cols="4" rows="5" name="body"></textarea>
                                  <div class="d-flex gap-2 justify-content-end my-2">
-                                     <button class="btn injaaz-btn-secondry" onclick="cancelAddDescription()">إلغاء</button>
-                                     <button class="btn injaaz-btn" onclick="saveDescription()">حفظ</button>
+                                     <button id="cancel-add-description" class="btn injaaz-btn-secondry">إلغاء</button>
+                                     <button id="save-description-btn" class="btn injaaz-btn">حفظ</button>
                                  </div>
                              </div>
 
@@ -38,12 +41,12 @@
                              <button  class="btn in-bg-secondry injaaz-btn-secondry my-2 fw-bold">التغييرات</button>
                              <div class="add-comment d-flex p-3 gap-2">
                                  <img class="comment-img" src="{{"https://www.gravatar.com/avatar/" . md5(strtolower(trim(Auth::user()->email))) . "?d=mp"}}" alt="loadding">
-                                 <div id="comment-confirm" class="card-modal-comment w-100" contenteditable="true" data-placeholder="تعليق" role="button"></div>
+                                 <div id="comment-confirm" class="card-modal-comment w-100" contenteditable="true" data-placeholder="تعليق" role="button" onclick="AddComment({{Auth::user()->id}},{{$board->id}})"></div>
                                  <div id="input-comment" class="d-none">
                                      <textarea class="form-control" id="comment-text" placeholder="أضف تعليق" rows="5"  name="body"></textarea>
                                      <div class="d-flex gap-2 justify-content-end my-2">
-                                         <button class="btn injaaz-btn-secondry" onclick="cancelAddComment()">إلغاء</button>
-                                         <button class="btn injaaz-btn" onclick="saveComment()">اضافة</button>
+                                         <button id="cancel-comment" class="btn injaaz-btn-secondry">إلغاء</button>
+                                         <button id="add-comment" class="btn injaaz-btn">اضافة</button>
                                      </div>
                                  </div>
                              </div>
@@ -72,9 +75,9 @@
                                  </td>
                                  <td class="py-3 px-3">
                                      <div class="d-flex gap-2 align-items-center">
-                                         <input id="card-start-date" class="card-modal-title" type="date">
+                                         <input id="card-start-date" class="card-modal-title" type="date" onchange="updateCardDates(this,{{Auth::user()->id}},'start_date')">
                                          <i class="fa-solid fa-arrow-left"></i>
-                                         <input id="card-due-date" class="card-modal-title" type="date">
+                                         <input id="card-due-date" class="card-modal-title" type="date" onchange="updateCardDates(this,{{Auth::user()->id}},'due_date')">
                                      </div>
                                  </td>
                              </tr>
@@ -109,9 +112,6 @@
                                  </td>
                                  <td>
                                      <div id="card_assigneds" class="d-flex flex-column gap-3 card-member-list custom-scrollbar px-3" dir="rtl">
-                                        {{-- <div class="d-flex justify-content-center">
-                                            <button class="btn injaaz-btn w-50" data-toggle="modal" data-target="#add-card-member"><i class="fa-solid fa-plus ms-2"></i> أضافة عضو </button>
-                                        </div>                        --}} 
                                      </div>
                                  </td>
                              </tr>
@@ -165,7 +165,7 @@
             </div>
         </div>
     </div>
-    <div class="row pb-4 pt-2 mt-2 gap-5 mx-0 board-body algin-itmes-center overflow-x-auto flex-nowrap custom-scrollbar-x">
+    <div class="row pt-2 mt-2 gap-5 mx-0 board-body algin-itmes-center overflow-x-auto flex-nowrap custom-scrollbar-x custom-row-padding">
             @if ($board->lists->count()>0)
             @foreach ($board->lists as $list)
             <div class="col-3 rounded board-list p-0">
@@ -179,13 +179,20 @@
                     <div class="list-body-conetnt mkmk custom-scrollbar px-3">
                         @if ($list->cards && $list->cards->count() > 0)
                             @foreach ($list->cards->sortBy('created_at') as $card)
-                                <div class="card bg-white p-2 d-flex flex-row justify-content-between" onclick="showCard({{Auth::user()->id}},{{$card->id}})"> 
+                                <div class="card bg-white p-2 d-flex flex-row justify-content-between" onclick="showCard(this,{{Auth::user()->id}},{{$card->id}})"> 
                                     <div class="">
-                                        <h6>{{$card->title}}</h6>
-                                        <div class="d-flex gap-3 align-items-center">
-                                            <small style="background-color: red ;color:white" title="أنجز بسرعة" class="fw-bold rounded p-1">تنتهي قريبا <i class="fa-regular fa-clock me-2"></i></small>
-                                            <i title="هذه الكارد تحتوي على وصف" class="fa-solid fa-align-left"></i>
-                                        </div>  
+                                        <h6 id="hcard-title">{{$card->title}}</h6>
+                                        @if (\Carbon\Carbon::parse($card->due_date)->format('Y-m-d')  == date('Y-m-d') || $card->description != null)
+                                            <div id="card-notification" class="d-flex gap-3 align-items-center">
+                                                @if ($card->due_date  == date('Y-m-d'))
+                                                    <small id="date-notify" style="background-color: red ;color:white" title="أنجز بسرعة" class="fw-bold rounded p-1" onclick="markComplete(this)" >تنتهي قريبا <i class="fa-regular fa-clock me-2"></i></small>
+                                                @endif                                        
+                                                @if ($card->description != null)
+                                                    <i id="description-notify" title="هذه الكارد تحتوي على وصف" class="fa-solid fa-align-left"></i>  
+                                                @endif
+                                            </div>  
+                                        @endif
+                                        
                                     </div>                               
                                     
                                     <div class="edit-confirm d-flex align-items-start">
@@ -229,6 +236,286 @@
     </main>
     <script>  
 
+    var selectedCard;
+
+    function markComplete(element){
+        element.html("Complete");
+        element.css({
+        color: "white",            
+        backgroundColor: "green"    
+    });
+    }
+
+    // Update Card title
+        function makeEditable(element, userId) {
+            var cardId = $('#card-id').val();
+            element.setAttribute('contenteditable', 'true');
+            element.focus();
+            element.addEventListener('blur', handleBlur);
+            element.removeEventListener('keydown', handleKeyDown);
+            function handleKeyDown(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    element.blur();
+                }
+            }
+
+            function handleBlur() {
+                const formData = new FormData();
+                formData.append('new_title', element.textContent);
+                formData.append('card_id', cardId);
+                formData.append('update_type', 'card_title');
+
+                fetch(`http://127.0.0.1:8000/dashboard/${userId}/card/update`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    },
+                    body: formData,
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data) {
+                        selectedCard.find('#hcard-title').html(element.textContent);
+                        element.removeEventListener('blur', handleBlur);
+                        element.removeEventListener('keydown', handleKeyDown);
+                        element.removeAttribute('contenteditable');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching card details:', error);
+                });
+            }
+        }
+
+    // End Update Card title
+        
+
+    // Update Card Description 
+        function editCardDescription(userId){
+            if (descriptionText){
+                        descriptionText.setData($('#description-confirm').html());
+            } else {
+                console.error('CKEditor instance not initialized');
+            }
+            $('#description-confirm').addClass('d-none');
+            $('#input-description').removeClass('d-none');
+            $('#save-description-btn').on('click', updateDescription);
+            $('#cancel-add-description').on('click', cancelUpdateDescription);
+            function updateDescription(){
+                if(descriptionText.getData().trim() != ""){
+                    var cardId = $('#card-id').val();
+                    const formData = new FormData();
+                    formData.append('new_description', descriptionText.getData());
+                    formData.append('card_id', cardId);
+                    formData.append('update_type', 'card_description');
+
+                    fetch(`http://127.0.0.1:8000/dashboard/${userId}/card/update`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        },
+                        body: formData,
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data) {
+                            $('#save-description-btn').off('click', updateDescription);
+                            $('#cancel-add-description').off('click', cancelUpdateDescription);
+                            $('#description-confirm').html(descriptionText.getData());
+                            $('#description-confirm').removeClass('d-none');
+                            $('#input-description').addClass('d-none');
+
+                            var notificationDev = selectedCard.find('#card-notification');
+
+                            if (notificationDev.length > 0) {
+                                var dateNotify = notificationDev.find('#date-notify');
+                                if (dateNotify.length === 0) {
+                                    notificationDev.append(`
+                                        <i id="description-notify" title="هذه الكارد تحتوي على وصف" class="fa-solid fa-align-left"></i>
+                                    `);
+                                }
+                            } else {
+                                selectedCard.append(`
+                                    <div id="card-notification" class="d-flex gap-3 align-items-center">
+                                        <i id="description-notify" title="هذه الكارد تحتوي على وصف" class="fa-solid fa-align-left"></i>
+                                    </div>
+                                `);
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching card details:', error);
+                    });
+                }
+            }
+
+            function cancelUpdateDescription(){
+                $('#description-confirm').removeClass('d-none');
+                $('#input-description').addClass('d-none');
+                $('#save-description-btn').off('click', updateDescription);
+                $('#cancel-add-description').off('click', cancelUpdateDescription);
+            }
+        }
+
+    // End Update Card Description 
+
+    // Add Card comment
+        function AddComment(userId,boardId){
+            $('#comment-confirm').addClass('d-none');
+            $('#input-comment').removeClass('d-none');
+
+            $('#add-comment').on('click', addnewComment);
+            $('#cancel-comment').on('click', cancelAddComment);
+            $(commentText).on('blur', cancelAddComment);
+            function addnewComment(){
+                if(commentText.getData().trim() !=""){
+                    var cardId = $('#card-id').val();
+                    const formData = new FormData();
+                    formData.append('comment_text', commentText.getData());
+                    formData.append('card_id', cardId);
+                    formData.append('user_id', userId);
+                    formData.append('board_id', boardId);
+                    fetch(`http://127.0.0.1:8000/dashboard/${userId}/comment/create`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        },
+                        body: formData,
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data){
+                            $('#add-comment').off('click', addnewComment);
+                            $('#cancel-comment').off('click', cancelAddComment);
+                            $('#input-comment .ck').off('blur', cancelAddComment);
+                            $('#comment-confirm').removeClass('d-none');
+                            $('#input-comment').addClass('d-none');
+                            commentText.setData("");
+                            const email = data.user_email.toLowerCase().trim();
+                            const md5Hash = CryptoJS.MD5(email).toString();
+                            const gravatarUrl = `https://www.gravatar.com/avatar/${md5Hash}?d=mp`;
+
+                            var cardComments = $('#card-comments');
+                            var firstCardComment = cardComments.find('.comment:first');
+                            if(firstCardComment){
+                                firstCardComment.before(`
+                                    <div class="d-flex gap-3 p-3 comment">
+                                        <img class="comment-img" src="${gravatarUrl}" alt="loadding">
+                                        <div class="w-100">
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="m-0 comment-owner-name">${data.user_name}</h6>
+                                                <h6 class="comment-date m-0" dir="ltr">${data.comment_date}</h6>
+                                            </div>
+                                            <div class="card-comment-item w-100 my-1" role="button">${data.comment_text}</div>
+                                        </div>
+                                    </div>
+                                `);
+                            } else {
+                                cardComments.append(`
+                                    <div class="d-flex gap-3 p-3 comment">
+                                        <img class="comment-img" src="${gravatarUrl}" alt="loadding">
+                                        <div class="w-100">
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="m-0 comment-owner-name">${data.user_name}</h6>
+                                                <h6 class="comment-date m-0" dir="ltr">${data.comment_date}</h6>
+                                            </div>
+                                            <div class="card-comment-item w-100 my-1" role="button">${data.comment_text}</div>
+                                        </div>
+                                    </div> `);
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching card details:', error);
+                    });
+                }
+            }
+        
+
+            function cancelAddComment(){
+                commentText.setData("");
+                $('#comment-confirm').removeClass('d-none');
+                $('#input-comment').addClass('d-none');
+            }
+                
+        }
+
+    // End Add Card comment
+
+    // Add Card Dates
+
+        function updateCardDates(element,userId,type){
+            var cardId = $('#card-id').val();
+            const formData = new FormData();
+            formData.append('date', $(element).val());
+            formData.append('card_id', cardId);
+            if(type=="start_date"){
+                formData.append('update_type', 'card_start_date');
+            } else formData.append('update_type', 'card_due_date');
+            
+
+            fetch(`http://127.0.0.1:8000/dashboard/${userId}/card/update`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                },
+                body: formData,
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data) {
+                    // sweet
+                    var currentDate = new Date().toISOString().slice(0, 10);
+
+                    if($(element).val() === currentDate){
+                        var notificationDev = selectedCard.find('#card-notification');
+
+                        if (notificationDev.length > 0) {
+                            var dateNotify = notificationDev.find('#date-notify');
+                            if (dateNotify.length === 0) {
+                                notificationDev.append(`
+                                    <small id="date-notify" style="background-color: red ;color:white" title="أنجز بسرعة" class="fw-bold rounded p-1" onclick="markComplete(this)" >تنتهي قريبا <i class="fa-regular fa-clock me-2"></i></small>
+                                `);
+                            }
+                        } else {
+                            selectedCard.append(`
+                                <div id="card-notification" class="d-flex gap-3 align-items-center">
+                                    <small id="date-notify" style="background-color: red ;color:white" title="أنجز بسرعة" class="fw-bold rounded p-1" onclick="markComplete(this)" >تنتهي قريبا <i class="fa-regular fa-clock me-2"></i></small>
+                                </div>
+                            `);
+                        }
+                    }              
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching card details:', error);
+            });
+        }
+    
+
+    // End Add Card Start Dates
+
     // showAddMember
         function showAddMember(){
                 $('#close-add-member-modal').on('click', function(){
@@ -242,10 +529,11 @@
 
     // Get Card Details
 
-        function showCard(userId,cardId) {      
+        function showCard(card,userId,cardId) {  
+                selectedCard = $(card);    
             $('#close-card-modal').on('click', function(){
-                    $('#card-title').val("");
-                    $('#description-confirm').html("");
+                    $('#card-title').html("");
+                    $('#description-confirm').html();
                     $('#card-start-date').val("");
                     $('#card-due-date').val("");
                     $('#card-comments').html("");
@@ -269,18 +557,23 @@
             .then(cardDetails => { 
                 setTimeout(() => {
                     $('#loadingSpinner').fadeOut(500);
-                    $('#card-title').val("");
-                    $('#description-confirm').html("");
+                    $('#card-title').html("");
+                    $('#description-confirm').html();
                     $('#card-start-date').val("");
                     $('#card-due-date').val("");
                     $('#card-comments').html("");
                     $('#card_assigneds').html("");
                     $('#member-photos').html("");
 
-                    $('#card-title').val(cardDetails.card_title);
-                    $('#description-confirm').html(cardDetails.card_description);
+                    $('#card-title').html(cardDetails.card_title);
+                    if(cardDetails.card_description != null){
+                        $('#description-confirm').html(cardDetails.card_description);
+                    } else{
+                        $('#description-confirm').html("");
+                    }
                     $('#card-start-date').val(cardDetails.start_date);
                     $('#card-due-date').val(cardDetails.due_date);
+                    $('#card-id').val(cardDetails.card_id);
 
                     cardDetails.card_comments.forEach(comment => {
                         const email = comment.user_email.toLowerCase().trim();
@@ -288,7 +581,7 @@
                         const gravatarUrl = `https://www.gravatar.com/avatar/${md5Hash}?d=mp`;
 
                         $('#card-comments').append(`
-                            <div class="d-flex gap-3 p-3">
+                            <div class="d-flex gap-3 p-3 comment">
                                 <img class="comment-img" src="${gravatarUrl}" alt="loadding">
                                 <div class="w-100">
                                     <div class="d-flex justify-content-between">
@@ -337,32 +630,26 @@
                     // Handle the error, e.g., show an error message
                     alert('Failed to fetch card details. Please try again.');
                 }, 1000);
-            });
-
-            // $('#loadingSpinner').addClass('d-none');
-            // $('#card-modal').data('backdrop', 'static');
-            // $('#card-modal').data('keyboard', false); 
-            // $('#card-modal').modal('show');    
+            });   
         }
 
     // end Get Card Details
-
-
 
     //deal Define Class of ckeditr
 
         var descriptionText = null;
         var commentText = null;
 
-        ClassicEditor.create(document.querySelector('#description-text'))
+        ClassicEditor.create($('#description-text')[0])
             .then(ckEditor => {
                 descriptionText = ckEditor;
+
             })
             .catch(error => {
                 console.error(error);
             });
 
-        ClassicEditor.create( document.querySelector( '#comment-text' ) )
+        ClassicEditor.create( $( '#comment-text' )[0])
             .then(ckEditor => {
                     commentText = ckEditor;
                 })
@@ -406,7 +693,7 @@
                     .then(data => {
                         if (data) {
                             listBody.find('.mkmk').append(`
-                            <div class="card bg-white p-2 d-flex flex-row justify-content-between" onclick="showCard({{Auth::user()->id}},${data.card.id})"> 
+                            <div class="card bg-white p-2 d-flex flex-row justify-content-between" onclick="showCard(this ,{{Auth::user()->id}},${data.card.id})"> 
                                 <div class="">
                                     <h6>${data.card.title}</h6>
                                 </div>                               
@@ -518,49 +805,7 @@
     // End Add List & other operation 
 
     
-    // Card Operation 
-
-        // Saved Card Description & send Comments
-
-            function saveDescription(){
-                if(descriptionText.getData().trim() != ""){
-                    $('#description-confirm').html(descriptionText.getData());
-                    $('#description-confirm').removeClass('d-none');
-                    $('#input-description').addClass('d-none');
-                } else {
-                    $('#description-confirm').text($('#description-confirm').data('placeholder'));
-                    $('#input-description').addClass('d-none');
-                    $('#description-confirm').removeClass('d-none');
-                }
-            }
-
-            function saveComment(){
-                if(commentText.getData().trim() !=""){
-                    $('#comment-confirm').html(commentText.getData());
-                    $('#comment-confirm').removeClass('d-none');
-                    $('#input-comment').addClass('d-none');
-                }else{
-                    $('#comment-confirm').text($('#comment-confirm').data('placeholder'));
-                    $('#comment-confirm').removeClass('d-none');
-                    $('#input-comment').addClass('d-none');
-                }
-            }
-
-        // end Saved Card Description & send Comments
-        
-        // Cancel Saved Card Description & send Comments
-
-            function cancelAddDescription(){
-                $('#description-confirm').removeClass('d-none');
-                $('#input-description').addClass('d-none');
-            }
-
-            function cancelAddComment(){
-                $('#comment-confirm').removeClass('d-none');
-                $('#input-comment').addClass('d-none');
-            }
-
-        //end Cancel Saved Card Description & send Comments
+    // Card Operation     
 
         // show member Details 
 
@@ -616,56 +861,6 @@
             });
 
         // Deal with placeholder of div and ckeditr
-
-            $('#description-confirm').on('click', function(){
-                if (descriptionText){
-                    descriptionText.setData($('#description-confirm').html());
-                } else {
-                    console.error('CKEditor instance not initialized');
-                }
-                $('#description-confirm').addClass('d-none');
-                $('#input-description').removeClass('d-none');
-            });
-
-            $('#comment-confirm').on('click', function(){
-                if(commentText){
-                    commentText.setData($('#comment-confirm').html());
-                } else{
-                    console.error('CKEditor instance not initialized');
-                }
-                $('#comment-confirm').addClass('d-none');
-                $('#input-comment').removeClass('d-none');
-            })
-
-            $('#input-description').on('blur', function () {
-                $('#description-confirm').removeClass('d-none');
-                $('#input-description').addClass('d-none');
-            });
-  
-
-
-            $('#card-title').on('click', function(){
-                $('#card-title').focus();
-
-                $('#card-title').on('blur', function () {
-                saveAndSendToServer();
-                });
-
-                // Attach keypress event handler to the input element
-                $('#card-title').on('keypress', function (event) {
-                    // Check if the pressed key is Enter (key code 13)
-                    if (event.which === 13) {
-                    saveAndSendToServer();
-                    return;
-                    }
-                });
-
-                // Function to save and send the value to the server
-                function saveAndSendToServer() {
-                    var inputValue = $('#card-title').val();
-                    alert('Saving and sending to server:', inputValue);
-                }
-                });
 
         });
 

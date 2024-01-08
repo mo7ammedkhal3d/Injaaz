@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Board;
 use App\Models\Card;
 use App\Http\Requests\StoreCardRequest;
 use App\Http\Requests\UpdateCardRequest;
@@ -13,56 +14,85 @@ class CardController extends Controller
      * Display a listing of the resource.
      */
 
-    public function index($user_id,$card_id)
-    {   
+     public function index($user_id, $card_id)
+     {
+         $card = Card::find($card_id);
+     
+         if (!$card) {
+             return response()->json(['error' => 'Card not found'], 404);
+         }
+     
+         $cardComments = [];
+         $assignedUsers = [];
+     
+         $board = $card->boardList->board;
+         $boardMembers = $board->boardMembers;
+     
+         $cardAssigned = $card->boardMembers()->with('user')->get();
+     
+         $assignedUserIds = $cardAssigned->pluck('user.id')->toArray();
+     
+         $unassignedBoardMembers = $boardMembers->reject(function ($boardMember) use ($assignedUserIds) {
+             return in_array($boardMember->user->id, $assignedUserIds);
+         });
+      
+         $cardCommentsCollection = CardComment::with('boardMember.user')
+             ->where('card_id', $card->id)
+             ->orderBy('created_at', 'desc')
+             ->get();
+     
+         foreach ($cardCommentsCollection as $comment) {
+             $user = $comment->boardMember->user;
+             $newComment = [
+                 'user_name' => $user->name,
+                 'user_email' => $user->email,
+                 'comment_text' => $comment->text,
+                 'comment_date' => $comment->created_at->format('Y/m/d h:i A'),
+             ];
+             $cardComments[] = $newComment;
+         }
+     
+         foreach ($cardAssigned as $boardMember) {
+             $user = $boardMember->user;
+     
+             $assignedUser = [
+                 'board_member_id' => $boardMember->id,
+                 'user_name' => $user->name,
+                 'user_email' => $user->email,
+             ];
+     
+             $assignedUsers[] = $assignedUser;
+         }
+     
+         $boardMembersInfo = [];
+         foreach ($unassignedBoardMembers as $boardMember) {
+             $user = $boardMember->user;
+     
+             $boardMembersInfo[] = [
+                 'board_member_id' => $boardMember->id,
+                 'name' => $user->name,
+                 'email' => $user->email,
+             ];
+         }
+     
+         $cardDetails = [
+             'card_id' => $card->id,
+             'card_title' => $card->title,
+             'card_description' => $card->description,
+             'start_date' => $card->start_date,
+             'due_date' => $card->due_date,
+             'card_comments' => $cardComments,
+             'card_assigneds' => $assignedUsers,
+             'unassigned_board_members' => $boardMembersInfo,
+         ];
+     
+         return response()->json($cardDetails);
+     }
 
-        $card = Card::find($card_id);
+     public function cardAssigned(){
 
-        $cardComments = [];
-        $assignedUsers = [];
-
-        $cardCommentsCollection = CardComment::with('boardMember.user')
-            ->where('card_id', $card->id)
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        $boardMembers = $card->boardMembers()->with('user')->get();
-
-        foreach ($cardCommentsCollection as $comment) {
-            $user = $comment->boardMember->user;
-            $newComment = [
-                'user_name' => $user->name,
-                'user_email' => $user->email,
-                'comment_text' => $comment->text,
-                'comment_date' => $comment->created_at->format('Y/m/d h:i A'),
-            ];
-            $cardComments[] = $newComment;
-        }
-
-        foreach ($boardMembers as $boardMember) {
-            $user = $boardMember->user;
-
-            $assignedUser = [
-                'user_name' => $user->name,
-                'user_email' => $user->email,
-            ];
-
-            $assignedUsers[] = $assignedUser;
-        }
-
-            $cardDetails=[
-               'card_id'=>$card->id,
-               'card_title' => $card->title,
-               'card_description' => $card->description,
-               'start_date'=>$card->start_date,
-               'due_date'=>$card->due_date,
-               'card_comments'=>$cardComments,
-               'card_assigneds' => $assignedUsers,
-            ];
-
-            return json_encode($cardDetails);
-    }
-
+     }
+     
     /**
      * Show the form for creating a new resource.
      */

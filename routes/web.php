@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\BoardListController;
+use App\Http\Controllers\CardAssignedController;
 use App\Http\Controllers\CardCommentController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\HomeController;
@@ -25,6 +26,8 @@ Route::get('/', function () {
 Route::get('/dashboard/{userId}', [BoardController::class, 'index'])->name('dashboard.index');
 Route::get('/dashboard/{board_id}/lists', [BoardController::class, 'show'])->name('dashboard.lists');
 Route::get('/dashboard/{userId}/card/{card_id}', [CardController::class, 'index'])->name('dashboard.getCardDetails');
+Route::post('/dashboard/{userId}/cardAssigned/add', [CardAssignedController::class, 'addCardAssigned'])->name('dashboard.addCardAssigned');
+Route::post('/dashboard/{userId}/cardAssigned/delete', [CardAssignedController::class, 'deleteCardAssigned'])->name('dashboard.deleteCardAssigned');
 Route::post('/dashboard/{userId}/card/create', [CardController::class, 'store'])->name('dashboard.createCard');
 Route::post('/dashboard/{userId}/card/update', [CardController::class, 'update'])->name('dashboard.updateCard');
 Route::post('/dashboard/{userId}/list/create', [BoardListController::class, 'store'])->name('dashboard.createList');

@@ -23,6 +23,6 @@ class Board extends Model
 
     public function boardMembers()
     {
-        return $this->belongsToMany(User::class, 'board_members')->withTimestamps();
+        return $this->hasMany(BoardMember::class);
     }
 }

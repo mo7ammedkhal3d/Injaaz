@@ -26,7 +26,7 @@ class User extends Authenticatable
 
     public function boardMembers()
     {
-        return $this->belongsToMany(Board::class, 'board_members')->withTimestamps();
+        return $this->hasMany(BoardMember::class);
     }
 
     /**

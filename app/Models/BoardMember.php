@@ -13,11 +13,11 @@ class BoardMember extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
-
+    
     public function board()
     {
-        return $this->belongsTo(Board::class);
+        return $this->belongsTo(Board::class, 'board_id');
     }
 }

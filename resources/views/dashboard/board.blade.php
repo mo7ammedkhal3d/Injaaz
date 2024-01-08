@@ -56,16 +56,16 @@
                             
                          </div>
                      </div>
-                     <div class="col-5">
-                         <table class="card-info">
+                     <div class="col-5 d-flex align-items-center flex-column">
+                         <table class="card-info w-75">
                              <tr class="card-owner">
                                  <td>
                                      <h5 class="m-0">المالك</h5>
                                  </td>
-                                 <td class="py-3 px-3">
-                                     <div class="d-flex gap-1">
+                                 <td class="py-4 td-custom-padding">
+                                     <div class="d-flex">
                                          <img class="comment-img" src="{{"https://www.gravatar.com/avatar/" . md5(strtolower(trim(Auth::user()->email))) . "?d=mp"}}" alt="loadding">
-                                         <input id="description" type="text" class="card-modal-title w-100" value="Mohammed khaled" role="button">
+                                         <input id="description" type="text" class="card-modal-title text-center w-100" value="Mohammed khaled" role="button">
                                      </div>
                                  </td>
                              </tr>
@@ -73,8 +73,8 @@
                                  <td>
                                     <h5 class="m-0">التواريخ</h5> 
                                  </td>
-                                 <td class="py-3 px-3">
-                                     <div class="d-flex gap-2 align-items-center">
+                                 <td class="py-4 td-custom-padding">
+                                     <div class="d-flex gap-2 justify-content-between align-items-center">
                                          <input id="card-start-date" class="card-modal-title" type="date" onchange="updateCardDates(this,{{Auth::user()->id}},'start_date')">
                                          <i class="fa-solid fa-arrow-left"></i>
                                          <input id="card-due-date" class="card-modal-title" type="date" onchange="updateCardDates(this,{{Auth::user()->id}},'due_date')">
@@ -85,14 +85,14 @@
                                  <td>
                                      <h5 class="m-0">نسبة الأنجاز</h5> 
                                  </td>
-                                 <td class="py-3 px-3">
-                                     <div class="d-flex gap-2 align-items-center">
+                                 <td class="py-4 td-custom-padding">
+                                     <div class="d-flex gap-2 justify-content-between align-items-center">
                                          <label for="rate"><input id="rate" type="text" class="card-modal-title" value="50" role="button">%</label>
-                                         <div class="d-flex gap-2 align-items-center">
-                                             <i class="fa-solid fa-circle-half-stroke"></i>
-                                             <i class="fa-solid fa-circle-half-stroke"></i>
-                                             <i class="fa-solid fa-circle-half-stroke"></i>
-                                             <i class="fa-solid fa-circle-half-stroke"></i>
+                                         <div class="d-flex gap-4 justify-content-between align-items-center">
+                                             <i class="fa-solid fa-circle-half-stroke progrss-icon"></i>
+                                             <i class="fa-solid fa-circle-half-stroke progrss-icon"></i>
+                                             <i class="fa-solid fa-circle-half-stroke progrss-icon"></i>
+                                             <i class="fa-solid fa-circle-half-stroke progrss-icon"></i>
                                          </div>
                                      </div>
                                  </td>
@@ -101,17 +101,21 @@
                                  <td>
                                      <h5 class="m-0">الاعضاء</h5> 
                                  </td>
-                                 <td class="d-flex gap-2 py-3 px-3">
+                                 <td class="d-flex gap-2 justify-content-between py-4 td-custom-padding">
                                      <div id="member-photos" class="member-photos position-relative w-50">
                                      </div>
                                      <button class="btn injaaz-btn" onclick="showMemberDetails()">عرض التفاصيل</button>
                                  </td>
                              </tr>
                              <tr class="member-details d-none">
-                                 <td>
-                                 </td>
-                                 <td>
-                                     <div id="card_assigneds" class="d-flex flex-column gap-3 card-member-list custom-scrollbar px-3" dir="rtl">
+                                 <td colspan="2">
+                                     <div class="d-flex flex-column gap-3 card-member-list custom-scrollbar px-3" dir="rtl">
+                                        <div id="card_assigneds" class="d-flex flex-column gap-3">
+
+                                        </div>
+                                        <div class="d-flex justify-content-center">
+                                            <button class="btn injaaz-btn w-50" onclick="showAddMember()"><i class="fa-solid fa-plus ms-2"></i> أضافة عضو </button>
+                                        </div> 
                                      </div>
                                  </td>
                              </tr>
@@ -137,13 +141,18 @@
                     </button>                        
                 </div>
                 <div class="modal-body">
-                    <div class=" px-5 d-flex justify-content-center h-100 align-items-center gap-3 flex-column add-member-details">
+                    <div class=" px-5 d-flex justify-content-center w-100 h-100 align-items-center gap-3 flex-column add-member-details">
                         <label for="member-email">الأسم</label>
-                        <input id="member-email" class="add-member-name w-100 rounded" type="text">
+                        <div id="board-member-dropdown"  class="w-75 board-member-dropdown">
+                            <input type="text" id="searchInput" class="no-boeder rounded px-2 w-100" oninput="filterOptions()" onclick="toggleDropdown()" placeholder="ابحث عن اعضاء">
+                            <div id="dropdownContent" class="custom-scrollbar rounded">
+                              
+                            </div>
+                          </div>
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-center">
-                    <button class="btn injaaz-btn w-50">أضافة</button>
+                    <button id="add-card-assigned" class="btn injaaz-btn w-50">أضافة</button>
                 </div>
             </div>
         </div>
@@ -180,7 +189,7 @@
                         @if ($list->cards && $list->cards->count() > 0)
                             @foreach ($list->cards->sortBy('created_at') as $card)
                                 <div class="card bg-white p-2 d-flex flex-row justify-content-between" onclick="showCard(this,{{Auth::user()->id}},{{$card->id}})"> 
-                                    <div class="">
+                                    <div id="card-short-info">
                                         <h6 id="hcard-title">{{$card->title}}</h6>
                                         @if (\Carbon\Carbon::parse($card->due_date)->format('Y-m-d')  == date('Y-m-d') || $card->description != null)
                                             <div id="card-notification" class="d-flex gap-3 align-items-center">
@@ -235,16 +244,120 @@
 
     </main>
     <script>  
-
+    var baseUrl = '{{asset('')}}';
     var selectedCard;
 
-    function markComplete(element){
-        element.html("Complete");
-        element.css({
-        color: "white",            
-        backgroundColor: "green"    
-    });
-    }
+
+    // Add member to card 
+        function toggleDropdown() {
+        $('#dropdownContent').toggle();
+        }
+
+        function filterOptions() {
+        var input = $('#searchInput').val().toLowerCase();
+        $('.dropdownOption').each(function() {
+            var optionText = $(this).find('#member-name').text().toLowerCase();
+            $(this).toggle(optionText.indexOf(input) > -1);
+        });
+        }
+
+        function selectUser(boardMemberId, element , userId) {
+            $('#searchInput').val($(element).find('#member-name').text());
+            $('#dropdownContent').hide();
+            $('#add-card-assigned').on('click',addCardMember);
+            function addCardMember(){
+                var cardId = $('#card-id').val();
+                const formData = new FormData();
+                formData.append('board_member_id',boardMemberId);
+                formData.append('card_id', cardId);
+
+                fetch(`${baseUrl}dashboard/${userId}/cardAssigned/add`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    },
+                    body: formData,
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data){
+                        $('#add-card-assigned').off('click',addCardMember);
+                        element.remove();
+                        $('#searchInput').val("");
+                        const email = data.user_email.toLowerCase().trim();
+                        const md5Hash = CryptoJS.MD5(email).toString();
+                        const gravatarUrl = `https://www.gravatar.com/avatar/${md5Hash}?d=mp`;
+
+                        $('#member-photos').append(`
+                                <img id="member-photo-${data.board_member_id}" class="comment-img" src="${gravatarUrl}" alt="loadding">
+                            `);
+
+                        $('#card_assigneds').append(`
+                            <div id="card-member" class="d-flex gap-3 align-items-center justify-content-between px-5">
+                                <img class="comment-img" src="${gravatarUrl}" alt="loading">
+                                <h6 class="m-0">${data.user_name}</h6>
+                                <i class="fa-solid fa-trash delete-member-icon" onclick="deleteCardMember(this,${data.board_member_id},{{Auth::user()->id}})" ></i>
+                            </div>              
+                        `);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching card details:', error);
+                });
+            }
+        }
+        
+
+    // Add member to card 
+
+    // Delte Card member
+        function deleteCardMember(element,boardMemberId,userId){
+            var cardId = $('#card-id').val();
+            const formData = new FormData();
+            formData.append('board_member_id',boardMemberId);
+            formData.append('card_id', cardId);
+            fetch(`${baseUrl}dashboard/${userId}/cardAssigned/delete`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                },
+                body: formData,
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data){
+                    var cardMember = $(element).closest('#card-member');
+                    var memberPhoto = $(`#member-photo-${boardMemberId}`);
+                    memberPhoto.remove();
+                    cardMember.remove();
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching card details:', error);
+            });
+        }
+
+    // Delete card member
+
+    // mark Complete
+        function markComplete(element){
+            element.html("Complete");
+            element.css({
+            color: "white",            
+            backgroundColor: "green"    
+        });
+        }
+    // mark Complete
 
     // Update Card title
         function makeEditable(element, userId) {
@@ -266,7 +379,7 @@
                 formData.append('card_id', cardId);
                 formData.append('update_type', 'card_title');
 
-                fetch(`http://127.0.0.1:8000/dashboard/${userId}/card/update`, {
+                fetch(`${baseUrl}dashboard/${userId}/card/update`, {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -315,7 +428,7 @@
                     formData.append('card_id', cardId);
                     formData.append('update_type', 'card_description');
 
-                    fetch(`http://127.0.0.1:8000/dashboard/${userId}/card/update`, {
+                    fetch(`${baseUrl}dashboard/${userId}/card/update`, {
                         method: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -346,7 +459,7 @@
                                     `);
                                 }
                             } else {
-                                selectedCard.append(`
+                                selectedCard.find('#card-short-info').append(`
                                     <div id="card-notification" class="d-flex gap-3 align-items-center">
                                         <i id="description-notify" title="هذه الكارد تحتوي على وصف" class="fa-solid fa-align-left"></i>
                                     </div>
@@ -386,7 +499,7 @@
                     formData.append('card_id', cardId);
                     formData.append('user_id', userId);
                     formData.append('board_id', boardId);
-                    fetch(`http://127.0.0.1:8000/dashboard/${userId}/comment/create`, {
+                    fetch(`${baseUrl}dashboard/${userId}/comment/create`, {
                         method: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -412,20 +525,20 @@
                             const gravatarUrl = `https://www.gravatar.com/avatar/${md5Hash}?d=mp`;
 
                             var cardComments = $('#card-comments');
-                            var firstCardComment = cardComments.find('.comment:first');
-                            if(firstCardComment){
-                                firstCardComment.before(`
-                                    <div class="d-flex gap-3 p-3 comment">
-                                        <img class="comment-img" src="${gravatarUrl}" alt="loadding">
-                                        <div class="w-100">
-                                            <div class="d-flex justify-content-between">
-                                                <h6 class="m-0 comment-owner-name">${data.user_name}</h6>
-                                                <h6 class="comment-date m-0" dir="ltr">${data.comment_date}</h6>
+                            if(cardComments.children().length){
+                                var firstCardComment = cardComments.find('.comment:first');
+                                    firstCardComment.before(`
+                                        <div class="d-flex gap-3 p-3 comment">
+                                            <img class="comment-img" src="${gravatarUrl}" alt="loadding">
+                                            <div class="w-100">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="m-0 comment-owner-name">${data.user_name}</h6>
+                                                    <h6 class="comment-date m-0" dir="ltr">${data.comment_date}</h6>
+                                                </div>
+                                                <div class="card-comment-item w-100 my-1" role="button">${data.comment_text}</div>
                                             </div>
-                                            <div class="card-comment-item w-100 my-1" role="button">${data.comment_text}</div>
                                         </div>
-                                    </div>
-                                `);
+                                    `);
                             } else {
                                 cardComments.append(`
                                     <div class="d-flex gap-3 p-3 comment">
@@ -470,7 +583,7 @@
             } else formData.append('update_type', 'card_due_date');
             
 
-            fetch(`http://127.0.0.1:8000/dashboard/${userId}/card/update`, {
+            fetch(`${baseUrl}dashboard/${userId}/card/update`, {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -499,7 +612,7 @@
                                 `);
                             }
                         } else {
-                            selectedCard.append(`
+                            selectedCard.find('#card-short-info').append(`
                                 <div id="card-notification" class="d-flex gap-3 align-items-center">
                                     <small id="date-notify" style="background-color: red ;color:white" title="أنجز بسرعة" class="fw-bold rounded p-1" onclick="markComplete(this)" >تنتهي قريبا <i class="fa-regular fa-clock me-2"></i></small>
                                 </div>
@@ -528,10 +641,9 @@
     // showAddMember
 
     // Get Card Details
-
         function showCard(card,userId,cardId) {  
-                selectedCard = $(card);    
-            $('#close-card-modal').on('click', function(){
+            selectedCard = $(card);    
+                    $('#close-card-modal').on('click', function(){
                     $('#card-title').html("");
                     $('#description-confirm').html();
                     $('#card-start-date').val("");
@@ -539,13 +651,14 @@
                     $('#card-comments').html("");
                     $('#card_assigneds').html("");
                     $('#member-photos').html("");
+                    $('#dropdownContent').html("");
                     $('#card-modal').modal('hide'); 
                 });
             $('#loadingSpinner').fadeIn(100);
             $('#card-modal').modal('show'); 
             
             
-            fetch(`http://127.0.0.1:8000/dashboard/${userId}/card/${cardId}`, {
+            fetch(`${baseUrl}dashboard/${userId}/card/${cardId}`, {
                 method: 'GET',
             })
             .then(response => {  
@@ -564,6 +677,7 @@
                     $('#card-comments').html("");
                     $('#card_assigneds').html("");
                     $('#member-photos').html("");
+                    $('#dropdownContent').html("");
 
                     $('#card-title').html(cardDetails.card_title);
                     if(cardDetails.card_description != null){
@@ -600,23 +714,33 @@
                         const gravatarUrl = `https://www.gravatar.com/avatar/${md5Hash}?d=mp`;
 
                         $('#member-photos').append(`
-                                <img class="comment-img" src="${gravatarUrl}" alt="loadding">
+                                <img id="member-photo-${card_assigned.board_member_id}" class="comment-img" src="${gravatarUrl}" alt="loadding">
                             `);
 
                         $('#card_assigneds').append(`
-                            <div class="d-flex gap-3 align-items-center justify-content-between px-5">
+                            <div id="card-member" class="d-flex gap-3 align-items-center justify-content-between px-5">
                                 <img class="comment-img" src="${gravatarUrl}" alt="loading">
                                 <h6 class="m-0">${card_assigned.user_name}</h6>
-                                <i class="fa-solid fa-trash delete-member-icon"></i>
-                            </div>              
+                                <i class="fa-solid fa-trash delete-member-icon" onclick="deleteCardMember(this,${card_assigned.board_member_id},{{Auth::user()->id}})" ></i>
+                            </div>               
                         `);
                     });
 
-                    $('#card_assigneds').append(`
-                        <div class="d-flex justify-content-center">
-                            <button class="btn injaaz-btn w-50" onclick="showAddMember()"><i class="fa-solid fa-plus ms-2"></i> أضافة عضو </button>
-                        </div> 
-                    `)
+                    cardDetails.unassigned_board_members.forEach(board_member =>{
+                        const email = board_member.email.toLowerCase().trim();
+                        const md5Hash = CryptoJS.MD5(email).toString();
+                        const gravatarUrl = `https://www.gravatar.com/avatar/${md5Hash}?d=mp`;
+
+                        $('#dropdownContent').append(`
+                            <div class="dropdownOption justify-content-center gap-3 px-4" onclick="selectUser(${board_member.board_member_id},this,{{Auth::user()->id}})">
+                                <div class="d-flex justify-content-between align-items-center px-4 w-75">
+                                    <img src="${gravatarUrl}" alt="John">
+                                    <h6 id="member-name">${board_member.name}</h6>
+                                </div>
+                            </div>                
+                        `);
+                    });
+
                 }, 400);
             })
 
@@ -658,7 +782,6 @@
             } );
     //end 
 
-
     // Add Card 
         function addCardConfirm(button){
             var listBody = $(button).closest('.list-body');
@@ -677,7 +800,7 @@
                     const formData = new FormData();
                     formData.append('title', newCardTitle);
                     formData.append('board_list_id',listId);
-                    fetch(`http://127.0.0.1:8000/dashboard/${userId}/card/create`, {
+                    fetch(`${baseUrl}dashboard/${userId}/card/create`, {
                         method: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -694,8 +817,8 @@
                         if (data) {
                             listBody.find('.mkmk').append(`
                             <div class="card bg-white p-2 d-flex flex-row justify-content-between" onclick="showCard(this ,{{Auth::user()->id}},${data.card.id})"> 
-                                <div class="">
-                                    <h6>${data.card.title}</h6>
+                                <div id="card-short-info">
+                                    <h6 id="hcard-title">${data.card.title}</h6>
                                 </div>                               
                                 
                                 <div class="edit-confirm d-flex align-items-start">
@@ -741,7 +864,7 @@
                 const formData = new FormData();
                 formData.append('title', newListTitle);
                 formData.append('board_id',boardId);
-                fetch(`http://127.0.0.1:8000/dashboard/${userId}/list/create`, {
+                fetch(`${baseUrl}dashboard/${userId}/list/create`, {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -804,7 +927,6 @@
 
     // End Add List & other operation 
 
-    
     // Card Operation     
 
         // show member Details 
@@ -818,7 +940,7 @@
     // end Card Operation
 
 
-        $(document).ready(function(){
+    $(document).ready(function(){
 
         // Deal with placeholder of div and ckeditr
 
@@ -862,7 +984,7 @@
 
         // Deal with placeholder of div and ckeditr
 
-        });
+    });
 
     </script>
 @endsection

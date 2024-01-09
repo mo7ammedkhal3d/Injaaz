@@ -6,6 +6,7 @@ use App\Http\Controllers\CardAssignedController;
 use App\Http\Controllers\CardCommentController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +33,8 @@ Route::post('/dashboard/{userId}/card/create', [CardController::class, 'store'])
 Route::post('/dashboard/{userId}/card/update', [CardController::class, 'update'])->name('dashboard.updateCard');
 Route::post('/dashboard/{userId}/list/create', [BoardListController::class, 'store'])->name('dashboard.createList');
 Route::post('/dashboard/{userId}/comment/create', [CardCommentController::class, 'store'])->name('dashboard.createComment');
+Route::get('/dashboard/{userId}/users/getAll', [UserController::class, 'getAll'])->name('dashboard.getAllUsers');
+Route::post('/dashboard/{userId}/board/create', [BoardController::class, 'store'])->name('dashboard.createBoard');
 Route::get('/dashboard/board', function () {
     return view('dashboard.board');
 })->name('dashboard.board');

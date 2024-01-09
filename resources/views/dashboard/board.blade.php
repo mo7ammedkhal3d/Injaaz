@@ -7,7 +7,7 @@
      <div class="modal card-modal" id="card-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
      <div class="modal-dialog modal-center" role="document">
          <div class="modal-content">
-            <div id="loadingSpinner">
+            <div id="card-loadingSpinner" class="loadingSpinner">
                 <div  class="spinner-border in-text-secondry" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div>
@@ -146,9 +146,9 @@
                         <div id="board-member-dropdown"  class="w-75 board-member-dropdown">
                             <input type="text" id="searchInput" class="no-boeder rounded px-2 w-100" oninput="filterOptions()" onclick="toggleDropdown()" placeholder="ابحث عن اعضاء">
                             <div id="dropdownContent" class="custom-scrollbar rounded">
-                              
+                                
                             </div>
-                          </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-center">
@@ -174,7 +174,7 @@
             </div>
         </div>
     </div>
-    <div class="row pt-2 mt-2 gap-5 mx-0 board-body algin-itmes-center overflow-x-auto flex-nowrap custom-scrollbar-x custom-row-padding">
+    <div class="row pt-2 mt-2 gap-5 mx-0 board-body algin-itmes-center overflow-x-auto flex-nowrap custom-scrollbar-x custom-row-changes">
             @if ($board->lists->count()>0)
             @foreach ($board->lists as $list)
             <div class="col-3 rounded board-list p-0">
@@ -654,7 +654,7 @@
                     $('#dropdownContent').html("");
                     $('#card-modal').modal('hide'); 
                 });
-            $('#loadingSpinner').fadeIn(100);
+            $('#card-loadingSpinner').fadeIn(100);
             $('#card-modal').modal('show'); 
             
             
@@ -669,7 +669,7 @@
             })
             .then(cardDetails => { 
                 setTimeout(() => {
-                    $('#loadingSpinner').fadeOut(500);
+                    $('#card-loadingSpinner').fadeOut(500);
                     $('#card-title').html("");
                     $('#description-confirm').html();
                     $('#card-start-date').val("");

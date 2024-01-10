@@ -91,7 +91,7 @@
         </div> 
       </div>
 
-      <div class="row mx-0 my-5">
+      <div id="user-boards" class="row mx-0 my-5">
         @if ($boards->count() > 0)
           @foreach ($boards as $board)
             <div class="col-lg-4" role=button>

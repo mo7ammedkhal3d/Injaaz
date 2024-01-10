@@ -25,4 +25,9 @@ class Board extends Model
     {
         return $this->hasMany(BoardMember::class);
     }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'board_id');
+    }
 }

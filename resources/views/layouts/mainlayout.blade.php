@@ -89,8 +89,10 @@
             <span id="notification-no" class="badge bg-primary badge-number"></span>
           </a><!-- End Notification Icon -->
 
-          <ul id="user-notification" class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications user-notification">
-            
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications user-notification">
+            <div id="user-notification" class=" dropdown-content overflow-x-hidden">
+
+            </div>
           </ul><!-- End Notification Dropdown Items -->
 
         </li><!-- End Notification Nav -->
@@ -474,7 +476,16 @@
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
   <script>
 
-          fetch(`${baseUrl}dashboard/{{Auth::user()->id}}/notification/getAll`, {
+        $(document).ready(function() {
+            $('.dropdown-menu li').each(function() {
+                $(this).click(function(e) {
+                    e.stopPropagation();
+                });
+            });
+        });
+
+        // Get new user notification
+          fetch(`${baseUrl}dashboard/{{Auth::user()->id}}/notification/getNew`, {
                 method: 'GET',
             })
             .then(response => {
@@ -485,12 +496,14 @@
             })
             .then(data => { 
                 if (data){
-                  var notificationNo = data.notifications.length;
-                  $('#notification-no').html(notificationNo);
+                  if(data.unReaded_notifiction > 0){
+                    $('#notification-no').html(data.unReaded_notifiction);
+                    var notificationTextHeader = `لديك ${data.unReaded_notifiction} اشعارات جديدة`
+                  } else var notificationTextHeader = "ليس لديك أي اشعارات جديدة"
                   $('#user-notification').append(`
                       <li class="dropdown-header">
-                        لديك ${notificationNo} أشعارات جديدة
-                        <a href="#"><span class="badge rounded-pill in-bg-primary py-2 px-5 me-4">عرض الكل</span></a>
+                        ${notificationTextHeader}
+                        <a href="#"><span class="badge rounded-pill in-bg-primary py-2 px-4 me-4">عرض الكل</span></a>
                       </li>
                       <li>
                         <hr class="dropdown-divider">
@@ -500,12 +513,12 @@
                   data.notifications.forEach(notification => {
                     if (notification.status == 'inprogress'){
                       $('#user-notification').append(`       
-                          <li id="notification-item" class="notification-item p-0">
+                          <li id="notification-item" class="notification-item p-0 in-transition">
                             <div class="row m-0 px-0 py-2">
                               <div class="row m-0 p-0">
                                 <div class="col-12 d-flex justify-content-between">
                                   <small class="notify-date">${moment(notification.created_at).fromNow()}</small>
-                                  <i class="fa-solid fa-xmark notify-delete-icon" onclick="deleteNotification(${notification.id},this)"></i>
+                                  <i class="fa-solid fa-xmark notify-delete-icon" onclick="moveNotification(${notification.id},this)"></i>
                                 </div>
                               </div>
                               <div class="row m-0 p-0 my-2">
@@ -514,9 +527,9 @@
                                 </div>
                               </div>
                               <div class="row m-0 p-0 justify-content-start">
-                                <div class="col-7 d-flex gap-1 justify-content-between">
-                                  <button class="btn btn-success fw-bold py-0 px-4" onclick="changeNotificationStatus(${notification.id},this,confirm)">قبول</button>
-                                  <button class="btn btn-danger fw-bold py-0 px-4" onclick="changeNotificationStatus(${notification.id},this,reject)">رفض</button>
+                                <div id="notification-state" class="col-7 d-flex gap-1 justify-content-between">
+                                  <button class="btn btn-success fw-bold py-0 px-4" onclick="changeNotificationStatus(${notification.id},this,'confirm')">قبول</button>
+                                  <button class="btn btn-danger fw-bold py-0 px-4" onclick="changeNotificationStatus(${notification.id},this,'reject')">رفض</button>
                                 </div>
                               </div>
                             </div>
@@ -524,12 +537,12 @@
                           </li> `); 
                       } else if (notification.status === 'reject'){ 
                         $('#user-notification').append(`
-                          <li id="notification-item" class="notification-item p-0">
+                          <li id="notification-item" class="notification-item p-0 in-transition">
                             <div class="row m-0 px-0 py-2">
                               <div class="row m-0 p-0">
                                 <div class="col-12 d-flex justify-content-between">
                                   <small class="notify-date">${moment(notification.created_at).fromNow()}</small>
-                                  <i class="fa-solid fa-xmark notify-delete-icon" onclick="deleteNotification(${notification.id},this)"></i>
+                                  <i class="fa-solid fa-xmark notify-delete-icon" onclick="moveNotification(${notification.id},this)"></i>
                                 </div>
                               </div>
                               <div class="row m-0 p-0 my-2">
@@ -538,7 +551,7 @@
                                 </div>
                               </div>
                               <div class="row m-0 p-0 justify-content-start">
-                                <div class="col-7 d-flex gap-1 justify-content-between">
+                                <div id="notification-state" class="col-7 d-flex gap-1 justify-content-between">
                                     <button disabled class="btn btn-danger fw-bold py-0 px-4">تم الرفض</button>
                                 </div>
                               </div>
@@ -547,12 +560,12 @@
                           </li> `);
                       } else { 
                         $('#user-notification').append(`
-                          <li id="notification-item" class="notification-item p-0">
+                          <li id="notification-item" class="notification-item p-0 in-transition">
                             <div class="row m-0 px-0 py-2">
                               <div class="row m-0 p-0">
                                 <div class="col-12 d-flex justify-content-between">
                                   <small class="notify-date">${moment(notification.created_at).fromNow()}</small>
-                                  <i class="fa-solid fa-xmark notify-delete-icon" onclick="deleteNotification(${notification.id},this)"></i>
+                                  <i class="fa-solid fa-xmark notify-delete-icon" onclick="moveNotification(${notification.id},this)"></i>
                                 </div>
                               </div>
                               <div class="row m-0 p-0 my-2">
@@ -561,7 +574,7 @@
                                 </div>
                               </div>
                               <div class="row m-0 p-0 justify-content-start">
-                                <div class="col-7 d-flex gap-1 justify-content-between">
+                                <div id="notification-state" class="col-7 d-flex gap-1 justify-content-between">
                                   <button disabled class="btn btn-success fw-bold py-0 px-4">تمت الموافقة</button>
                                 </div>
                               </div>
@@ -582,11 +595,14 @@
                 console.error('Error fetching card details:', error);
             });
 
-        // Delete Notification
-          function deleteNotification(notificationId,element){
+        // Get new user notification
+
+
+        // Move Notification to stack
+          function moveNotification(notificationId,element){
             const formData = new FormData();
             formData.append('notification_id',notificationId);
-            fetch(`${baseUrl}dashboard/{{Auth::user()->id}}/notification/delete`, {
+            fetch(`${baseUrl}dashboard/{{Auth::user()->id}}/notification/moveToStack`, {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -601,21 +617,100 @@
             })
             .then(data => { 
                 var notificationItem = element.closest('#notification-item');
-                notificationItem.remove();
+                $(notificationItem).css('transform', 'translateX(20rem)');
+
+                setTimeout(() => {
+                  notificationItem.remove();
+                }, 200);   
             })
             .catch(error => {
                 console.error('Error fetching card details:', error);
             });
           }
-        // Delete Notification
+        // Remove Notification from in box
 
-          function changeNotificationStatus(notificationId,element){
+        
+        // changeNotificationStatus
+          function changeNotificationStatus(notificationId,element,updateType){
+            const formData = new FormData();
+            formData.append('notification_id',notificationId);
+            formData.append('update_type',updateType);
+            fetch(`${baseUrl}dashboard/{{Auth::user()->id}}/notification/updateNotificationState`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                },
+                body: formData,
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => { 
+               var notificationState = $(element).closest('#notification-state');
+               if(data.update_type == "reject"){
+                notificationState.html(`
+                  <button disabled class="btn btn-danger fw-bold py-0 px-4">تم الرفض</button>
+                `);
+               } else{
+                notificationState.html(`
+                  <button disabled class="btn btn-success fw-bold py-0 px-4">تمت الموافقة</button>
+                `);
+                
+                $('#user-boards').append(`
+                    <div class="col-lg-4" role="button">
+                        <a href="#" onclick="redirectToBoard(${data.board.id},{{Auth::user()->id}}); return false;">
+                            <div class="board my-3">
+                                <div class="board-body p-3">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <h5 class="board-title">${data.board.name}</h5>
+                                        <i class="fa-solid fa-ellipsis"></i>
+                                    </div>
+                                    <p class="board-description">${data.board.description}</p>
+                                </div>
+                            </div>  
+                        </a>
+                    </div>
+                `);
+               }
+              })
+              .catch(error => {
+                  console.error('Error fetching card details:', error);
+              });
+            
+            }
 
-          }
+            function redirectToBoard(boardId,userId) {
+                window.location.href = `${baseUrl}dashboard/${boardId}/lists`
+            }
 
+        // changeNotificationStatus
+        
+        // showNotification
           function showNotification(element){
+            fetch(`${baseUrl}dashboard/{{Auth::user()->id}}/notification/changeReadState`, {
+                method: 'GET',
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => { 
+                if (data){
+                  var notificationNo = $(element).find('#notification-no');
+                  notificationNo.html("");
+                }
+            })
 
+            .catch(error => {
+                console.error('Error fetching card details:', error);
+            });
           }
+        // showNotification
 
   </script>
   <!-- Vendor JS Files -->

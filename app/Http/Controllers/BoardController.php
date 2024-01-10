@@ -68,6 +68,7 @@ class BoardController extends Controller
                 Notification::create([
                     'sender_user_id' => $validatedData['user_id'],
                     'recipient_user_id' => $inviteUserId,
+                    'board_id'=>$board->id,
                     'text' => auth()->user()->name . '  قام بدعوتك للإنضمام الى  <span class="invited-to-board">'. $board->name.'<span>',
                 ]);
             }

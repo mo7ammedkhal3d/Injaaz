@@ -131,6 +131,9 @@ body {
     color: red;
 }
 
+.in-transition{
+    transition: all 0.2s ease;
+}
 
 /* end mainlayout */
 

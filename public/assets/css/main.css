@@ -111,6 +111,32 @@ body {
 
 /*#endregion */
 
+/* mainlayout */
+
+.user-notification{
+    width: 20rem
+}
+
+.notify-date{
+    font-size: 12px;
+    direction: ltr;
+}
+
+.header-nav .notifications .notification-item .notify-delete-icon{
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.header-nav .notifications .notification-item .notify-delete-icon:hover{
+    color: red;
+}
+
+
+/* end mainlayout */
+
+
+
+
 /*#region dashboard.index*/
 
 .header-nav .profile .dropdown-item i {
@@ -242,6 +268,11 @@ body {
 
 .invite-section{
     height: 10rem;
+}
+
+.invited-to-board{
+    color: #2d94c9;
+    font-weight: bolder;
 }
 
 /*endregion Add board modal*/

@@ -42,6 +42,8 @@
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+  <!-- Include moment.js from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
   <!-- =======================================================
   * Template Name: NiceAdmin
@@ -80,77 +82,15 @@
           </a>
         </li><!-- End Search Icon-->
 
-        <li class="nav-item dropdown mx-2">
+        <li class="nav-item dropdown mx-2" onclick="showNotification(this)">
 
           <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
             <i class="bi bi-bell"></i>
-            <span class="badge bg-primary badge-number">4</span>
+            <span id="notification-no" class="badge bg-primary badge-number"></span>
           </a><!-- End Notification Icon -->
 
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-            <li class="dropdown-header">
-              You have 4 new notifications
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-exclamation-circle text-warning"></i>
-              <div>
-                <h4>Lorem Ipsum</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>30 min. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-x-circle text-danger"></i>
-              <div>
-                <h4>Atque rerum nesciunt</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>1 hr. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-check-circle text-success"></i>
-              <div>
-                <h4>Sit rerum fuga</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>2 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-info-circle text-primary"></i>
-              <div>
-                <h4>Dicta reprehenderit</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>4 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li class="dropdown-footer">
-              <a href="#">Show all notifications</a>
-            </li>
-
+          <ul id="user-notification" class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications user-notification">
+            
           </ul><!-- End Notification Dropdown Items -->
 
         </li><!-- End Notification Nav -->
@@ -531,23 +471,153 @@
 
     <!--End Main-->
 
-
-  {{-- <!-- ======= Footer ======= -->
-  <footer id="footer" class="footer">
-    <div class="copyright">
-      &copy; <strong><span>إنجاز</span></strong>. جميع الحقوق محفوضة
-    </div>
-    <div class="credits">
-      <!-- All the links in the footer should remain intact. -->
-      <!-- You can delete the links only if you purchased the pro version. -->
-      <!-- Licensing information: https://bootstrapmade.com/license/ -->
-      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      تم التصميم بواسطة <a href="https://github.com/mo7ammedkhal3d">MK187</a>
-    </div>
-  </footer><!-- End Footer --> --}}
-
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <script>
 
+          fetch(`${baseUrl}dashboard/{{Auth::user()->id}}/notification/getAll`, {
+                method: 'GET',
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => { 
+                if (data){
+                  var notificationNo = data.notifications.length;
+                  $('#notification-no').html(notificationNo);
+                  $('#user-notification').append(`
+                      <li class="dropdown-header">
+                        لديك ${notificationNo} أشعارات جديدة
+                        <a href="#"><span class="badge rounded-pill in-bg-primary py-2 px-5 me-4">عرض الكل</span></a>
+                      </li>
+                      <li>
+                        <hr class="dropdown-divider">
+                      </li>
+                  `);
+
+                  data.notifications.forEach(notification => {
+                    if (notification.status == 'inprogress'){
+                      $('#user-notification').append(`       
+                          <li id="notification-item" class="notification-item p-0">
+                            <div class="row m-0 px-0 py-2">
+                              <div class="row m-0 p-0">
+                                <div class="col-12 d-flex justify-content-between">
+                                  <small class="notify-date">${moment(notification.created_at).fromNow()}</small>
+                                  <i class="fa-solid fa-xmark notify-delete-icon" onclick="deleteNotification(${notification.id},this)"></i>
+                                </div>
+                              </div>
+                              <div class="row m-0 p-0 my-2">
+                                <div class="col-12">
+                                  <h6 class="m-0 fw-bold text-end">${notification.text}</h6>
+                                </div>
+                              </div>
+                              <div class="row m-0 p-0 justify-content-start">
+                                <div class="col-7 d-flex gap-1 justify-content-between">
+                                  <button class="btn btn-success fw-bold py-0 px-4" onclick="changeNotificationStatus(${notification.id},this,confirm)">قبول</button>
+                                  <button class="btn btn-danger fw-bold py-0 px-4" onclick="changeNotificationStatus(${notification.id},this,reject)">رفض</button>
+                                </div>
+                              </div>
+                            </div>
+                            <hr class="dropdown-divider">
+                          </li> `); 
+                      } else if (notification.status === 'reject'){ 
+                        $('#user-notification').append(`
+                          <li id="notification-item" class="notification-item p-0">
+                            <div class="row m-0 px-0 py-2">
+                              <div class="row m-0 p-0">
+                                <div class="col-12 d-flex justify-content-between">
+                                  <small class="notify-date">${moment(notification.created_at).fromNow()}</small>
+                                  <i class="fa-solid fa-xmark notify-delete-icon" onclick="deleteNotification(${notification.id},this)"></i>
+                                </div>
+                              </div>
+                              <div class="row m-0 p-0 my-2">
+                                <div class="col-12">
+                                    <h6 class="m-0 fw-bold text-end in-text-secondry">${notification.text}</h6>
+                                </div>
+                              </div>
+                              <div class="row m-0 p-0 justify-content-start">
+                                <div class="col-7 d-flex gap-1 justify-content-between">
+                                    <button disabled class="btn btn-danger fw-bold py-0 px-4">تم الرفض</button>
+                                </div>
+                              </div>
+                            </div>
+                            <hr class="dropdown-divider">
+                          </li> `);
+                      } else { 
+                        $('#user-notification').append(`
+                          <li id="notification-item" class="notification-item p-0">
+                            <div class="row m-0 px-0 py-2">
+                              <div class="row m-0 p-0">
+                                <div class="col-12 d-flex justify-content-between">
+                                  <small class="notify-date">${moment(notification.created_at).fromNow()}</small>
+                                  <i class="fa-solid fa-xmark notify-delete-icon" onclick="deleteNotification(${notification.id},this)"></i>
+                                </div>
+                              </div>
+                              <div class="row m-0 p-0 my-2">
+                                <div class="col-12">
+                                  <h6 class="m-0 fw-bold text-end in-text-secondry">${notification.text}</h6>
+                                </div>
+                              </div>
+                              <div class="row m-0 p-0 justify-content-start">
+                                <div class="col-7 d-flex gap-1 justify-content-between">
+                                  <button disabled class="btn btn-success fw-bold py-0 px-4">تمت الموافقة</button>
+                                </div>
+                              </div>
+                            </div>
+                            <hr class="dropdown-divider">
+                          </li> `);
+                        }
+                  });
+                }
+                $('#user-notification').append(`
+                  <li class="dropdown-footer">
+                    <a href="#">عرض جميع الاشعارات</a>
+                  </li>
+                  `)      
+            })
+
+            .catch(error => {
+                console.error('Error fetching card details:', error);
+            });
+
+        // Delete Notification
+          function deleteNotification(notificationId,element){
+            const formData = new FormData();
+            formData.append('notification_id',notificationId);
+            fetch(`${baseUrl}dashboard/{{Auth::user()->id}}/notification/delete`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                },
+                body: formData,
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => { 
+                var notificationItem = element.closest('#notification-item');
+                notificationItem.remove();
+            })
+            .catch(error => {
+                console.error('Error fetching card details:', error);
+            });
+          }
+        // Delete Notification
+
+          function changeNotificationStatus(notificationId,element){
+
+          }
+
+          function showNotification(element){
+
+          }
+
+  </script>
   <!-- Vendor JS Files -->
   {{-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> --}}
   {{-- <script src="{{asset('assets/vendor/jquery/jquery-3.7.1.min')}}"></script> --}}
@@ -560,9 +630,9 @@
   <script src="{{asset('assets/vendor/simple-datatables/simple-datatables.js')}}"></script>
   <script src="{{asset('assets/vendor/tinymce/tinymce.min.js')}}"></script>
   <script src="{{asset('assets/vendor/php-email-form/validate.js')}}"></script>
+  <script src="{{asset('assets/js/dashboard.js')}}"></script>
 
-  <!-- Template Main JS File -->
-  <script src="{{asset('assets/js/main.js')}}"></script>
+  {{-- <script src="{{asset('assets/js/main.js')}}"></script> --}}
 
 </body>
 

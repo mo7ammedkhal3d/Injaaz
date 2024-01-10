@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Board;
 use App\Http\Requests\StoreBoardRequest;
 use App\Models\BoardMember;
+use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,13 @@ class BoardController extends Controller
      */
     public function index($userId)
     {
-        $boards = Board::where('user_id', $userId)->get();
+
+        $boards = Board::where('user_id', $userId)
+            ->orWhereHas('boardMembers', function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })
+            ->with('boardMembers') 
+            ->get();
 
         return view('dashboard.index', ['boards' => $boards]);
     }
@@ -37,12 +44,10 @@ class BoardController extends Controller
      */
     public function store(StoreBoardRequest $request)
     {
-        // Validate the request
         $validatedData = $request->validate([
             'board_name' => 'required|string|max:255',
             'board_description' => 'required|string',
             'user_id' => 'required|exists:users,id',
-            // 'invite_users' => 'nullable|array',
         ]);
 
         $board = Board::create([
@@ -56,16 +61,17 @@ class BoardController extends Controller
             'board_id' => $board->id,
         ]);
 
-        // if (!empty($validatedData['invite_users'])) {
-        //     foreach ($validatedData['invite_users'] as $inviteUserId) {
-        //         Notification::create([
-        //             'sender_user_id' => $validatedData['user_id'],
-        //             'receiver_user_id' => $inviteUserId,
-        //             'time'=>date('Y:m:d h:m A'),
-        //             'message' => 'User ' . auth()->user()->name . ' invites you to join board ' . $board->name,
-        //         ]);
-        //     }
-        // }
+        $inviteUsersIds= json_decode($request->invite_users);
+
+        if (!empty($inviteUsersIds)){
+            foreach ($inviteUsersIds as $inviteUserId){
+                Notification::create([
+                    'sender_user_id' => $validatedData['user_id'],
+                    'recipient_user_id' => $inviteUserId,
+                    'text' => auth()->user()->name . '  قام بدعوتك للإنضمام الى  <span class="invited-to-board">'. $board->name.'<span>',
+                ]);
+            }
+        }
 
         return response()->json(['board' => $board], 201);
     }

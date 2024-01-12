@@ -37,13 +37,22 @@ Route::post('/dashboard/{userId}/list/create', [BoardListController::class, 'sto
 Route::post('/dashboard/{userId}/comment/create', [CardCommentController::class, 'store'])->name('dashboard.createComment');
 Route::get('/dashboard/{userId}/users/getAll', [UserController::class, 'getAll'])->name('dashboard.getAllUsers');
 Route::post('/dashboard/{userId}/board/create', [BoardController::class, 'store'])->name('dashboard.createBoard');
-Route::get('/dashboard/{userId}/notification/getAll', [NotificationController::class, 'getAll'])->name('getNewUserNotification');
+Route::get('/dashboard/{userId}/notification/getAll', [NotificationController::class, 'getAll'])->name('getAllUserNotification');
 Route::get('/dashboard/{userId}/notification/getNew', [NotificationController::class, 'getNew'])->name('getNewUserNotification');
 Route::post('/dashboard/{userId}/notification/moveToStack', [NotificationController::class, 'moveToStack'])->name('NotificationMoveToStack');
 Route::get('/dashboard/{userId}/notification/changeReadState', [NotificationController::class, 'changeReadState'])->name('NotificationChangeReadState');
 Route::post('/dashboard/{userId}/notification/updateNotificationState', [NotificationController::class, 'updateNotificationState'])->name('updateNotificationState');
-
-Route::get('/dashboard/board', function () {
+Route::post('/dashboard/{userId}/notification/deleteNotification', [NotificationController::class, 'delete'])->name('deleteNotification');
+Route::get('/dashboard/{userId}/getUserProfile/local',[UserController::class, 'jsonGetUserProfile'])->name('localGetUserProfile');
+Route::post('/dashboard/{userId}/saveProfile',[UserController::class, 'saveProfile'])->name('saveProfile');
+Route::get('/dashboard/{userId}/getUserBoards/local',[UserController::class, 'jsonGetUserBoards'])->name('localGetUserBoards');
+Route::get('/dashboard/{userId}/getUserCards/local',[UserController::class, 'jsonGetUserCards'])->name('localGetUserCards');
+Route::get('/dashboard/{userId}/getUserProfile', [UserController::class, 'viewGetUserProfile'])->name('viewGetUserProfile');
+Route::get('/dashboard/{userId}/getUserBoards',[UserController::class, 'viewGetUserBoards'])->name('viewGetUserBoards');
+Route::get('/dashboard/{userId}/getUserCards',[UserController::class, 'viewGetUserCards'])->name('viewGetUserCards');
+Route::get('/dashboard/{userId}/getAccountSettings',[UserController::class, 'getAccountSettings'])->name('getAccountSettings');
+Route::get('/dashboard/{userId}/getBoardInfo',[UserController::class, 'getBoardInfo'])->name('getBoardInfo');
+Route::get('/dashboard/board', function (){
     return view('dashboard.board');
 })->name('dashboard.board');
 

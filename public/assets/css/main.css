@@ -615,6 +615,70 @@ body {
 
 /*#endregion*/
 
+/*#region dashboard.Notification*/
+
+.notification-delete-icon{
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--primary-color);
+}
+
+.notification-delete-icon:hover{
+    color: red;
+}
+
+/*#endregion dashboard.Notification*/
+
+/*#region dashboard.profile*/
+
+.user-photo img{
+    height: 20rem;
+}
+
+.profile-navigation ul li{
+    padding: 1rem 0.5rem;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.profile-navigation ul li:hover{
+    border-bottom: 0.2rem solid var(--primary-color);
+}
+
+.profile-navigation ul .active{
+    border-bottom: 0.2rem solid var(--primary-color);
+}
+
+.profile-navigation hr{
+    margin-top: -1.19rem;
+    opacity: 0.5;
+    border-top: 0.2rem solid;
+}
+
+.sections-container{
+    min-height: 25rem;
+}
+
+.btn-user-profile{
+    padding: 0.5rem 5rem 
+}
+
+.personal-icon , .have-member-icon{
+    font-size: 2rem;
+    color: var(--primary-color);
+}
+
+.user-board-name{
+    border-bottom: 0.1rem solid var(--primary-color);
+    cursor: pointer;
+}
+
+/*#endregion dashboard.profile*/
+
+
+
+
 /*#region front.login & front.register*/
 
 .edit-border-raduis{

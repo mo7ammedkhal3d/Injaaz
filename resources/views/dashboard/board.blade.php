@@ -800,6 +800,7 @@
                     const formData = new FormData();
                     formData.append('title', newCardTitle);
                     formData.append('board_list_id',listId);
+                    formData.append('user_id',userId);
                     fetch(`${baseUrl}dashboard/${userId}/card/create`, {
                         method: 'POST',
                         headers: {

@@ -17,7 +17,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = ['name', 'email', 'phone', 'password'];
+    protected $fillable = ['name', 'email', 'phone','bio', 'password'];
 
     public function boards()
     {
@@ -32,6 +32,11 @@ class User extends Authenticatable
     public function sentNotifications()
     {
         return $this->hasMany(Notification::class, 'sender_user_id');
+    }
+
+    public function cards()
+    {
+        return $this->hasMany(Card::class, 'user_id');
     }
 
     public function receivedNotifications()

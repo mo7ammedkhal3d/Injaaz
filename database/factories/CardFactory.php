@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Board;
 use App\Models\BoardList;
 use App\Models\Card;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,6 +22,7 @@ class CardFactory extends Factory
             'title' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
             'board_list_id' => BoardList::factory(),
+            'user_id' => User::factory(),
             'due_date' => $this->faker->date,
             'start_date' => $this->faker->date,
         ];

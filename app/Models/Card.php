@@ -9,11 +9,16 @@ class Card extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'board_list_id', 'due_date', 'start_date'];
+    protected $fillable = ['title', 'description','user_id', 'board_list_id', 'due_date', 'start_date'];
 
     public function boardList()
     {
         return $this->belongsTo(BoardList::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function boardMembers()

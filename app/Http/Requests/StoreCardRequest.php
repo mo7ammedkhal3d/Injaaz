@@ -23,7 +23,9 @@ class StoreCardRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required|string',
+            'board_list_id' => 'required|exists:board_lists,id',
+            'user_id' => 'required|exists:users,id',
         ];
     }
 }

@@ -180,7 +180,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+              <a href="{{route('viewGetUserProfile', ['userId' => Auth::user()->id])}}" class="dropdown-item d-flex align-items-center">
                 <i class="bi bi-person"></i>
                 <span>ملفي الشخصي</span>
               </a>
@@ -188,7 +188,24 @@
             <li>
               <hr class="dropdown-divider">
             </li>
-
+            <li>
+              <a href="{{route('viewGetUserBoards', ['userId' => Auth::user()->id])}}" class="dropdown-item d-flex align-items-center">
+                <i class="bi bi-person"></i>
+                <span>اللوحات</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li>
+              <a href="{{route('viewGetUserCards', ['userId' => Auth::user()->id])}}" class="dropdown-item d-flex align-items-center">
+                <i class="bi bi-person"></i>
+                <span>المهام</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
             <li>
               <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
                 <i class="bi bi-gear"></i>
@@ -202,7 +219,7 @@
             <li>
               <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
                 <i class="bi bi-question-circle"></i>
-                <span>أحتاج مساعدة ؟</span>
+                <span> مساعدة ؟</span>
               </a>
             </li>
             <li>
@@ -475,7 +492,7 @@
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
   <script>
-
+    var baseUrl = '{{asset('')}}';
         $(document).ready(function() {
             $('.dropdown-menu li').each(function() {
                 $(this).click(function(e) {
@@ -503,7 +520,7 @@
                   $('#user-notification').append(`
                       <li class="dropdown-header">
                         ${notificationTextHeader}
-                        <a href="#"><span class="badge rounded-pill in-bg-primary py-2 px-4 me-4">عرض الكل</span></a>
+                        <a href="{{ route('getAllUserNotification', ['userId' => Auth::user()->id]) }}"><span class="badge rounded-pill in-bg-primary py-2 px-4 me-4">عرض الكل</span></a>
                       </li>
                       <li>
                         <hr class="dropdown-divider">
@@ -586,7 +603,7 @@
                 }
                 $('#user-notification').append(`
                   <li class="dropdown-footer">
-                    <a href="#">عرض جميع الاشعارات</a>
+                    <a href="{{ route('getAllUserNotification', ['userId' => Auth::user()->id]) }}">عرض جميع الاشعارات</a>
                   </li>
                   `)      
             })
@@ -627,8 +644,7 @@
                 console.error('Error fetching card details:', error);
             });
           }
-        // Remove Notification from in box
-
+        // Move Notification to stack
         
         // changeNotificationStatus
           function changeNotificationStatus(notificationId,element,updateType){
@@ -712,12 +728,41 @@
           }
         // showNotification
 
+        // Delete Notification
+          
+          function deleteNotification(notificationId,element){
+            const formData = new FormData();
+            formData.append('notification_id',notificationId);
+            fetch(`${baseUrl}dashboard/{{Auth::user()->id}}/notification/deleteNotification`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                },
+                body: formData,
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => { 
+                var notificationItem = element.closest('tr');
+                  notificationItem.remove();
+            })
+            .catch(error => {
+                console.error('Error fetching card details:', error);
+            });
+          }
+          
+        // Delete Notification
   </script>
   <!-- Vendor JS Files -->
   {{-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> --}}
   {{-- <script src="{{asset('assets/vendor/jquery/jquery-3.7.1.min')}}"></script> --}}
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
   <script src="{{asset('assets/vendor/apexcharts/apexcharts.min.js')}}"></script>
+  <script src="{{asset('assets/vendor/sweetalert/sweetalert.min.js')}}"></script>
   <script src="{{asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
   <script src="{{asset('assets/vendor/chart.js/chart.umd.js')}}"></script>
   <script src="{{asset('assets/vendor/echarts/echarts.min.js')}}"></script>

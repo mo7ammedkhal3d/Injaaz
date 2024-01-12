@@ -11,6 +11,18 @@ use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
+
+    public function getAll(){
+        $authenticatedUserId = auth()->user()->id;
+    
+        $notifications = Notification::where('recipient_user_id', $authenticatedUserId)
+                                      ->orderBy('created_at', 'desc') 
+                                      ->get();
+    
+        return view('dashboard.notification',['notifications' => $notifications]);
+    }
+
+    
     public function getNew() {
         $authenticatedUserId = auth()->user()->id;
     

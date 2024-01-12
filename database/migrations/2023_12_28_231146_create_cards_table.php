@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->foreignId('board_list_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->date('due_date')->nullable()->nullable();
             $table->date('start_date')->nullable()->nullable();
             $table->timestamps();

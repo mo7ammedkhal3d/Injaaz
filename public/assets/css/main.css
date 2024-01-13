@@ -676,7 +676,15 @@ body {
 
 /*#endregion dashboard.profile*/
 
+/*#region dashboard.accountSettings */
 
+.change-photo-modal .modal-center{
+    top: 20% !important;
+    max-width: 40rem;
+}
+
+
+/*#endregion*/
 
 
 /*#region front.login & front.register*/
@@ -745,10 +753,6 @@ body {
 }
 
 /* Add member dropdwon  */
-
-/*#endregion*/
-
-/*#region */
 
 /*#endregion*/
 

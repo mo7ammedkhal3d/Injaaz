@@ -207,7 +207,7 @@
               <hr class="dropdown-divider">
             </li>
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+              <a href="{{route('account.settings',['userId'=>Auth::user()->id])}}" class="dropdown-item d-flex align-items-center" href="users-profile.html">
                 <i class="bi bi-gear"></i>
                 <span>أعدادات الحساب</span>
               </a>

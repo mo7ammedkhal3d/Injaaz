@@ -49,7 +49,7 @@
                                     <a class="btn injaaz-btn fw-bold btn-user-profile" onclick="saveProfile()">حفظ</a>
                                 </div>
                                 <div class="mb-3 d-flex justify-content-center">
-                                    <a href="{{route('getAccountSettings',['userId'=>Auth::user()->id])}}" class="btn injaaz-btn fw-bold btn-user-profile" >أعدادات الحساب</a>
+                                    <a href="{{route('account.settings',['userId'=>Auth::user()->id])}}" class="btn injaaz-btn fw-bold btn-user-profile" >أعدادات الحساب</a>
                                 </div>
                             </div>
                         </div>

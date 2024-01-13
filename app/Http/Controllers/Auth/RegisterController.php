@@ -55,6 +55,7 @@ class RegisterController extends Controller
             'phone' => ['required', 'string', 'min:9', 'max:9', 'regex:/^7[73810][0-9]{7}$/'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'bio' => ['nullable', 'string', 'max:500'], 
+            'terms' => ['required', 'accepted'],
         ]);
     }
 

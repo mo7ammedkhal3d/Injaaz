@@ -10,7 +10,7 @@ class AccountSettingsController extends Controller
     public function index()
 {
     $user = auth()->user();
-    return view('account.settings', compact('user'));
+    return view('dashboard.accountSettings', compact('user'));
 }
 
 public function update(Request $request)
@@ -20,7 +20,7 @@ public function update(Request $request)
     $request->validate([
         'name' => 'required|string|max:255',
         'phone' => ['required', 'string', 'min:9', 'max:9', 'regex:/^7[73810][0-9]{7}$/'],
-        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        'email' => 'required|email|unique:users,email,' . auth()->id(),
         'password' => 'nullable|string|min:8|confirmed',
         'bio' => 'nullable|string',
     ]);
@@ -36,6 +36,6 @@ public function update(Request $request)
 
     $user->save();
 
-    return redirect()->route('account.settings')->with('success', 'Account settings updated successfully.');
+    return redirect()->route('account.settings', ['userId' => $user->id])->with('success', true);
 }
 }

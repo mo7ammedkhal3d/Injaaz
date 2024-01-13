@@ -52,7 +52,7 @@ Route::get('/dashboard/{userId}/getUserProfile', [UserController::class, 'viewGe
 Route::get('/dashboard/{userId}/getUserBoards',[UserController::class, 'viewGetUserBoards'])->name('viewGetUserBoards');
 Route::get('/dashboard/{userId}/getUserCards',[UserController::class, 'viewGetUserCards'])->name('viewGetUserCards');
 Route::get('/dashboard/{userId}/account/settings',[AccountSettingsController::class ,'index'])->name('account.settings');
-Route::post('/dashboard/{userId}/account/settings/update',[AccountSettingsController::class ,'update'])->name('account.settings.update');
+Route::post('/dashboard/{userId}/account/settings/update', [AccountSettingsController::class, 'update'])->name('account.settings.update');
 Route::get('/dashboard/{userId}/getBoardInfo',[UserController::class, 'getBoardInfo'])->name('getBoardInfo');
 
 Route::get('/dashboard/board', function (){

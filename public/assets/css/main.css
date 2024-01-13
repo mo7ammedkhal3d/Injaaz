@@ -17,6 +17,7 @@
     --oncontaianer-color:#1B4242;
     --first-gray-color:#f5f8fa;
     --second-gray-color:#e7e7e7;
+    --srface-color:#efefef;
     --white-color:#FFF;
     --font-family:'myfont';
 }
@@ -32,6 +33,10 @@ body {
 
 .in-bg-secondry{
     background-color: var(--onprimary-color);
+}
+
+.in-bg-srface{
+    background-color: var(--srface-color);
 }
 
 .in-text-primary{

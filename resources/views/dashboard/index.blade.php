@@ -1,6 +1,6 @@
 @extends('layouts.mainlayout')
 @section('content')
-  <main id="main" class="main p-0">
+  <main id="main" class="main p-0 in-bg-srface">
     <div class="boards-header mb-5">
       <div class="row mx-0 px-2 py-4">
         <div class="user-info col-5 d-flex justify-content-center gap-4 align-items-center p-5 d-flex align-item-center justify-content-center">
@@ -41,6 +41,11 @@
 
         {{-- second-modal-content --}}
           <div id="second-modal-content" class="modal-content d-none">
+            <div id="board-loadingSpinner" class="loadingSpinner d-none">
+              <div  class="spinner-border in-text-secondry" role="status">
+                  <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
             <div class="row m-0 p-0">
               <div class="col-6 p-4 add-board-img-section">
                 <img src="{{asset('assets/img/create-board-2.png')}}" alt="loadding">
@@ -237,6 +242,7 @@
         // createboard
           function createboard(){
               const formData = new FormData();
+              $('#board-loadingSpinner').removeClass('d-none');
               formData.append('board_name',$('#board-name').val());
               formData.append('board_description',$('#board-description').val());
               formData.append('user_id',userId);

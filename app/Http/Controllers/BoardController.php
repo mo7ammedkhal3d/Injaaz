@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Board;
 use App\Http\Requests\StoreBoardRequest;
+use App\Models\BoardList;
 use App\Models\BoardMember;
 use App\Models\Notification;
 use App\Models\User;
@@ -94,6 +95,62 @@ class BoardController extends Controller
         $board = Board::find($board_id);
 
         return view('dashboard.board', ['board' => $board]);
+    }
+
+    public function boardSettings($uder_id, $board_id){
+        // print $board_id; exit;
+        $boardInfo = Board::getBoardInfo($board_id);
+        $listes=[];
+        $cards=[];
+        $boardMemebers=[];
+
+        foreach ($boardInfo->lists as $list) {
+            $newList=[
+                'list_title'=>$list->title,
+                'cards_no'=>$list->cards->count(),
+            ];
+            $listes[]=$newList;
+            foreach ($list->cards as $card){
+                $card_assigneds=[];
+                foreach ($card->boardMembers as $boardMember) {
+                    $newCardAssigned=[
+                        'assgined_name'=>$boardMember->user->name,
+                        'assgined_email'=>$boardMember->user->email,
+                    ];
+                    $card_assigneds[]=$newCardAssigned;
+                }
+
+                $newCard=[
+                    'card_title'=>$card->title,
+                    'card_list'=>$card->boardList->title,
+                    'card_start_date'=>$card->start_date,//->format('Y/m/d h:i A'),
+                    'card_progress'=>$card->progress_rate,
+                    'card_due_date'=>$card->due_date,//->format('Y/m/d h:i A'),
+                    'card_assigneds'=>$card_assigneds,
+                ];
+                $cards[]=$newCard;
+            }
+        }
+
+        foreach ($boardInfo->boardMembers as $boardMember){
+            $newboard_member=[
+                'member_id'=>$boardMember->user->id,
+                'member_name'=>$boardMember->user->name,
+                'member_email'=>$boardMember->user->email,
+            ];
+            $boardMemebers[]=$newboard_member;
+        }
+
+        $board_details=[
+            'board_id'=>$boardInfo->id,
+            'board_name'=>$boardInfo->name,
+            'board_dexcription'=>$boardInfo->description,
+            'board_listes'=>$listes,
+            'board_cards'=>$cards,
+            'board_members'=>$boardMemebers
+        ];
+
+        return view('dashboard.boardSettings', compact('board_details'));
     }
 
     /**

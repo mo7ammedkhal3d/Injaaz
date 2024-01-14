@@ -70,7 +70,7 @@
                                             </div>
                                         </div>
                                     @endif
-                                        <a href="{{ route('getBoardInfo', ['userId' => Auth::user()->id, 'boardId' => $board['id']]) }}" class="col-9">
+                                        <a href="{{ route('boardSettings', ['userId' => Auth::user()->id, 'board_id' => $board['id']]) }}" class="col-9">
                                             <div class="user-board-name">
                                                 <h3 class="text-end pb-2 fw-bold">{{ $board['name'] }}</h3>
                                             </div>

@@ -90,8 +90,10 @@ class UserController extends Controller
         ->get();
 
         $cards =[];
-         
+
+        $counter=0;
         foreach($userCards as $card){
+            $counter++;
             $card=[
                 'id'=>$card->id,
                 'card_title'=>$card->title,

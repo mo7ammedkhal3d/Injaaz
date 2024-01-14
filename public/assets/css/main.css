@@ -628,7 +628,8 @@ body {
     color: var(--primary-color);
 }
 
-.notification-delete-icon:hover{
+.notification-delete-icon:hover , 
+.board-ember-delete-icon:hover{
     color: red;
 }
 
@@ -691,6 +692,12 @@ body {
 
 /*#endregion*/
 
+.board-ember-delete-icon{
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--primary-color);
+    font-size: 1.3rem;
+}
 
 /*#region front.login & front.register*/
 

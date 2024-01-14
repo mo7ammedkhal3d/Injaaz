@@ -30,4 +30,19 @@ class Board extends Model
     {
         return $this->hasMany(Notification::class, 'board_id');
     }
+
+    public static function getBoardInfo($boardId)
+    {
+        return self::with(['lists' => function ($query) {
+                $query->with(['cards' => function ($query) {
+                    $query->with(['boardMembers' => function ($query) {
+                        $query->with('user');
+                    }]);
+                }]);
+            }])
+            ->with(['boardMembers' => function ($query) {
+                $query->with('user');
+            }])
+            ->findOrFail($boardId);
+    }
 }

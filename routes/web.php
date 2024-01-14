@@ -53,15 +53,14 @@ Route::get('/dashboard/{userId}/getUserBoards',[UserController::class, 'viewGetU
 Route::get('/dashboard/{userId}/getUserCards',[UserController::class, 'viewGetUserCards'])->name('viewGetUserCards');
 Route::get('/dashboard/{userId}/account/settings',[AccountSettingsController::class ,'index'])->name('account.settings');
 Route::post('/dashboard/{userId}/account/settings/update', [AccountSettingsController::class, 'update'])->name('account.settings.update');
-Route::get('/dashboard/{userId}/getBoardInfo',[UserController::class, 'getBoardInfo'])->name('getBoardInfo');
-
+Route::get('/dashboard/{userId}/boardSettings/{board_id}',[BoardController::class, 'boardSettings'])->name('boardSettings');
 Route::get('/dashboard/board', function (){
     return view('dashboard.board');
 })->name('dashboard.board');
 
-Route::fallback(FUNCTION(){
-    return view('errors.404');
-})->name('errors.404');
+// Route::fallback(FUNCTION(){
+//     return view('errors.404');
+// })->name('errors.404');
 
 Route::get('/login',function(){
     return view('auth.login');

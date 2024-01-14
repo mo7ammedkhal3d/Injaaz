@@ -25,6 +25,7 @@ class CardFactory extends Factory
             'user_id' => User::factory(),
             'due_date' => $this->faker->date,
             'start_date' => $this->faker->date,
+            'progress_rate' => $this->faker->numberBetween(1, 100),
         ];
     }
 }

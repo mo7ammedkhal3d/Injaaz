@@ -674,10 +674,13 @@
                 notificationState.html(`
                   <button disabled class="btn btn-success fw-bold py-0 px-4">تمت الموافقة</button>
                 `);
+
+                var route = `{{ route('dashboard.lists', ['userId' => Auth::user()->id, 'board_id' => ':boardId']) }}`;
+                route = route.replace(':boardId', data.board.id);
                 
                 $('#user-boards').append(`
                     <div class="col-lg-4" role="button">
-                        <a href="#" onclick="redirectToBoard(${data.board.id},{{Auth::user()->id}}); return false;">
+                        <a href="${route}">
                             <div class="board my-3">
                                 <div class="board-body p-3">
                                     <div class="d-flex justify-content-between mb-3">

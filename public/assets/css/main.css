@@ -292,6 +292,14 @@ body {
 
 /* this for row of listes */
 
+.link-board-general .board-general-icon ,
+.link-board-membres .board-membres-icon{
+    font-size: 1.3rem;
+    color: var(--primary-color);
+}
+
+
+
 .custom-row-changes{
     padding-bottom: 2.2rem!important;
     height: 34.59rem;
@@ -641,22 +649,26 @@ body {
     height: 20rem;
 }
 
-.profile-navigation ul li{
+.profile-navigation ul li,
+.board-settings-navigation ul li{
     padding: 1rem 0.5rem;
     cursor: pointer;
     font-weight: bold;
     font-size: 1.2rem;
 }
 
-.profile-navigation ul li:hover{
+.profile-navigation ul li:hover,
+.board-settings-navigation ul li:hover{
     border-bottom: 0.2rem solid var(--primary-color);
 }
 
-.profile-navigation ul .active{
+.profile-navigation ul .active,
+.board-settings-navigation ul .active {
     border-bottom: 0.2rem solid var(--primary-color);
 }
 
-.profile-navigation hr{
+.profile-navigation hr ,
+.board-settings-navigation hr{
     margin-top: -1.19rem;
     opacity: 0.5;
     border-top: 0.2rem solid;
@@ -692,12 +704,26 @@ body {
 
 /*#endregion*/
 
+/*#region */
+
+.board-sections-container{
+    min-height: 30rem;
+}
+
 .board-ember-delete-icon{
     cursor: pointer;
     transition: all 0.3s ease;
     color: var(--primary-color);
     font-size: 1.3rem;
 }
+
+.board-member-photo{
+    height: 4.3rem
+}
+
+/*#endregion*/
+
+
 
 /*#region front.login & front.register*/
 
@@ -768,9 +794,7 @@ body {
 
 /*#endregion*/
 
-/*#region */
 
-/*#endregion*/
 
 /*#region */
 

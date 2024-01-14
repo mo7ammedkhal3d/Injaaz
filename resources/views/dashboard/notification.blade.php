@@ -32,11 +32,11 @@
                                     {{ $notification->created_at->format('Y/m/d h:i A') }}
                                 </td>
                                 <td>
-                                    @if ($notification->state == "reject")
+                                    @if ($notification->status == "reject")
                                         <div id="notification-state" class="col-7 d-flex gap-1 justify-content-between">
                                             <button disabled class="btn btn-danger fw-bold py-0 px-4">تم الرفض</button>
                                         </div>
-                                    @elseif($notification->state == "confirm")
+                                    @elseif($notification->status == "confirm")
                                       <div id="notification-state" class="col-7 d-flex gap-1 justify-content-between">
                                         <button disabled class="btn btn-success fw-bold py-0 px-4">تمت الموافقة</button>
                                       </div>

@@ -97,8 +97,8 @@ class BoardController extends Controller
         return view('dashboard.board', ['board' => $board]);
     }
 
-    public function boardSettings($uder_id, $board_id){
-        // print $board_id; exit;
+    public function getBoardDetails($board_id){
+
         $boardInfo = Board::getBoardInfo($board_id);
         $listes=[];
         $cards=[];
@@ -150,7 +150,22 @@ class BoardController extends Controller
             'board_members'=>$boardMemebers
         ];
 
-        return view('dashboard.boardSettings', compact('board_details'));
+        return $board_details;
+    }
+
+    public function generalSettings($user_id,$board_id){
+
+        $board_details = $this->getBoardDetails($board_id);
+        $section = 'board_general';
+
+        return view('dashboard.boardSettings', compact('board_details', 'section'));
+    }
+
+    public function boardMembres($user_id,$board_id){
+        $board_details = $this->getBoardDetails($board_id);
+        $section = 'board_membres';
+
+        return view('dashboard.boardSettings', compact('board_details', 'section'));
     }
 
     /**

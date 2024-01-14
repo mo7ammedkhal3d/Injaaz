@@ -2,7 +2,7 @@
 @section('content')
     <main id="main" class="main p-0">
         
-     <!--#region card-modal Modal -->
+    <!--#region card-modal Modal -->
 
      <div class="modal card-modal" id="card-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
      <div class="modal-dialog modal-center" role="document">
@@ -127,36 +127,36 @@
      </div>
      </div>
 
- <!--#endregion Card Modal -->
+    <!--#endregion Card Modal -->
 
     <!--#region Add Memeber Modal-->
 
-    <div id="add-card-member" class="modal add-member-modal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-center" role="document">
-            <div class="modal-content">
-                <div class="modal-header px-4">
-                    <h5 class="m-0 text-center">أضافة عضو</h5>
-                    <button id="close-add-member-modal" type="button" class="close injaaz-btn-close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>                        
-                </div>
-                <div class="modal-body">
-                    <div class=" px-5 d-flex justify-content-center w-100 h-100 align-items-center gap-3 flex-column add-member-details">
-                        <label for="member-email">الأسم</label>
-                        <div id="board-member-dropdown"  class="w-75 board-member-dropdown">
-                            <input type="text" id="searchInput" class="no-boeder rounded px-2 w-100" oninput="filterOptions()" onclick="toggleDropdown()" placeholder="ابحث عن اعضاء">
-                            <div id="dropdownContent" class="custom-scrollbar rounded">
-                                
+        <div id="add-card-member" class="modal add-member-modal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-center" role="document">
+                <div class="modal-content">
+                    <div class="modal-header px-4">
+                        <h5 class="m-0 text-center">أضافة عضو</h5>
+                        <button id="close-add-member-modal" type="button" class="close injaaz-btn-close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>                        
+                    </div>
+                    <div class="modal-body">
+                        <div class=" px-5 d-flex justify-content-center w-100 h-100 align-items-center gap-3 flex-column add-member-details">
+                            <label for="member-email">الأسم</label>
+                            <div id="board-member-dropdown"  class="w-75 board-member-dropdown">
+                                <input type="text" id="searchInput" class="no-boeder rounded px-2 w-100" oninput="filterOptions()" onclick="toggleDropdown()" placeholder="ابحث عن اعضاء">
+                                <div id="dropdownContent" class="custom-scrollbar rounded">
+                                    
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer d-flex justify-content-center">
-                    <button id="add-card-assigned" class="btn injaaz-btn w-50">أضافة</button>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button id="add-card-assigned" class="btn injaaz-btn w-50">أضافة</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     <!--#endregion Add Memeber Modal-->
 
 
@@ -166,12 +166,12 @@
             <div class="board-name">
                 <h3 class="fw-bold">{{$board->name}}</h3>
             </div>
-            <div class="board-settings" role="button">
-                <i class="fa-solid fa-gear"></i>
-            </div>
-            <div class="board-members" role="button">
-                <i class="fa-solid fa-users"></i>
-            </div>
+            <a href="{{ route('board.generalSettings', ['userId' => Auth::user()->id, 'board_id' => $board->id]) }}" class="link-board-general" role="button">
+                <i class="fa-solid fa-gear board-general-icon"></i>
+            </a>
+            <a href="{{ route('board.boardMembres', ['userId' => Auth::user()->id, 'board_id' => $board->id]) }}" class="link-board-membres" role="button">
+                <i class="fa-solid fa-users board-membres-icon"></i>
+            </a>
         </div>
     </div>
     <div class="row pt-2 mt-2 gap-5 mx-0 board-body algin-itmes-center overflow-x-auto flex-nowrap custom-scrollbar-x custom-row-changes">

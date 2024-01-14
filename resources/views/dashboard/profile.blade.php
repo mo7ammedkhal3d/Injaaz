@@ -70,7 +70,7 @@
                                             </div>
                                         </div>
                                     @endif
-                                        <a href="{{ route('boardSettings', ['userId' => Auth::user()->id, 'board_id' => $board['id']]) }}" class="col-9">
+                                        <a href="{{ route('board.generalSettings', ['userId' => Auth::user()->id, 'board_id' => $board['id']]) }}" class="col-9">
                                             <div class="user-board-name">
                                                 <h3 class="text-end pb-2 fw-bold">{{ $board['name'] }}</h3>
                                             </div>
@@ -231,9 +231,12 @@
                                 </div>
                             `);
                         }
+                        
+                        var route = `{{ route('board.generalSettings', ['userId' => Auth::user()->id, 'board_id' => ':boardId']) }}`;
+                        route = route.replace(':boardId', board.id);
 
                         $boardContainer.append(`
-                            <a class="col-9">
+                            <a href="${route}" class="col-9">
                                 <div class="user-board-name">
                                     <h3 class="text-end pb-2 fw-bold">${board.name}</h3>
                                 </div>

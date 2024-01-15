@@ -168,27 +168,107 @@ class BoardController extends Controller
         return view('dashboard.boardSettings', compact('board_details', 'section'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Board $board)
-    {
-        //
+    public function updategeneralSettings(Request $request ,$user_id){
+
+        $board = Board::find($request->board_id);
+    
+        $board->update([
+            'name' => $request->board_name,
+            'description' => $request->board_description,
+        ]);
+    
+        return response()->json(['message'=>'تم التعديل','user'=>$board], 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateBoardRequest $request, Board $board)
-    {
-        //
+    public function delelteBoardMember(Request $request ,$user_id){
+        $boardMember = BoardMember::where('board_id', $request->board_id)
+        ->where('user_id', $request->member_id)
+        ->first();
+
+        if ($boardMember) {
+            $boardMember->delete();
+
+            return response()->json(['message' => 'تم الحذف']);
+        }
+
+        return response()->json(['message' => 'حذتث مشكلة أتناء عملية الحذف'], 404);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Board $board)
-    {
-        //
+    public function sendInvitation(Request $request,$user_id){
+        $sender_user = User::find($user_id)->name;
+        $board = Board::find($request->board_id);
+
+        Notification::create([
+            'sender_user_id' => $user_id,
+            'recipient_user_id' => $request->recipient_userId,
+            'board_id'=>$request->board_id,
+            'text' => auth()->user()->name . '  قام بدعوتك للإنضمام الى  <span class="invited-to-board">'. $board->name.'<span>',                    
+        ]);
+
+        $reciver_user = User::find($request->recipient_userId);
+        Mail::to($reciver_user->email)->send(new InvitationMail($reciver_user->name,$sender_user,$board->name));
+
+        return response()->json(['message' => 'تم أرسال الدعوة بنجاح']);
     }
+
+    public function deleteForMe(Request $request){
+
+        $board = Board::findOrFail($request->board_id);
+
+        if ($board->user_id == $request->member_id) {
+
+
+            $otherBoardMembers = BoardMember::where('board_id', $request->board_id)
+                ->where('user_id', '<>', $request->member_id)
+                ->exists();
+
+            if ($otherBoardMembers) {
+                $firstBoardMember = BoardMember::where('board_id', $request->board_id)
+                ->where('user_id', '<>', $request->member_id)
+                ->first();
+
+                $board->user_id = $firstBoardMember->user_id;
+                $board->save();
+
+            } else {
+                $board->delete();
+            }
+
+            BoardMember::where('board_id', $request->board_id)
+                ->where('user_id', $request->member_id)
+                ->delete();
+
+            return response()->json(['message' => 'تم الحذف']);
+
+        } else {
+            BoardMember::where('board_id', $request->board_id)
+                ->where('user_id', $request->member_id)
+                ->delete();
+            return response()->json(['message' => 'تم الحذف']);
+        }
+    }
+
+    // /**
+    //  * Show the form for editing the specified resource.
+    //  */
+    // public function edit(Board $board)
+    // {
+    //     //
+    // }
+
+    // /**
+    //  * Update the specified resource in storage.
+    //  */
+    // public function update(UpdateBoardRequest $request, Board $board)
+    // {
+    //     //
+    // }
+
+    // /**
+    //  * Remove the specified resource from storage.
+    //  */
+    // public function destroy(Board $board)
+    // {
+    //     //
+    // }
 }

@@ -10,6 +10,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserController;
 use App\Mail\InvitationMail;
+use App\Models\Board;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -55,6 +56,11 @@ Route::get('/dashboard/{userId}/account/settings',[AccountSettingsController::cl
 Route::post('/dashboard/{userId}/account/settings/update', [AccountSettingsController::class, 'update'])->name('account.settings.update');
 Route::get('/dashboard/{userId}/board/generalSettings/{board_id}',[BoardController::class, 'generalSettings'])->name('board.generalSettings');
 Route::get('/dashboard/{userId}/board/boardMembres/{board_id}',[BoardController::class, 'boardMembres'])->name('board.boardMembres');
+Route::post('/dashboard/{userId}/board/generalSettings/update',[BoardController::class, 'updategeneralSettings'])->name('board.updategeneralSettings');
+Route::post('/dashboard/{userId}/board/boardmember/delete',[BoardController::class, 'delelteBoardMember'])->name('board.delelteBoardMember');
+Route::get('/dashboard/{userId}/users/getUninvite/{board_id}',[UserController::class, 'getUninvite'])->name('board.getUninvite');
+Route::Post('/dashboard/{userId}/board/sendInvitation',[BoardController::class, 'sendInvitation'])->name('board.sendInvitation');
+Route::Post('/dashboard/{userId}/board/deleteForMe',[BoardController::class, 'deleteForMe'])->name('board.deleteForMe');
 Route::get('/dashboard/board', function (){
     return view('dashboard.board');
 })->name('dashboard.board');

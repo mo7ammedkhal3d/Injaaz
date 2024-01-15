@@ -114,7 +114,8 @@
             </div>
 
         <script>
-
+        
+        // navigation
             function changeActiveLink(element,section){
                 $('.navigation-item').each(function() {
                     $(this).removeClass('active');
@@ -126,6 +127,8 @@
 
                 $(`#${section}`).removeClass('d-none');
             }
+
+        // navigation
 
         // getUserProfile
             function getUserProfile(element,section){

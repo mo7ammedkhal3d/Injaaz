@@ -1,6 +1,35 @@
 @extends('layouts.mainlayout')
 @section('content')
     <main id="main" class="main p-0">
+
+            <!--#region invite Board Memeber Modal-->
+            <div id="invite-toboard-modal" class="modal invite-toboard-modal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-center" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header px-4">
+                            <h5 class="m-0 text-center">دعوة أعضاء</h5>
+                            <button id="close-invite-toboard-modal" type="button" class="close injaaz-btn-close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>                        
+                        </div>
+                        <div class="modal-body">
+                            <div class="row m-0 p-0 my-5 invite-section">    
+                                <div id="board-add-dropdown"  class="w-100 board-add-dropdown">
+                                  <label class="form-label mb-4 fw-bold" for="invite-member">ادخل اسم العضو للبحث</label>  {{--onclick="boardToggleDropdown()"--}}
+                                  <input type="text" id="invite-member-search" class="form-control board-name-input" oninput="boardFilterOptions()" placeholder="ابحث عن اعضاء">
+                                  <button id="send-invite-btn" class="btn btn-success btn btn-success w-25 my-3 d-none">دعوة</button>
+                                  <div id="board-dropdownContent" class="custom-scrollbar rounded d-none">
+                                    
+                                  </div>
+                                </div>                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!--#endregion invite Board Memeber Modal-->
+
+
         <div class="row px-5 pt-5 pb-3 justify-content-center mx-0">
             <div class="row mt-5">
                 <div class="col-11 profile-navigation">
@@ -28,7 +57,7 @@
                             </div>
                             <div class="row mb-3  justify-content-center mb-3">
                                 <div class="col-1 ps-0">
-                                    <label for="board-name" class="form-label fw-bold">الوصف</label>
+                                    <label for="board-description" class="form-label fw-bold">الوصف</label>
                                 </div>
                                 <div class="col-7">
                                     <textarea id="board-description" class="form-control" rows="7" aria-label="With textarea">{{$board_details['board_dexcription']}}</textarea>
@@ -36,7 +65,7 @@
                             </div>
                             <div class="row mb-3 mb-3 pe-5  justify-content-center">
                                 <div class="col-7 me-5 d-flex justify-content-center">
-                                    <button class="btn injaaz-btn w-50 fw-bold">حفظ</button>
+                                    <button class="btn injaaz-btn w-50 fw-bold" onclick="UpdateGeneralSettings({{$board_details['board_id']}})">حفظ</button>
                                 </div>
                             </div>
                         </div>
@@ -115,21 +144,23 @@
                             <div class="row justify-content-center">
                                 <div class="col-5">
                                     @foreach ($board_details['board_members'] as $board_member)
-                                        <div class="d-flex mb-5 justify-content-between align-items-center">
+                                        <div id="board-member" class="d-flex mb-5 justify-content-between align-items-center">
                                             <div class="d-flex gap-4 align-items-center">
                                                 <img src="{{ "https://www.gravatar.com/avatar/" . md5(strtolower(trim($board_member['member_email']))) . "?d=mp" }}" alt="Profile" class="rounded-circle board-member-photo">
                                                 <h5>{{$board_member['member_name']}}</h5>
                                             </div>
-                                            <div>
-                                                <i class="fa-solid fa-trash-can board-ember-delete-icon" onclick="deleteBoardMember({{$board_details['board_id']}},{{$board_member['member_id']}},this)"></i>
-                                            </div>
-                                        </div>   
+                                            @if ($board_member['member_id'] != Auth::user()->id)
+                                                <div>
+                                                    <i class="fa-solid fa-trash-can board-ember-delete-icon" onclick="deleteBoardMember(this, {{$board_details['board_id']}}, {{$board_member['member_id']}})"></i>
+                                                </div>     
+                                            @endif
+                                        </div>
                                     @endforeach
                                 </div>
                             </div>
                             <div class="row py-2 justify-content-center">
                                 <div class="col-3 d-flex justify-content-center flex-column">
-                                    <button class="btn fw-bold injaaz-btn" onclick="inviteMembers({{$board_details['board_id']}})">دعوة أعضاء</button>
+                                    <button class="btn fw-bold injaaz-btn" onclick="showInviteToBoardModal({{$board_details['board_id']}})">دعوة أعضاء</button>
                                 </div>
                             </div>
                         </div>
@@ -148,7 +179,7 @@
                             </div>
                             <div class="row py-2 justify-content-center">
                                 <div class="col-3 d-flex justify-content-center flex-column">
-                                    <button class="btn fw-bold btn-danger" onclick="deleteBoard({{$board_details['board_id']}})">حذف اللوحة</button>
+                                    <button class="btn fw-bold btn-danger" onclick="deleteBoard({{$board_details['board_id']}},{{Auth::user()->id}})">حذف اللوحة</button>
                                 </div>
                             </div>
                         </div>
@@ -160,21 +191,286 @@
     </div>  
     <script>
 
-        function moveLink(element,section){
-            $('.navigation-item').each(function() {
-                    $(this).removeClass('active');
+        var selectedBoardId ;
+
+        // navigation
+            function moveLink(element,section){
+                $('.navigation-item').each(function() {
+                        $(this).removeClass('active');
+                    });
+
+                    $(element).addClass('active');
+
+                    $('.board-sections').addClass('d-none');
+
+                    $(`#${section}`).removeClass('d-none');
+            }
+        // navigation
+
+        // updateGeneralSettings
+            function UpdateGeneralSettings(boardId){
+                const formData = new FormData();
+                formData.append('board_name',$('#board-name').val());
+                formData.append('board_description',$('#board-description').val());
+                formData.append('board_id',boardId);
+                fetch(`${baseUrl}dashboard/{{Auth::user()->id}}/board/generalSettings/update`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    },
+                    body: formData,
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => { 
+                    swal({
+                        //  title: title,
+                            text: data.message,
+                            content: true,
+                            icon: "success",
+                            classname: 'swal-IW',
+                            timer: 1700,
+                            buttons: false,
+                        });
+
+                        $('#board-name').val(data.board.name);
+                        $('#board-description').val(data.board.description);
+                })
+
+                .catch(error => {
+                    console.error('Error fetching card details:', error);
+                });
+            }
+        // updateGeneralSettings
+
+        // delete board member          
+            function deleteBoardMember(element,boardId,memberId){
+                swal({
+                    // title: "Are you sure?",
+                    text: "هل تريد بالتأكيد حذف هذا العضو من اللوحة",
+                    className: 'swal-IW',
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                    buttons: ["ألغاء", "تأكيد"],
+                }).then((result) => {
+                    if (result == true) {
+                        const formData = new FormData();
+                        formData.append('member_id',memberId);
+                        formData.append('board_id',boardId);
+                        fetch(`${baseUrl}dashboard/{{Auth::user()->id}}/board/boardmember/delete`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            },
+                            body: formData,
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => { 
+                            swal({
+                                //  title: title,
+                                    text: data.message,
+                                    content: true,
+                                    icon: "success",
+                                    classname: 'swal-IW',
+                                    timer: 1700,
+                                    buttons: false,
+                                });
+
+                                var boardMember = $(element).closest('#board-member');
+                                boardMember.remove();
+                        })
+
+                        .catch(error => {
+                            console.error('Error fetching card details:', error);
+                        });
+                    }
+                })
+            }
+
+        // delete board member
+
+        // boardFilterOptions
+            function boardFilterOptions() {
+            var input = $('#invite-member-search').val().toLowerCase();
+            var dropdownVisible = false;
+
+            $('.dropdownOption').each(function() {
+                var optionText = $(this).find('#user-name').text().toLowerCase();
+                
+                if (optionText.indexOf(input) > -1) {
+                    $(this).show();
+                    console.log("here");
+                    dropdownVisible = true;
+                } else {
+                    $(this).hide();
+                }
+            });
+            $('#board-dropdownContent').toggleClass('d-none', !dropdownVisible);
+            $('#board-dropdownContent').toggleClass('d-none', input =="");
+            }
+        // boardFilterOptions
+      
+        // selectUser
+            function selectUser(userId, element){
+                $('#invite-member-search').val($(element).find('#user-name').text());
+                $('#board-dropdownContent').toggleClass('d-none');
+                $('#send-invite-btn').removeClass('d-none');
+                $('#send-invite-btn').on('click',sendInvite);
+                var input = $('#invite-member-search').val().trim().toLowerCase();
+                $('#send-invite-btn').toggleClass('d-none', input ==="");
+
+
+                function sendInvite(){
+                    const formData = new FormData();
+                    formData.append('recipient_userId',userId);
+                    formData.append('board_id',selectedBoardId);
+                    fetch(`${baseUrl}dashboard/{{Auth::user()->id}}/board/sendInvitation`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        },
+                        body: formData,
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => { 
+                        swal({
+                            //  title: title,
+                                text: data.message,
+                                content: true,
+                                icon: "success",
+                                classname: 'swal-IW',
+                                timer: 1700,
+                                buttons: false,
+                            });
+                            $('#send-invite-btn').addClass('d-none');
+                            $('#send-invite-btn').off('click',sendInvite);
+                            $('#invite-member-search').val("");
+                            element.remove();
+                    })
+
+                    .catch(error => {
+                        console.error('Error fetching card details:', error);
+                    });
+                }
+            }
+        // selectUser
+
+
+        // invite board membres
+            function showInviteToBoardModal(boardId){
+                $('#invite-toboard-modal').modal('show');
+                selectedBoardId = boardId;
+                $('#close-invite-toboard-modal').on('click', function(){
+                    $('#invite-toboard-modal').modal('hide'); 
+                    $('#board-dropdownContent').html("");
+                    $('#send-invite-btn').addClass('d-none');
+                    $('#invite-member-search').val("");
+                });
+                
+                fetch(`${baseUrl}dashboard/{{Auth::user()->id}}/users/getUninvite/${boardId}`, {
+                method: 'GET',
+                })
+
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => { 
+                    if (data){
+                    data.users.forEach(user =>{
+                        const email = user.email.toLowerCase().trim();
+                        const md5Hash = CryptoJS.MD5(email).toString();
+                        const gravatarUrl = `https://www.gravatar.com/avatar/${md5Hash}?d=mp`;
+
+                        $('#board-dropdownContent').append(`
+                        <div class="dropdownOption justify-content-center gap-3 px-4" onclick="selectUser(${user.id},this,{{Auth::user()->id}})">
+                        <div class="d-flex justify-content-between align-items-center px-4 w-75">
+                            <img src="${gravatarUrl}" alt="John">
+                            <h6 id="user-name">${user.name}</h6>
+                        </div>
+                        </div>              
+                        `);
+                    });
+                    }
+                })
+
+                .catch(error => {
+                    console.error('Error fetching card details:', error);
                 });
 
-                $(element).addClass('active');
-
-                $('.board-sections').addClass('d-none');
-
-                $(`#${section}`).removeClass('d-none');
-        }
+            }  
+        // invite board membres
 
 
+        // delete board  
+            
+           function deleteBoard(boardId,userId){
+            swal({
+                    // title: "Are you sure?",
+                    text: "سيتم حذف اللوحة لديك فقط , إذا كان للوحة أعضاء ستظل ظاهرة لديهم",
+                    className: 'swal-IW',
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                    buttons: ["ألغاء", "تأكيد"],
+                }).then((result) => {
+                    if (result == true) {
+                        const formData = new FormData();
+                        formData.append('member_id',userId);
+                        formData.append('board_id',boardId);
+                        fetch(`${baseUrl}dashboard/{{Auth::user()->id}}/board/deleteForMe`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            },
+                            body: formData,
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => { 
+                            swal({
+                                    text: data.message,
+                                    content: true,
+                                    icon: "success",
+                                    classname: 'swal-IW',
+                                    timer: 1700,
+                                    buttons: false,
+                                });
 
+                                setTimeout(function() {
+                                    window.location.href = `${baseUrl}dashboard/{{Auth::user()->id}}`;
+                                }, 500);
+                        })
 
+                        .catch(error => {
+                            console.error('Error fetching card details:', error);
+                        });
+                    }
+                })
+           }
+
+        // delete board  
     </script>
 @endsection
 

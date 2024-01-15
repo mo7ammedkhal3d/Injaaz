@@ -704,7 +704,7 @@ body {
 
 /*#endregion*/
 
-/*#region */
+/*#region dashboard.boardSettings */
 
 .board-sections-container{
     min-height: 30rem;
@@ -720,6 +720,27 @@ body {
 .board-member-photo{
     height: 4.3rem
 }
+
+/* invite to board modal */
+
+.invite-toboard-modal .modal-center{
+    top: 15% !important;
+    max-width: 40rem;
+}
+
+.invite-toboard-modal .modal-content{
+    overflow: visible;
+    direction: rtl;
+    height: 25rem;
+}
+
+.invite-toboard-modal .modal-body{
+    overflow-y: auto;
+    position: static;
+}
+
+
+/* invite to board modal */
 
 /*#endregion*/
 

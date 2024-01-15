@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Board;
+use App\Models\BoardMember;
 use App\Models\Card;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -14,6 +15,25 @@ class UserController extends Controller
 
         return response()->json(['users'=>$users],200);
     }
+
+    public function getUninvite($user_Id,$board_id){
+        
+        $usersInBoard = BoardMember::where('board_id', $board_id)
+            ->pluck('user_id'); 
+
+        $users = User::whereNotIn('id', $usersInBoard) 
+            ->whereNotIn('id', function ($query) use ($board_id) {
+                $query->select('recipient_user_id')
+                    ->from('notifications')
+                    ->where('board_id', $board_id)
+                    ->where('status', 'inprogress');
+            })
+            ->where('id', '<>', auth()->id()) 
+            ->get();
+
+        return response()->json(['users'=>$users],200);
+    }
+
 
     public function viewGetUserProfile(){
 

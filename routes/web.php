@@ -100,6 +100,10 @@ Route::get('/contact',function(){
     return view('gustes.contact',['activeLink'=>'6','pageName'=>'تواصل معنا','pagetitle'=>'تواصل معنا']);
 })->name('gustes.contact');
 
+Route::get('/terms',function(){
+    return view('gustes.conditionAndTerms');
+})->name('gustes.terms');
+
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');

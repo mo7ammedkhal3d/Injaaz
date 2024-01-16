@@ -827,11 +827,52 @@ body {
     border-radius: 50%;
 }
 
+.loging-img img{
+    height: 20rem;
+}
+
+.register-img img{
+    height: 15rem;
+    position: absolute;
+    right: 2rem;
+    top: 24.5rem;
+}
+
+.register-img-2 img{
+    height: 20rem;
+    position: absolute;
+    left: 0rem;
+    top: -0.5rem;
+}
+
+.loging-back img{
+    height: 5rem;
+}
+
+.register-back img{
+    height: 4rem;
+}
+
+.edit-card-loging{
+    background-color: white;
+    box-shadow: 1px 1px 17px lightgray
+}
+
 /* Add member dropdwon  */
 
 /*#endregion*/
 
+/* terms and condition */
 
+.terms-img{
+    display: flex;
+    justify-content: center;
+    margin: 5rem 0;
+}
+.terms-img img{
+    height: 10rem;
+}
+/* terms and condition */
 
 /*#region */
 

@@ -24,10 +24,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('gustes.index',['activeLink'=>'1','pageName'=>'الرئيسية']);
-})->name('gustes.index');
-
 Route::get('/dashboard/{userId}', [BoardController::class, 'index'])->name('dashboard.index');
 Route::get('/dashboard/{board_id}/lists', [BoardController::class, 'show'])->name('dashboard.lists');
 Route::get('/dashboard/{userId}/card/{card_id}', [CardController::class, 'index'])->name('dashboard.getCardDetails');
@@ -61,13 +57,15 @@ Route::post('/dashboard/{userId}/board/boardmember/delete',[BoardController::cla
 Route::get('/dashboard/{userId}/users/getUninvite/{board_id}',[UserController::class, 'getUninvite'])->name('board.getUninvite');
 Route::Post('/dashboard/{userId}/board/sendInvitation',[BoardController::class, 'sendInvitation'])->name('board.sendInvitation');
 Route::Post('/dashboard/{userId}/board/deleteForMe',[BoardController::class, 'deleteForMe'])->name('board.deleteForMe');
+Route::Post('/dashboard/{userId}/card/updatePosition',[CardController::class, 'updatePosition'])->name('card.updatePosition');
+Route::Post('/dashboard/{userId}/card/updateList',[CardController::class, 'updateList'])->name('card.updateList');
 Route::get('/dashboard/board', function (){
     return view('dashboard.board');
 })->name('dashboard.board');
 
-// Route::fallback(FUNCTION(){
-//     return view('errors.404');
-// })->name('errors.404');
+Route::fallback(FUNCTION(){
+    return view('errors.404');
+})->name('errors.404');
 
 Route::get('/login',function(){
     return view('auth.login');
@@ -77,29 +75,30 @@ Route::get('/register',function(){
     return view('auth.register');
 })->name('auth.register');
 
+
+Route::get('/', function () {
+    return view('gustes.index',['activeLink'=>'1','pageName'=>'الرئيسية']);
+})->name('gustes.index');
+
 Route::get('/about',function(){
-    return view('gustes.about',['activeLink'=>'2','pageName'=>'عن إنجاز']);
+    return view('gustes.about',['activeLink'=>'2','pageName'=>'عن إنجاز','pagetitle'=>'تعرف علينا أكثر']);
 })->name('gustes.about');
 
-Route::get('/contact',function(){
-    return view('gustes.contact',['activeLink'=>'6','pageName'=>'تواصل معنا']);
-})->name('gustes.contact');
-
-Route::get('/project',function(){
-    return view('gustes.project',['activeLink'=>'4','pageName'=>'المشاريع']);
-})->name('gustes.project');
-
 Route::get('/services',function(){
-    return view('gustes.services',['activeLink'=>'3','pageName'=>'الخدمات']);
+    return view('gustes.services',['activeLink'=>'3','pageName'=>'الخدمات','pagetitle'=>'الخدمات التي نقدمها']);
 })->name('gustes.services');
 
+Route::get('/testimonial',function(){
+    return view('gustes.testimonial',['activeLink'=>'4','pageName'=>'عملائنا','pagetitle'=>'ماذا قالوا عنا']);
+})->name('gustes.testimonial');
+
 Route::get('/team',function(){
-    return view('gustes.team',['activeLink'=>'5','pageName'=>'الأعضاء']);
+    return view('gustes.team',['activeLink'=>'5','pageName'=>'الأعضاء','pagetitle'=>'تواصل مع الأعضاء']);
 })->name('gustes.team');
 
-Route::get('/testimonial',function(){
-    return view('gustes.testimonial',['activeLink'=>'5','pageName'=>'عملائنا']);
-})->name('gustes.testimonial');
+Route::get('/contact',function(){
+    return view('gustes.contact',['activeLink'=>'6','pageName'=>'تواصل معنا','pagetitle'=>'تواصل معنا']);
+})->name('gustes.contact');
 
 Auth::routes();
 

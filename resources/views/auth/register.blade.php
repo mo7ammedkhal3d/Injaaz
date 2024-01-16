@@ -4,7 +4,7 @@
     <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
       <div class="d-flex justify-content-center py-4">
-        <a href="index.html" class="logo d-flex align-items-center w-auto">
+        <a href="{{route('gustes.index')}}" class="logo d-flex align-items-center w-auto">
           <img style="filter: invert();  height: 4rem !important;" src="{{asset('assets/img/logo.png')}}" alt="">
         </a>
       </div><!-- End Logo -->

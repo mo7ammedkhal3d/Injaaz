@@ -176,25 +176,25 @@
     </div>
     <div class="row pt-2 mt-2 gap-5 mx-0 board-body algin-itmes-center overflow-x-auto flex-nowrap custom-scrollbar-x custom-row-changes">
             @if ($board->lists->count()>0)
-            @foreach ($board->lists as $list)
-            <div class="col-3 rounded board-list p-0">
+            @foreach ($board->lists->sortBy('created_at') as $list)
+            <div class="col-3 rounded board-list p-0" data-list-id="{{$list->id}}">
                 <div class="list-header p-3">
                     <div class="list-title d-flex align-items-center justify-content-between" role="button">
-                        <h5>{{$list->title}}</h5>
-                        <i class="fa-solid fa-ellipsis"></i>
+                        <h5 class="fw-bold">{{$list->title}}</h5>
+                        <i class="fa-solid fa-ellipsis list-links"></i>
                     </div>
                 </div>
                 <div class="list-body custom-scrollbar">
                     <div class="list-body-conetnt mkmk custom-scrollbar px-3">
                         @if ($list->cards && $list->cards->count() > 0)
-                            @foreach ($list->cards->sortBy('created_at') as $card)
-                                <div class="card bg-white p-2 d-flex flex-row justify-content-between" onclick="showCard(this,{{Auth::user()->id}},{{$card->id}})"> 
-                                    <div id="card-short-info">
-                                        <h6 id="hcard-title">{{$card->title}}</h6>
+                            @foreach ($list->cards->sortBy('position') as $card)
+                                <div draggable="true" class="card bg-white p-2 d-flex flex-row justify-content-between" onclick="showCard(this,{{Auth::user()->id}},{{$card->id}})" data-card-id="{{$card->id}}"> 
+                                    <div id="card-short-info" class="d-flex justify-content-center gap-3 flex-column" >
+                                        <h6 id="hcard-title" class="fw-bold m-0">{{$card->title}}</h6>
                                         @if (\Carbon\Carbon::parse($card->due_date)->format('Y-m-d')  == date('Y-m-d') || $card->description != null)
                                             <div id="card-notification" class="d-flex gap-3 align-items-center">
                                                 @if ($card->due_date  == date('Y-m-d'))
-                                                    <small id="date-notify" style="background-color: red ;color:white" title="أنجز بسرعة" class="fw-bold rounded p-1" onclick="markComplete(this)" >تنتهي قريبا <i class="fa-regular fa-clock me-2"></i></small>
+                                                    <small id="date-notify" style="background-color: #EF4040 ;color:white" title="أنجز بسرعة" class="fw-bold rounded p-1" onclick="markComplete(this)" >تنتهي قريبا <i class="fa-regular fa-clock me-2"></i></small>
                                                 @endif                                        
                                                 @if ($card->description != null)
                                                     <i id="description-notify" title="هذه الكارد تحتوي على وصف" class="fa-solid fa-align-left"></i>  
@@ -246,7 +246,6 @@
     <script>  
     var baseUrl = '{{asset('')}}';
     var selectedCard;
-
 
     // Add member to card 
         function toggleDropdown() {
@@ -608,7 +607,7 @@
                             var dateNotify = notificationDev.find('#date-notify');
                             if (dateNotify.length === 0) {
                                 notificationDev.append(`
-                                    <small id="date-notify" style="background-color: red ;color:white" title="أنجز بسرعة" class="fw-bold rounded p-1" onclick="markComplete(this)" >تنتهي قريبا <i class="fa-regular fa-clock me-2"></i></small>
+                                    <small id="date-notify" style="background-color: #EF4040 ;color:white" title="أنجز بسرعة" class="fw-bold rounded p-1" onclick="markComplete(this)" >تنتهي قريبا <i class="fa-regular fa-clock me-2"></i></small>
                                 `);
                             }
                         } else {
@@ -817,9 +816,9 @@
                     .then(data => {
                         if (data) {
                             listBody.find('.mkmk').append(`
-                            <div class="card bg-white p-2 d-flex flex-row justify-content-between" onclick="showCard(this ,{{Auth::user()->id}},${data.card.id})"> 
+                            <div draggable="true" class="card bg-white p-2 d-flex flex-row justify-content-between" onclick="showCard(this ,{{Auth::user()->id}},${data.card.id})" data-card-id="${data.card.id}"> 
                                 <div id="card-short-info">
-                                    <h6 id="hcard-title">${data.card.title}</h6>
+                                    <h6 id="hcard-title" class="fw-bold m-0">${data.card.title}</h6>
                                 </div>                               
                                 
                                 <div class="edit-confirm d-flex align-items-start">
@@ -830,6 +829,7 @@
                             `);
                             listBody.scrollTop(listBody.prop('scrollHeight'));
                             listBody.find('.title-card').val("");
+                            setupDragAndDrop();
                         }
                     })
 
@@ -881,11 +881,11 @@
                 .then( data => { 
                     if (data) {
                         $('.new-list').before(`
-                            <div class="col-3 rounded board-list p-0">
+                            <div class="col-3 rounded board-list p-0" data-list-id="${data.boardList.id}">
                                 <div class="list-header p-3">
                                     <div class="list-title d-flex align-items-center justify-content-between" role="button">
-                                        <h5>${data.boardList.title}</h5>
-                                        <i class="fa-solid fa-ellipsis"></i>
+                                        <h5 class="fw-bold">${data.boardList.title}</h5>
+                                        <i class="fa-solid fa-ellipsis list-links"></i>
                                     </div>
                                 </div>
                                 <div class="list-body custom-scrollbar">
@@ -907,6 +907,7 @@
                         $('.add-list-confirm').removeClass('d-none');
                         $('.new-list-conetnt').addClass('d-none');
                         $('.new-list').find('input').addClass('d-none');
+                        setupDragAndDrop();
                     }
                 })
 
@@ -941,8 +942,118 @@
     // end Card Operation
 
 
-    $(document).ready(function(){
+    // Drag and drop
 
+        function setupDragAndDrop() {
+            const columns = document.querySelectorAll('.list-body-conetnt');
+            columns.forEach((item) => {
+                item.addEventListener("dragover", (e) => {
+                    e.preventDefault();
+                    const dragging = document.querySelector(".dragging");
+                    const applyAfter = getNewPosition(item, e.clientY);
+
+                    if (applyAfter) {
+                        applyAfter.insertAdjacentElement("afterend", dragging);
+                    } else {
+                        item.prepend(dragging);
+                    }
+                });
+            });
+        }
+
+
+        var oldListId;
+        var cardId; 
+        var newListId;
+        var oldPosition;
+        var newPosition;
+
+        document.addEventListener("dragstart", (e) => {
+            e.target.classList.add("dragging");
+            cardId = e.target.dataset.cardId;
+            oldListId = e.target.closest('.board-list').dataset.listId;
+            oldPosition = Array.from(e.target.parentElement.children).indexOf(e.target)+1;
+        });
+
+        document.addEventListener("dragend", (e) => {
+            e.target.classList.remove("dragging");
+            newListId = e.target.closest('.board-list').dataset.listId;
+            newPosition = Array.from(e.target.parentElement.children).indexOf(e.target)+1;
+
+            updateCardPosition(oldListId,cardId, newListId, newPosition,oldPosition);
+        });
+
+
+
+        function getNewPosition(column, posY) {
+            const cards = column.querySelectorAll(".card:not(.dragging)");
+            let result;
+
+            for (let refer_card of cards) {
+                const box = refer_card.getBoundingClientRect();
+                const boxCenterY = box.y + box.height / 2;
+
+                if (posY >= boxCenterY) result = refer_card;
+            }
+            return result;
+        }
+
+        function updateCardPosition(oldListId,cardId, newListId, newPosition,oldPosition) {
+            if(oldListId != newListId){
+                const formData = new FormData();
+                formData.append('new_list_id',newListId);
+                formData.append('new_position',newPosition);
+                formData.append('card_id',cardId);
+                fetch(`${baseUrl}dashboard/{{ Auth::user()->id }}/card/updateList`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    },
+                    body: formData,
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => { 
+                
+                })
+                .catch(error => {
+                    console.error('Error fetching card details:', error);
+                });
+
+                }else if(oldPosition != newPosition ){
+                    const formData = new FormData();
+                    formData.append('new_position',newPosition);
+                    formData.append('card_id',cardId);
+                    fetch(`${baseUrl}dashboard/{{Auth::user()->id}}/card/updatePosition`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        },
+                        body: formData,
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => { 
+                    })
+                    .catch(error => {
+                        console.error('Error fetching card details:', error);
+                    });
+                    }
+        }
+
+    // Drag and drop 
+
+
+    $(document).ready(function(){
+        setupDragAndDrop();
         // Deal with placeholder of div and ckeditr
 
             var $descriptionDev = $('#description-confirm');

@@ -9,7 +9,7 @@ class Card extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'user_id', 'board_list_id', 'due_date', 'start_date', 'progress_rate'];
+    protected $fillable = ['title', 'description', 'user_id', 'board_list_id', 'due_date', 'start_date', 'progress_rate', 'position']; 
 
     public function boardList()
     {
@@ -23,7 +23,7 @@ class Card extends Model
 
     public function boardMembers()
     {
-        return $this->belongsToMany(BoardMember::class, 'card_assigned')->withPivot([]); 
+        return $this->belongsToMany(BoardMember::class, 'card_assigned')->withPivot([]);
     }
 
     public function cardComments()

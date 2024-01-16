@@ -18,8 +18,9 @@ return new class extends Migration
             $table->foreignId('board_list_id')->constrained();
             $table->unsignedInteger('progress_rate')->default(0);
             $table->foreignId('user_id')->constrained();
-            $table->date('due_date')->nullable()->nullable();
-            $table->date('start_date')->nullable()->nullable();
+            $table->date('due_date')->nullable();
+            $table->date('start_date')->nullable();
+            $table->unsignedInteger('position');
             $table->timestamps();
         });
     }
@@ -32,3 +33,4 @@ return new class extends Migration
         Schema::dropIfExists('cards');
     }
 };
+

@@ -7,6 +7,7 @@ use App\Models\Card;
 use App\Http\Requests\StoreCardRequest;
 use App\Http\Requests\UpdateCardRequest;
 use App\Models\CardComment;
+use Illuminate\Http\Request;
 
 class CardController extends Controller
 {
@@ -106,10 +107,61 @@ class CardController extends Controller
      */
     public function store(StoreCardRequest $request)
     {
-        $card = Card::create($request->validated());
-    
+        $validatedData = $request->validated();
+
+        $lastCard = Card::where('board_list_id', $validatedData['board_list_id'])
+                        ->orderBy('position', 'desc')
+                        ->first();
+
+        $position = $lastCard ? $lastCard->position + 1 : 1;
+
+        $validatedData['position'] = $position;
+
+        $card = Card::create($validatedData);
+
         return response()->json(['card' => $card], 201);
     }
+
+    public function updatePosition(Request $request, $user_id)
+    {
+        $card = Card::find($request->card_id);
+        $oldPosition = $card->position;
+        $newPosition = $request->new_position;
+
+        Card::where('board_list_id', $card->boardList->id)
+            ->where('position', '>=', $newPosition)
+            ->where('position', '<', $oldPosition)
+            ->increment('position');
+
+        $card->update(['position' => $newPosition]);
+
+        return response()->json(['card' => $card], 200);
+    }
+
+
+    public function updateList(Request $request, $userId)
+    {
+        $card = Card::find($request->card_id);
+        $oldBoardListId = $card->board_list_id;
+        $oldPosition = $card->position;
+        $newBoardListId = $request->new_list_id;
+        $newPosition = $request->new_position;
+
+        Card::where('board_list_id', $oldBoardListId)
+            ->where('position', '>', $oldPosition)
+            ->decrement('position');
+
+
+        Card::where('board_list_id', $newBoardListId)
+            ->where('position', '>=', $newPosition)
+            ->increment('position');
+
+        $card->update(['board_list_id' => $newBoardListId, 'position' => $newPosition]);
+
+        return response()->json(['card' => $card], 200);
+    }
+
+
 
     /**
      * Display the specified resource.

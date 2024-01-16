@@ -37,7 +37,7 @@
                         <li class="navigation-item {{ $section === 'board_general' ? 'active' : '' }}"  onclick="moveLink(this,'board-general')">عام</li>
                         <li class="navigation-item {{ $section === 'board_lists' ? 'active' : '' }}" onclick="moveLink(this,'board-lists')">القوائم</li>
                         <li class="navigation-item {{ $section === 'board_cards' ? 'active' : '' }}" onclick="moveLink(this,'board-cards')">المهام</li>
-                        <li class="navigation-item {{ $section === 'board_membres' ? 'active' : '' }}" onclick="moveLink(this,'board_membres')">الاعضاء</li>
+                        <li class="navigation-item {{ $section === 'board_membres' ? 'active' : '' }}" onclick="moveLink(this,'board-membres')">الاعضاء</li>
                         <li class="navigation-item {{ $section === 'board_actions' ? 'active' : '' }}" onclick="moveLink(this,'board-actions')">الاجراءات</li>
                     </ul>
                     <hr>
@@ -121,9 +121,9 @@
                                         </td>
                                             <td>
                                                 @foreach ($card['card_assigneds'] as $card_assigned)
-                                                    <div class="d-flex gap-4 align-items-center my-2">
-                                                        <img src="{{ "https://www.gravatar.com/avatar/" . md5(strtolower(trim($card_assigned['assgined_email']))) . "?d=mp" }}" alt="Profile" class="rounded-circle">
-                                                        <h6>{{$card_assigned['assgined_name']}}</h6>
+                                                    <div class="d-flex gap-4 align-items-center my-2 justify-content-between">
+                                                        <img src="{{ "https://www.gravatar.com/avatar/" . md5(strtolower(trim($card_assigned['assgined_email']))) . "?d=mp" }}" style="height: 3rem" alt="Profile" class="rounded-circle">
+                                                        <h6 class="m-0" >{{$card_assigned['assgined_name']}}</h6>
                                                     </div>
                                                 @endforeach
                                             </td>
@@ -139,7 +139,7 @@
                             </table>
                         </div>
                     </div>
-                    <div id="board_membres" class="row py-5 {{ $section === 'board_membres' ? '' : 'd-none' }} board_membres board-sections">
+                    <div id="board-membres" class="row py-5 {{ $section === 'board_membres' ? '' : 'd-none' }} board_membres board-sections">
                         <div class="col-12 px-5">
                             <div class="row justify-content-center">
                                 <div class="col-5">

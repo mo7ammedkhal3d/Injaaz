@@ -7,8 +7,8 @@
                     <p class="text-white pb-3 animated zoomIn text-end ">اكتشف تجربة إدارة مشاريع فائقة السلاسة مع نظامنا المبتكر. استمتع بتنظيم مهامك، وتعاون بفعالية، وتتبع تقدمك بسهولة
                         ولكن بمزايا وإمكانيات محسّنة ومتقدمة. جاهز لتحقيق أهدافك بكفاءة وبأسلوب يلبي تطلعاتك
                        </p>
-                    <a href="" class="btn btn-light py-sm-3 px-sm-5 rounded-pill ms-3 animated slideInLeft">ابدأ مساحة عمل</a>
-                    <a href="" class="btn btn-outline-light py-sm-3 px-sm-5 rounded-pill animated slideInRight">تواصل معنا</a>
+                    <a href="{{route('register')}}" class="btn btn-light py-sm-3 px-sm-5 rounded-pill ms-3 animated slideInLeft">سجل الآن</a>
+                    <a href="{{route('gustes.contact')}}" class="btn btn-outline-light py-sm-3 px-sm-5 rounded-pill animated slideInRight">تواصل معنا</a>
                 </div>
                 <div class="col-lg-6 text-center text-lg-start">
                     <img class="img-fluid" src="{{asset('assets/img/hero.png')}}" alt="">

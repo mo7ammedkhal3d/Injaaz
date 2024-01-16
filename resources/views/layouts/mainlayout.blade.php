@@ -45,13 +45,6 @@
   <!-- Include moment.js from CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
-  <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Updated: Nov 17 2023 with Bootstrap v5.3.2
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body class="toggle-sidebar">
@@ -759,6 +752,7 @@
           }
           
         // Delete Notification
+  
   </script>
   <!-- Vendor JS Files -->
   {{-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> --}}

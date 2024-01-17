@@ -200,14 +200,11 @@
                                                     <i id="description-notify" title="هذه الكارد تحتوي على وصف" class="fa-solid fa-align-left"></i>  
                                                 @endif
                                             </div>  
-                                        @endif
-                                        
-                                    </div>                               
-                                    
+                                        @endif                         
+                                    </div>                                                         
                                     <div class="edit-confirm d-flex align-items-start">
                                         <i class="fa-solid fa-marker edit-card-title"></i>
-                                    </div>
-                                            
+                                    </div>             
                                 </div>
                             @endforeach
                         @endif

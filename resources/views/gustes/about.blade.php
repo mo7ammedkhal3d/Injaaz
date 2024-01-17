@@ -1,7 +1,7 @@
 @extends('layouts.gustlayout')
 @include('layouts.pageshero')
 @section('content')
-        <!-- About Start -->
+    <!-- About Start -->
         <div class="container-xxl py-5">
             <div class="container px-lg-5">
                 <div class="row g-5">
@@ -10,7 +10,11 @@
                             <h6 class="position-relative edit-text-primary pe-4">عن إنجاز</h6>
                             <h2 class="mt-2 text-end">أفضل حل مع 10 سنين من الخبرة</h2>
                         </div>
-                        <p class="mb-4 text-end">هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها. ولذلك يتم استخدام طريقة لوريم إيبسوم لأنها تعطي توزيعاَ طبيعياَ -إلى حد ما- للأحرف عوضاً عن استخدام "هنا يوجد  </p>
+                        <p class="mb-4 text-end">
+                        مرحبًا بك في مشروع إنجاز، حيث نسعى لجعل حياتك أكثر تنظيمًا وإدارة. إنجاز هو تطبيق ويب مبتكر يهدف إلى تسهيل تنظيم المهام اليومية وتحقيق الأهداف بسهولة وفعالية
+                        باستخدام واجهة مستخدم بسيطة وسهلة، يمكنك إدارة مهامك الشخصية أو مشاريع الفريق بكل يسر وسلاسة. يتيح لك إنجاز تحديد الأولويات، ومتابعة تقدم المهام، وتعيين مسؤوليات الفريق بشكل فعّال.
+                        نحن نقدم لك أدوات متقدمة تساعدك على فهم أداء المشروع بشكل أفضل، مما يمكنك من اتخاذ قرارات مستنيرة وتحسين إنتاجيتك. انطلق الآن وابدأ رحلتك مع إنجاز لتجربة فريدة من نوعها في إدارة المهام وتحقيق الإنجاز.
+                        </p>
                         <div class="row g-3">
                             <div class="col-sm-6">
                                 <h6 class="mb-3"><i class="fa fa-check edit-text-primary ms-2"></i>الحائز على جائزة</h6>
@@ -35,16 +39,16 @@
                 </div>
             </div>
         </div>
-        <!-- About End -->
+    <!-- About End -->
 
 
-        <!-- Newsletter Start -->
+    <!-- Newsletter Start -->
         <div class="container-xxl newsletter my-5 wow fadeInUp edit-bg-primary" data-wow-delay="0.1s">
             <div class="container px-lg-5">
                 <div class="row align-items-center" style="height: 250px;">
                     <div class="col-12 col-md-6">
                         <h3 class="text-white">مستعد للبدء</h3>
-                        <small class="text-white">برامح النشر المكتبي وبرامح تحرير صفحات الويب برامح النشر المكتبي وبرامح تحرير صفحات الويب </small>
+                        <small class="text-white">اشترك في نشرتنا الإخبارية لتكون أول من يعلم بآخر التحديثات والميزات الجديدة في مشروع إنجاز</small>
                         <div class="position-relative w-100 mt-3">
                             <input class="form-control border-0 rounded-pill w-100 pe-4 ps-5" type="text" placeholder="ادخل إيميلك" style="height: 48px;">
                             <button type="button" class="btn shadow-none position-absolute top-0 start-0 mt-1 me-2"><i class="fa fa-paper-plane text-primary fs-4"></i></button>
@@ -56,10 +60,9 @@
                 </div>
             </div>
         </div>
-        <!-- Newsletter End -->
+    <!-- Newsletter End -->
 
-
-        <!-- Team Start -->
+    <!-- Team Start -->
         <div class="container-xxl py-5">
             <div class="container px-lg-5">
                 <div class="section-title position-relative text-center mb-5 pb-2 wow fadeInUp" data-wow-delay="0.1s">
@@ -121,5 +124,5 @@
                 </div>
             </div>
         </div>
-        <!-- Team End -->
+    <!-- Team End -->
 @endsection

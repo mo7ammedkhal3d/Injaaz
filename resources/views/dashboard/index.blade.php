@@ -11,7 +11,7 @@
     </div>
 
     {{-- Add Board Modal --}}
-      <div class="modal fade moda add-board-modal" id="add-board-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal add-board-modal" id="add-board-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-center" role="document">
         {{-- first-modal-content --}}
           <div id="first-modal-content" class="modal-content">

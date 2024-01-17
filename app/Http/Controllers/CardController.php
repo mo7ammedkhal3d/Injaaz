@@ -128,11 +128,18 @@ class CardController extends Controller
         $oldPosition = $card->position;
         $newPosition = $request->new_position;
 
-        Card::where('board_list_id', $card->boardList->id)
+        if($newPosition < $oldPosition){
+            Card::where('board_list_id', $card->boardList->id)
             ->where('position', '>=', $newPosition)
             ->where('position', '<', $oldPosition)
             ->increment('position');
-
+        } else{
+            Card::where('board_list_id', $card->boardList->id)
+            ->where('position', '<=', $newPosition)
+            ->where('position', '>', $oldPosition)
+            ->decrement('position');
+        }
+        
         $card->update(['position' => $newPosition]);
 
         return response()->json(['card' => $card], 200);

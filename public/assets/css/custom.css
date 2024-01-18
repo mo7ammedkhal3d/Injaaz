@@ -36,6 +36,7 @@ body {
 
 .header-nav .nav-icon{
     color: var(--onprimary-color);
+    margin-right: 65px;
 }
 
 .header-nav .nav-profile{
@@ -52,8 +53,17 @@ body {
 }
 
 .dropdown-toggle::after {
-    margin-right: 0.255em;
+    margin-right: 0.8em;
 }
+
+.header-nav .profile {
+    min-width: 267px;
+}
+
+.dropdown-menu .dropdown-header,
+ .dropdown-menu .dropdown-footer{
+    font-size: 13px;
+ }
 
 /*--------------------------------------------------------------
 # Edit-Sidebar

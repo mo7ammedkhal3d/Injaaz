@@ -1,13 +1,12 @@
-@font-face{
-    font-family:myfont;
-    src:url('http://127.0.0.1:8000/public/assets/font/GE_SS_Two_Bold.otf')
+@font-face {
+    font-family: 'myFont';
+    src: url('/assets/font/GE_SS_Two_Bold.otf');
 }
 
 @font-face {
-    font-family: myfont2;
-    src: url('font/DroidKufi-Regular.ttf')
+    font-family: 'myFont2';
+    src: url('/assets/font/DroidKufi-Regular.ttf');
 }
-
 
 /*#region General*/
 :root{
@@ -19,12 +18,14 @@
     --second-gray-color:#e7e7e7;
     --srface-color:#efefef;
     --white-color:#FFF;
-    --font-family:'myfont';
+    --font-family:'myfont2';
 }
+
 html,
 body {
     direction: rtl;
     background-color: #fbfbfb;
+    font-family: var(--font-family);
 }
 
 .in-bg-primary{
@@ -118,6 +119,11 @@ body {
 
 /* mainlayout */
 
+.nav-user-info{
+    width: auto;
+    /* min-width: 13rem; */
+}
+
 .user-notification{
     width: 20rem
 }
@@ -153,12 +159,12 @@ body {
 
 @media (min-width: 768px){
     .dropdown-menu-arrow::before {
-        left: 20px;
+        left: 26px;
         right: auto;
     }
 
     .notifications::before{
-        right: 20px;
+        right: 85px;
         left: auto;
     }
 
@@ -169,7 +175,7 @@ body {
 }
 
 .boards-header{
-    height: 15rem;
+    height: 17rem;
     background-image: url('/assets/img/user-boards.jpg');
     background-size: cover;
 }
@@ -188,8 +194,11 @@ body {
 
 .boards-header .user-info{
     position: absolute;
-    top: 12rem;
-    backdrop-filter: blur(3px);
+    min-width: 30rem;
+    width: auto;
+    top: 10rem;
+    right: 1.4rem;
+    backdrop-filter: blur(2px);
     box-shadow: 1px 1px 15px;
     border-radius: 0.5rem;
     z-index: 2;
@@ -197,6 +206,11 @@ body {
 
 .boards-header .user-info h1{
     color: var(--white-color);
+    font-family: var(--font-family);
+}
+
+.boards-header .user-info img{
+    height: 6rem;
 }
 
 .board{
@@ -207,6 +221,7 @@ body {
 
 .board .board-body{
     height: 10rem;
+    width: 80%;
 }
 
 .board .board-title{
@@ -217,6 +232,15 @@ body {
 
 .board .board-description{
     color: #4d4d4d;
+}
+
+.board-dropleft-icon{
+    font-size: 1.4rem;
+    color: var(--primary-color);
+}
+
+.dropdwon-board-icon{
+    color: var(--primary-color);
 }
 
 /*region Add board modal*/
@@ -281,6 +305,17 @@ body {
 .invited-to-board{
     color: #2d94c9;
     font-weight: bolder;
+}
+
+.board-name .error,
+.board-description .error{
+    color: red;
+    margin-top: 0.5rem;
+    padding-right: 1rem;
+}
+
+.board-info{
+    min-height: 18rem;
 }
 
 /*endregion Add board modal*/
@@ -757,10 +792,7 @@ body {
     transform: rotate(5deg);
 }
 
-
 /* Style for drag and drop */
-
-
 
 /*#region front.login & front.register*/
 

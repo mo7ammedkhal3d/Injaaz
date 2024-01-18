@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::group(['middleware' => ['auth']], function () {
 Route::get('/dashboard/{userId}', [BoardController::class, 'index'])->name('dashboard.index');
 Route::get('/dashboard/{board_id}/lists', [BoardController::class, 'show'])->name('dashboard.lists');
 Route::get('/dashboard/{userId}/card/{card_id}', [CardController::class, 'index'])->name('dashboard.getCardDetails');
@@ -59,6 +60,8 @@ Route::Post('/dashboard/{userId}/board/sendInvitation',[BoardController::class, 
 Route::Post('/dashboard/{userId}/board/deleteForMe',[BoardController::class, 'deleteForMe'])->name('board.deleteForMe');
 Route::Post('/dashboard/{userId}/card/updatePosition',[CardController::class, 'updatePosition'])->name('card.updatePosition');
 Route::Post('/dashboard/{userId}/card/updateList',[CardController::class, 'updateList'])->name('card.updateList');
+});
+
 Route::get('/dashboard/board', function (){
     return view('dashboard.board');
 })->name('dashboard.board');

@@ -150,9 +150,11 @@
                                                 <h5>{{$board_member['member_name']}}</h5>
                                             </div>
                                             @if ($board_member['member_id'] != Auth::user()->id)
+                                            @if ($board_details['board_user_id'] == Auth::user()->id)
                                                 <div>
                                                     <i class="fa-solid fa-trash-can board-ember-delete-icon" onclick="deleteBoardMember(this, {{$board_details['board_id']}}, {{$board_member['member_id']}})"></i>
-                                                </div>     
+                                                </div>   
+                                            @endif
                                             @endif
                                         </div>
                                     @endforeach

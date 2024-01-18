@@ -3,9 +3,11 @@
   <main id="main" class="main p-0 in-bg-srface">
     <div class="boards-header mb-5">
       <div class="row mx-0 px-2 py-4">
-        <div class="user-info col-5 d-flex justify-content-center gap-4 align-items-center p-5 d-flex align-item-center justify-content-center">
-          <img src="{{"https://www.gravatar.com/avatar/" . md5(strtolower(trim(Auth::user()->email))) . "?d=mp"}}" alt="Profile" class="rounded-circle">
-          <h1 class="m-0">{{Auth::user()->name}}</h1>
+        <div class="user-info d-flex justify-content-start gap-4 align-items-center p-5 d-flex">
+          <div class="d-flex w-100 justify-content-start gap-5 align-items-center">
+            <img src="{{"https://www.gravatar.com/avatar/" . md5(strtolower(trim(Auth::user()->email))) . "?d=mp"}}" alt="Profile" class="rounded-circle">
+            <h1 class="m-0">{{Auth::user()->name}}</h1>
+          </div>
         </div>
       </div>  
     </div>
@@ -25,15 +27,21 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <div class="row m-0 p-0 my-4 py-4">    
-                  <input id="board-name" type="text" class="form-control mb-4 board-name-input" name="name" placeholder="اسم اللوحة" aria-label="name" aria-describedby="basic-addon1">
-                  <textarea id="board-description" class="form-control mb-3" rows="5" placeholder="وصف اللوحة"></textarea>                 
-                </div>
-                <div class="row m-0 p-0 py-3 my-3 justify-content-center">
-                  <div class="col-10">
-                    <button id="btn-continue" type="button" class="btn injaaz-btn w-100 fw-bold">متابعة</button>
+                <form id="board-info-form">
+                  <div class="row m-0 p-0 mt-4 board-info">  
+                    <div class="board-name">
+                      <input id="board-name-input" type="text" class="form-control fw-bold board-name-input" name="boardName" placeholder="اسم اللوحة" aria-label="name" aria-describedby="basic-addon1">
+                    </div>  
+                    <div class="mb-3 board-description">
+                      <textarea id="board-description-input" class="form-control fw-bold  " rows="5" name="boardDescription" placeholder="وصف اللوحة"></textarea>  
+                    </div>
                   </div>
-                </div>
+                  <div class="row m-0 p-0 py-3 mb-3 justify-content-center">
+                    <div class="col-10">
+                      <button id="btn-continue" type="submit" class="btn injaaz-btn w-100 fw-bold">متابعة</button>
+                    </div>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
@@ -85,32 +93,65 @@
     {{-- Add Board Modal  --}}
     
     {{-- show boards --}}
-      <div class="d-flex p-5 mt-5">
-        <div class="col-3">
-          <div class="boards-page-title">
-            <h1>اللوحات</h1>
-          </div>
+      <div class="p-5 pb-4 mt-5">
+        <div class="col-3 boards-page-title">
+          <h1>اللوحات</h1>
         </div>
-        <div class="col-2 d-flex align-items-center justify-content-center">
+        <div class="col-2 mt-4">
           <button id="btn-add-board" class="btn injaaz-btn add-board-btn" onclick="addBoardConfirm({{Auth::user()->id}})">أضافة لوحة</button>
         </div> 
       </div>
 
-      <div id="user-boards" class="row mx-0 my-5">
+      <div id="user-boards" class="row mx-0 my-3 px-4">
         @if ($boards->count() > 0)
           @foreach ($boards as $board)
-            <div class="col-lg-4" role=button>
-              <a href="{{ route('dashboard.lists', ['board_id' => $board->id]) }}">
-                <div class="board my-3">
-                  <div class="board-body p-3">
-                    <div class="d-flex justify-content-between mb-3">
-                      <h5 class="board-title">{{ $board->name }}</h5>
-                      <i class="fa-solid fa-ellipsis"></i>
-                    </div>
-                    <p class="board-description">{{ $board->description }}</p>
+            <div class="col-lg-4 pe-0 ps-3" role=button>
+              <div class="board my-3 d-flex flex-row-reverse">
+                <div class="board-option p-2">
+                  <i class="fa-solid fa-ellipsis board-dropleft-icon" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                  <ul class="dropdown-menu text-end">
+                    <li>
+                      <a href="{{ route('dashboard.lists', ['board_id' => $board->id]) }}" class="dropdown-item">
+                        <i class="fa-solid fa-list-check m-0 ms-1 dropdwon-board-icon"></i>
+                        <span>عرض اللوحة</span>
+                      </a>
+                    </li>
+                    <li>
+                      <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                      <a href="{{ route('board.boardMembres', ['userId' => Auth::user()->id, 'board_id' => $board->id]) }}" class="dropdown-item">
+                        <i class="fa-solid fa-users m-0 ms-1 dropdwon-board-icon"></i>
+                        <span>الأعضاء</span>
+                      </a>
+                    </li>
+                    <li>
+                      <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                      <a class="dropdown-item">
+                        <i class="fa-solid fa-box-archive m-0 ms-1 dropdwon-board-icon"></i>
+                        <span>أرشفة</span>
+                      </a>
+                    </li>
+                    <li>
+                      <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                      <a href="{{ route('board.generalSettings', ['userId' => Auth::user()->id, 'board_id' => $board->id]) }}" class="dropdown-item">
+                        <i class="fa-solid fa-gear m-0 ms-1 dropdwon-board-icon"></i>
+                        <span>الأعدادت</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <a class="board-body p-3" href="{{ route('dashboard.lists', ['board_id' => $board->id]) }}">
+                  <div class="d-flex justify-content-between mb-3">
+                    <h6 class="board-title">{{ $board->name }}</h6>
                   </div>
-                </div>  
-              </a>
+                  <p class="board-description">{{ $board->description }}</p>
+                </a>
+              </div>  
             </div>
           @endforeach
         @endif
@@ -125,6 +166,16 @@
     // Add board 
 
       var inviteUsers = [];
+
+      // board-info-form validation
+        jQuery.validator.addMethod("noDigitStart", function(value, element) {
+        return this.optional(element) || !/^\d/.test(value);
+          }, "لا يجب أن يبدأ برقم");
+
+          jQuery.validator.addMethod("noWhitespaceStart", function(value, element) {
+              return this.optional(element) || !/^\s/.test(value);
+          }, "لا يجب أن يبدأ بمسافة");
+
 
       // may later invite users
         function mayLater(){
@@ -171,28 +222,84 @@
             }
         }
       // selectUser
-        
+
       // addBoardConfirm
         function addBoardConfirm(userId){
           $('#add-board-modal').modal('show');
-          $('#btn-continue').on('click', continueCreateBoard)
+
+          $('#board-info-form').validate({
+                rules: {
+                    boardName: {
+                        required: true,
+                        minlength: 5,
+                        noDigitStart: true,
+                        noWhitespaceStart: true,
+                    },
+                    boardDescription: {
+                        required: true,
+                        minlength: 10,
+                        noDigitStart: true,
+                        noWhitespaceStart: true,
+                    }
+                },
+                messages: {
+                    boardName: {
+                        required: "قم بادخال أسم اللوحة",
+                        minlength: "أسم اللوحة يجب أن يكون 5 أحرف على الأقل",
+                        noWhitespaceStart: "أسم اللوحة لا يجب أن يبدأ بمسافة"
+                    },
+                    boardDescription: {
+                        required: "قم بأدخال اللوحة",
+                        minlength: "وصف اللوحة يجب أن يكون 10 احرف على الاقل",
+                        noWhitespaceStart: "وصف اللوحة لا يجب أن يبدأ بمسافة"
+                    }
+                },
+                submitHandler: function (form) {
+                    continueCreateBoard();
+                    return false; 
+                }
+            });
+
+
+          $('#btn-continue').on('click', function () {
+              if ($('#board-info-form').valid()) {
+                  continueCreateBoard();
+                  return false; 
+              }
+          });
+
+
           $('#btn-create-board').on('click', createboard);
 
           $('#close-add-board-modal-1').on('click', function(){
-              $('#add-board-modal').modal('hide'); 
+            $('#board-dropdownContent').html("");
+            $('#board-info-form').trigger('reset');
+            $('#btn-create-board').prop('disabled', true);
+            while (inviteUsers.length > 0) {
+              inviteUsers.pop();
+            }
+            $('#add-board-modal').modal('hide'); 
             });
 
           $('#close-add-board-modal-2').on('click', function(){
             $('#first-modal-content').removeClass('d-none');
             $('#second-modal-content').addClass('d-none');
-            $('#btn-continue').off('click', continueCreateBoard);
+            $('#board-dropdownContent').html("");
+            $('#board-info-form').trigger('reset');
+            $('#btn-continue').off('click');
+            $('#btn-create-board').off('click');
+            $('#btn-create-board').prop('disabled', true);
+            while (inviteUsers.length > 0) {
+              inviteUsers.pop();
+            }
             $('#add-board-modal').modal('hide'); 
           });
 
           $('#back-to-previous').on('click', function(){
             $('#first-modal-content').removeClass('d-none');
             $('#second-modal-content').addClass('d-none');
-            $('#btn-continue').on('click', continueCreateBoard);
+            $('#btn-continue').off('click');
+            $('#btn-create-board').off('click');
             $('#board-dropdownContent').html("");
             $('#btn-create-board').prop('disabled', true);
             while (inviteUsers.length > 0) {
@@ -201,50 +308,50 @@
           });
         
         // continueCreateBoard
-          function continueCreateBoard() {
-            $('#first-modal-content').addClass('d-none');
-            $('#btn-continue').off('click', continueCreateBoard);
-            $('#second-modal-content').removeClass('d-none');
-            fetch(`${baseUrl}dashboard/${userId}/users/getAll`, {
-                method: 'GET',
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => { 
-                if (data){
-                  data.users.forEach(user =>{
-                    const email = user.email.toLowerCase().trim();
-                    const md5Hash = CryptoJS.MD5(email).toString();
-                    const gravatarUrl = `https://www.gravatar.com/avatar/${md5Hash}?d=mp`;
+            function continueCreateBoard() {
+              $('#first-modal-content').addClass('d-none');
+              $('#btn-continue').off('click', continueCreateBoard);
+              $('#second-modal-content').removeClass('d-none');
+              fetch(`${baseUrl}dashboard/${userId}/users/getAll`, {
+                  method: 'GET',
+              })
+              .then(response => {
+                  if (!response.ok) {
+                      throw new Error('Network response was not ok');
+                  }
+                  return response.json();
+              })
+              .then(data => { 
+                  if (data){
+                    data.users.forEach(user =>{
+                      const email = user.email.toLowerCase().trim();
+                      const md5Hash = CryptoJS.MD5(email).toString();
+                      const gravatarUrl = `https://www.gravatar.com/avatar/${md5Hash}?d=mp`;
 
-                    $('#board-dropdownContent').append(`
-                    <div class="dropdownOption justify-content-center gap-3 px-4" onclick="selectUser(${user.id},this,{{Auth::user()->id}})">
-                      <div class="d-flex justify-content-between align-items-center px-4 w-75">
-                          <img src="${gravatarUrl}" alt="John">
-                          <h6 id="user-name">${user.name}</h6>
-                      </div>
-                    </div>              
-                    `);
-                  });
-                }
-            })
+                      $('#board-dropdownContent').append(`
+                      <div class="dropdownOption justify-content-center gap-3 px-4" onclick="selectUser(${user.id},this,{{Auth::user()->id}})">
+                        <div class="d-flex justify-content-between align-items-center px-4 w-75">
+                            <img src="${gravatarUrl}" alt="John">
+                            <h6 id="user-name">${user.name}</h6>
+                        </div>
+                      </div>              
+                      `);
+                    });
+                  }
+              })
 
-            .catch(error => {
-                console.error('Error fetching card details:', error);
-            });
-          }  
+              .catch(error => {
+                  console.error('Error fetching card details:', error);
+              });
+            }  
         // continueCreateBoard
 
         // createboard
           function createboard(){
               const formData = new FormData();
               $('#board-loadingSpinner').removeClass('d-none');
-              formData.append('board_name',$('#board-name').val());
-              formData.append('board_description',$('#board-description').val());
+              formData.append('board_name',$('#board-name-input').val());
+              formData.append('board_description',$('#board-description-input').val());
               formData.append('user_id',userId);
               formData.append('invite_users', JSON.stringify(inviteUsers));
               fetch(`${baseUrl}dashboard/${userId}/board/create`, {
@@ -275,10 +382,6 @@
       // addBoardConfirm
     
     // Add board 
-
-    // Get User Notification
-        
-    // Get User Notification
 
     $(document).ready(function(){
       $('#add-board-modal').on('shown.bs.modal', function (e) {

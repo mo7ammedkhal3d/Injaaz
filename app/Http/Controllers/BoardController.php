@@ -141,8 +141,10 @@ class BoardController extends Controller
             $boardMemebers[]=$newboard_member;
         }
 
+
         $board_details=[
             'board_id'=>$boardInfo->id,
+            'board_user_id'=>$boardInfo->user_id,
             'board_name'=>$boardInfo->name,
             'board_dexcription'=>$boardInfo->description,
             'board_listes'=>$listes,

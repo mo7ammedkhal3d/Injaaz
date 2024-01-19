@@ -53,31 +53,38 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="user-boards" class="col-4 user-boards py-5 {{ $section === 'user_boards' ? '' : 'd-none' }} profile-section">
-                            @if ($section === 'user_boards')
-                                @foreach ($boards as $board)
-                                <div class="row py-3">
-                                    @if ($board['board_member_no'] > 1)
-                                        <div class="col-3">
-                                            <div class="have-memer">
-                                                <i class="fa-solid fa-users have-member-icon"></i>
+                        <div id="user-boards" class="col-12 user-boards py-5 {{ $section === 'user_boards' ? '' : 'd-none' }} profile-section">
+                            <div id="boards-container" class="row gap-5 justify-content-center">
+                                @if ($section === 'user_boards')
+                                    @foreach ($boards as $board)
+                                        <div class="col-3 user-porofile-board">
+                                            <div class="row py-3">
+                                                @if ($board['board_member_no'] > 1)
+                                                    <div class="col-2">
+                                                        <div class="have-memer">
+                                                            <i class="fa-solid fa-users have-member-icon"></i>
+                                                        </div>
+                                                    </div>
+                                                @else
+                                                    <div class="col-2">
+                                                        <div class="personal">
+                                                            <i class="fa-solid fa-user personal-icon"></i>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                    <a href="{{ route('board.generalSettings', ['userId' => Auth::user()->id, 'board_id' => $board['id']]) }}" class="col-10">
+                                                        <div class="user-board-name">
+                                                            <h4 class="text-end pb-2 fw-bold">{{ $board['name'] }}</h4>
+                                                            <h6>{{$board['board_member_no']}} أعضاء</h6>
+                                                            <h6>{{$board['board_list_no']}} قوائم</h6>
+                                                            <h6>{{$board['board_card_no']}} مهمات</h6>
+                                                        </div>
+                                                    </a>
                                             </div>
                                         </div>
-                                    @else
-                                        <div class="col-3">
-                                            <div class="personal">
-                                                <i class="fa-solid fa-user personal-icon"></i>
-                                            </div>
-                                        </div>
-                                    @endif
-                                        <a href="{{ route('board.generalSettings', ['userId' => Auth::user()->id, 'board_id' => $board['id']]) }}" class="col-9">
-                                            <div class="user-board-name">
-                                                <h3 class="text-end pb-2 fw-bold">{{ $board['name'] }}</h3>
-                                            </div>
-                                        </a>
-                                </div>
-                                @endforeach
-                            @endif
+                                    @endforeach
+                                @endif
+                            </div>    
                         </div>
                         <div id="user-cards" class="col-10 user-cards {{ $section === 'user_cards' ? '' : 'd-none' }} py-5 profile-section">
                             <table class="table table-striped text-center">
@@ -213,21 +220,22 @@
                 })
                 .then(data => { 
                     if(data){
-                        $('#user-boards').html("");
+                        $('#boards-container').html("");
                         $.each(data.boards, function(index, board) {
-                        var $boardContainer = $('<div class="row py-3"></div>');
+                        var $boardContainer1 = $('<div class="col-3 user-porofile-board"></div>')
+                        var $boardContainer2 = $('<div class="row py-3"></div>');
 
                         if (board.board_member_no > 1) {
-                            $boardContainer.append(`
-                                <div class="col-3">
+                            $boardContainer2.append(`
+                                <div class="col-2">
                                     <div class="have-memer">
                                         <i class="fa-solid fa-users have-member-icon"></i>
                                     </div>
                                 </div>
                             `);
                         } else {
-                            $boardContainer.append(`
-                                <div class="col-3">
+                            $boardContainer2.append(`
+                                <div class="col-2">
                                     <div class="personal">
                                         <i class="fa-solid fa-user personal-icon"></i>
                                     </div>
@@ -238,15 +246,19 @@
                         var route = `{{ route('board.generalSettings', ['userId' => Auth::user()->id, 'board_id' => ':boardId']) }}`;
                         route = route.replace(':boardId', board.id);
 
-                        $boardContainer.append(`
-                            <a href="${route}" class="col-9">
+                        $boardContainer2.append(`
+                            <a href="${route}" class="col-10">
                                 <div class="user-board-name">
-                                    <h3 class="text-end pb-2 fw-bold">${board.name}</h3>
+                                    <h4 class="text-end pb-2 fw-bold">${board.name}</h4>
+                                    <h6>${board.board_member_no} أعضاء</h6>
+                                    <h6>${board.board_list_no} قوائم</h6>
+                                    <h6>${board.board_card_no} مهمات</h6>
                                 </div>
                             </a>
                         `);
 
-                        $('#user-boards').append($boardContainer);
+                        $boardContainer1.append($boardContainer2);
+                        $('#boards-container').append($boardContainer1);
                     });
                     changeActiveLink(element,section);
                     }

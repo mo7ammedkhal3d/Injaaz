@@ -23,7 +23,7 @@
              </div>
              <div class="modal-body custom-scrollbar">
                  <div class="row m-0 p-0"  dir="rtl">    
-                     <div class="col-7 p-2">
+                     <div class="col-7 p-2 ps-3">
                          <div class="description-section my-2">
                              <label for="description" class="fw-bold w-100 in-text-secondry my-2">الوصف</label>
                              <div id="description-confirm" class="card-modal-description w-100"  contenteditable="true" data-placeholder="الوصف" role="button" onclick="editCardDescription(this,{{Auth::user()->id}})"></div>
@@ -56,22 +56,22 @@
                             
                          </div>
                      </div>
-                     <div class="col-5 d-flex align-items-center flex-column">
-                         <table class="card-info w-75">
+                     <div class="col-5 d-flex flex-column align-items-end ps-5">
+                         <table class="card-info">
                              <tr class="card-owner">
                                  <td>
-                                     <h5 class="m-0">المالك</h5>
+                                     <h5 class="m-0 fw-bold">المالك</h5>
                                  </td>
                                  <td class="py-4 td-custom-padding">
-                                     <div class="d-flex">
-                                         <img class="comment-img" src="{{"https://www.gravatar.com/avatar/" . md5(strtolower(trim(Auth::user()->email))) . "?d=mp"}}" alt="loadding">
-                                         <input id="description" type="text" class="card-modal-title text-center w-100" value="Mohammed khaled" role="button">
+                                     <div id="card-owner" class="d-flex justify-content-start gap-4">
+                                         {{-- <img class="comment-img" src="{{"https://www.gravatar.com/avatar/" . md5(strtolower(trim(Auth::user()->email))) . "?d=mp"}}" alt="loadding">
+                                         <p id="owner-name" class="m-0 p-0 px-1 owner-name rounded no-border card-modal-title" role="button" {{--onclick="makeEditable(this,{{Auth::user()->id}})"--}}>Mohammed Khaled</p> --}}
                                      </div>
                                  </td>
                              </tr>
                              <tr class="dates">
                                  <td>
-                                    <h5 class="m-0">التواريخ</h5> 
+                                    <h5 class="m-0 fw-bold">التواريخ</h5> 
                                  </td>
                                  <td class="py-4 td-custom-padding">
                                      <div class="d-flex gap-2 justify-content-between align-items-center">
@@ -83,11 +83,11 @@
                              </tr>
                              <tr class="progrss-rate">
                                  <td>
-                                     <h5 class="m-0">نسبة الأنجاز</h5> 
+                                     <h5 class="m-0 fw-bold">نسبة الأنجاز</h5> 
                                  </td>
                                  <td class="py-4 td-custom-padding">
                                      <div class="d-flex gap-2 justify-content-between align-items-center">
-                                         <label for="rate"><input id="rate" type="text" class="card-modal-title" value="50" role="button">%</label>
+                                         <label for="rate"><input id="progress-rate" type="number" max="100" class="card-modal-title text-center" value="50" role="button" onchange="updateCardProgrss(this,{{Auth::user()->id}},'progress')">%</label>
                                          <div class="d-flex gap-4 justify-content-between align-items-center">
                                              <i class="fa-solid fa-circle-half-stroke progrss-icon"></i>
                                              <i class="fa-solid fa-circle-half-stroke progrss-icon"></i>
@@ -99,12 +99,12 @@
                              </tr>
                              <tr class="card-member">
                                  <td>
-                                     <h5 class="m-0">الاعضاء</h5> 
+                                     <h5 class="m-0 fw-bold">الاعضاء</h5> 
                                  </td>
                                  <td class="d-flex gap-2 justify-content-between py-4 td-custom-padding">
                                      <div id="member-photos" class="member-photos position-relative w-50">
                                      </div>
-                                     <button class="btn injaaz-btn" onclick="showMemberDetails()">عرض التفاصيل</button>
+                                     <button class="btn injaaz-btn in-sm-text" onclick="showMemberDetails()">عرض التفاصيل</button>
                                  </td>
                              </tr>
                              <tr class="member-details d-none">
@@ -114,7 +114,7 @@
 
                                         </div>
                                         <div class="d-flex justify-content-center">
-                                            <button class="btn injaaz-btn w-50" onclick="showAddMember()"><i class="fa-solid fa-plus ms-2"></i> أضافة عضو </button>
+                                            <button class="btn injaaz-btn w-50 in-sm-text" onclick="showAddMember()"><i class="fa-solid fa-plus ms-2"></i> أضافة عضو </button>
                                         </div> 
                                      </div>
                                  </td>
@@ -625,6 +625,38 @@
 
     // End Add Card Start Dates
 
+    // Update Card Progress
+        function updateCardProgrss(element,userId,type){
+            var cardId = $('#card-id').val();
+            const formData = new FormData();
+            formData.append('progress', $(element).val());
+            formData.append('card_id', cardId);
+            formData.append('update_type', 'card_progress');
+            fetch(`${baseUrl}dashboard/${userId}/card/update`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                },
+                body: formData,
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data) {
+                            
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching card details:', error);
+            });
+    }
+        
+    // Update Card Progress
+
     // showAddMember
         function showAddMember(){
                 $('#close-add-member-modal').on('click', function(){
@@ -643,7 +675,9 @@
                     $('#card-title').html("");
                     $('#description-confirm').html();
                     $('#card-start-date').val("");
+                    $('#progress-rate').val("");
                     $('#card-due-date').val("");
+                    $('#card-owner').html("");
                     $('#card-comments').html("");
                     $('#card_assigneds').html("");
                     $('#member-photos').html("");
@@ -668,7 +702,9 @@
                     $('#card-loadingSpinner').fadeOut(500);
                     $('#card-title').html("");
                     $('#description-confirm').html();
+                    $('#card-owner').html("");
                     $('#card-start-date').val("");
+                    $('#progress-rate').val("");
                     $('#card-due-date').val("");
                     $('#card-comments').html("");
                     $('#card_assigneds').html("");
@@ -684,6 +720,17 @@
                     $('#card-start-date').val(cardDetails.start_date);
                     $('#card-due-date').val(cardDetails.due_date);
                     $('#card-id').val(cardDetails.card_id);
+                    $('#progress-rate').val(cardDetails.progress_rate);
+
+                    const email = cardDetails.card_owner_email.toLowerCase().trim();
+                    const md5Hash = CryptoJS.MD5(email).toString();
+                    const gravatarUrl = `https://www.gravatar.com/avatar/${md5Hash}?d=mp`;
+                    $('#card-owner').append(`
+                        <img class="comment-img" src="${gravatarUrl}" alt="loadding">
+                        <p id="owner-name" class="m-0 p-0 px-1 owner-name rounded no-border card-modal-title" role="button" {{--onclick="makeEditable(this,{{Auth::user()->id}})"--}}>${cardDetails.card_owner_name}</p>
+   
+                    `);
+
 
                     cardDetails.card_comments.forEach(comment => {
                         const email = comment.user_email.toLowerCase().trim();

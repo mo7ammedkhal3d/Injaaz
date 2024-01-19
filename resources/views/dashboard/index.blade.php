@@ -102,7 +102,7 @@
         </div> 
       </div>
 
-      <div id="user-boards" class="row mx-0 my-3 px-4">
+      <div id="user-boards" class="row mx-0 my-3 px-4 user-boards">
         @if ($boards->count() > 0)
           @foreach ($boards as $board)
             <div class="col-lg-4 pe-0 ps-3" role=button>
@@ -154,6 +154,13 @@
               </div>  
             </div>
           @endforeach
+        @else
+            <div id="noting-user-boards" class="d-flex align-items-center flex-column justify-content-center noting-user-boards">
+              <h1>
+                لاتوجد لديك أي لوحات 
+              </h1>
+              <h4 class="my-4">قم بأضافة لوحتك الأولى</h4>
+            </div>
         @endif
       </div>
     {{-- show boards --}}

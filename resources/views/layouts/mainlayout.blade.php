@@ -363,22 +363,61 @@
                   <button disabled class="btn btn-success fw-bold py-0 px-4">تمت الموافقة</button>
                 `);
 
-                var route = `{{ route('dashboard.lists', ['userId' => Auth::user()->id, 'board_id' => ':boardId']) }}`;
-                route = route.replace(':boardId', data.board.id);
-                
+                var boardListsroute = `{{ route('dashboard.lists', ['userId' => Auth::user()->id, 'board_id' => ':boardId']) }}`;
+                boardListsroute = boardListsroute.replace(':boardId', data.board.id);
+                var boardMemebesroute = `{{ route('board.boardMembres', ['userId' => Auth::user()->id, 'board_id' => ':boardId']) }}`;
+                boardMemebesroute = boardMemebesroute.replace(':boardId', data.board.id);
+                var boardSettingsroute = `{{ route('board.generalSettings', ['userId' => Auth::user()->id, 'board_id' => ':boardId']) }}`;
+                boardSettingsroute = boardSettingsroute.replace(':boardId', data.board.id);
+                $('#noting-user-boards').addClass('d-none');
                 $('#user-boards').append(`
-                    <div class="col-lg-4" role="button">
-                        <a href="${route}">
-                            <div class="board my-3">
-                                <div class="board-body p-3">
-                                    <div class="d-flex justify-content-between mb-3">
-                                        <h5 class="board-title">${data.board.name}</h5>
-                                        <i class="fa-solid fa-ellipsis"></i>
-                                    </div>
-                                    <p class="board-description">${data.board.description}</p>
-                                </div>
-                            </div>  
+                    <div class="col-lg-4 pe-0 ps-3" role=button>
+                      <div class="board my-3 d-flex flex-row-reverse">
+                        <div class="board-option p-2">
+                          <i class="fa-solid fa-ellipsis board-dropleft-icon" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                          <ul class="dropdown-menu text-end">
+                            <li>
+                              <a href="${boardListsroute}" class="dropdown-item">
+                                <i class="fa-solid fa-list-check m-0 ms-1 dropdwon-board-icon"></i>
+                                <span>عرض اللوحة</span>
+                              </a>
+                            </li>
+                            <li>
+                              <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                              <a href="${boardMemebesroute}" class="dropdown-item">
+                                <i class="fa-solid fa-users m-0 ms-1 dropdwon-board-icon"></i>
+                                <span>الأعضاء</span>
+                              </a>
+                            </li>
+                            <li>
+                              <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                              <a class="dropdown-item">
+                                <i class="fa-solid fa-box-archive m-0 ms-1 dropdwon-board-icon"></i>
+                                <span>أرشفة</span>
+                              </a>
+                            </li>
+                            <li>
+                              <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                              <a href="${boardSettingsroute}" class="dropdown-item">
+                                <i class="fa-solid fa-gear m-0 ms-1 dropdwon-board-icon"></i>
+                                <span>الأعدادت</span>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                        <a class="board-body p-3" href="${boardListsroute}">
+                          <div class="d-flex justify-content-between mb-3">
+                            <h6 class="board-title">${data.board.name}</h6>
+                          </div>
+                          <p class="board-description">${data.board.description}</p>
                         </a>
+                      </div>  
                     </div>
                 `);
                }

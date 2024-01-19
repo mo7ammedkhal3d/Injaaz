@@ -88,12 +88,19 @@ class UserController extends Controller
         ->get();
 
         $boards=[];
+        
 
         foreach($userBoards as $board){
+            $cardsNo =0;
+            foreach ($board->lists as  $list) {
+                $cardsNo+=$list->cards->count();
+            }
             $board=[
                 'id'=>$board->id,
                 'name'=>$board->name,
                 'board_member_no'=>$board->boardMembers->count(),
+                'board_list_no'=>$board->lists->count(),
+                'board_card_no'=>$cardsNo,
             ];
 
             $boards[]=$board;

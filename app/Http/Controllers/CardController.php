@@ -7,6 +7,7 @@ use App\Models\Card;
 use App\Http\Requests\StoreCardRequest;
 use App\Http\Requests\UpdateCardRequest;
 use App\Models\CardComment;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class CardController extends Controller
@@ -82,6 +83,9 @@ class CardController extends Controller
              'card_description' => $card->description,
              'start_date' => $card->start_date,
              'due_date' => $card->due_date,
+             'progress_rate'=>$card->progress_rate,
+             'card_owner_name'=>User::find($card->user_id)->name,
+             'card_owner_email'=>User::find($card->user_id)->email,
              'card_comments' => $cardComments,
              'card_assigneds' => $assignedUsers,
              'unassigned_board_members' => $boardMembersInfo,
@@ -209,6 +213,9 @@ class CardController extends Controller
                 break;
             case 'card_due_date':
                 $card->due_date = $request->date;
+                break;
+            case 'card_progress':
+                $card->progress_rate = $request->progress;
                 break;
             default:
                 return response()->json(['error' => 'Invalid update type'], 400);

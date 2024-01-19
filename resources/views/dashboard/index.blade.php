@@ -260,7 +260,7 @@
                         noWhitespaceStart: "أسم اللوحة لا يجب أن يبدأ بمسافة"
                     },
                     boardDescription: {
-                        required: "قم بأدخال اللوحة",
+                        required: "فم بادخال وصف للوحة",
                         minlength: "وصف اللوحة يجب أن يكون 10 احرف على الاقل",
                         noWhitespaceStart: "وصف اللوحة لا يجب أن يبدأ بمسافة"
                     }

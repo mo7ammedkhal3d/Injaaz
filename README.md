@@ -9,7 +9,7 @@ Injaaz is a powerful task management application designed to streamline your pro
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/Injaaz.git
+git clone https://github.com/mo7ammedkhal3d/Injaaz.git
 cd Injaaz
 Install Dependencies
 bash

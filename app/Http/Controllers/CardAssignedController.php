@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\BoardMember;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB; // Import DB facade
-use App\Models\Card; // Import your Card model
+use Illuminate\Support\Facades\DB; 
+use App\Models\Card; 
 
 class CardAssignedController extends Controller
 {

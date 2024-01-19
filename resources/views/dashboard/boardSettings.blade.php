@@ -2,7 +2,8 @@
 @section('content')
     <main id="main" class="main p-0">
 
-            <!--#region invite Board Memeber Modal-->
+        {{-- invite Board Memeber Modal --}}
+            <!--#region -->
             <div id="invite-toboard-modal" class="modal invite-toboard-modal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-center" role="document">
                     <div class="modal-content">
@@ -27,10 +28,11 @@
                     </div>
                 </div>
             </div>
-        <!--#endregion invite Board Memeber Modal-->
+        {{-- invite Board Memeber Modal --}}       
 
-
+    
         <div class="row px-5 pt-5 pb-3 justify-content-center mx-0">
+        {{-- Board Settings Navigation --}}
             <div class="row mt-5">
                 <div class="col-11 profile-navigation">
                     <ul class="d-flex list-unstyled justify-content-start gap-5">
@@ -43,6 +45,9 @@
                     <hr>
                 </div>
             </div>
+        {{-- Board Settings Navigation --}}
+
+        {{-- Sections --}}
             <div class="row board-sections-container">
                 <div class="col-11 p-3 d-flex justify-content-start flex-column">
                     <div id="board-general" class="row py-5 {{ $section === 'board_general' ? '' : 'd-none' }} board-general board-sections">
@@ -188,9 +193,10 @@
                     </div>
                 </div>
             </div>
-
+        {{-- Sections --}}
         </div>
-    </div>  
+    </main>  
+
     <script>
 
         var selectedBoardId ;

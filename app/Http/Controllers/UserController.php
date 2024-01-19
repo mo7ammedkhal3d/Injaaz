@@ -7,12 +7,13 @@ use App\Models\BoardMember;
 use App\Models\Card;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     public function getAll(){
-        $users =User::all();
 
+        $users = User::where('id', '!=', Auth::user()->id)->get();
         return response()->json(['users'=>$users],200);
     }
 

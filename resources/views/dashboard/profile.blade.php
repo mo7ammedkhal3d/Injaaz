@@ -2,6 +2,7 @@
 @section('content')
     <main id="main" class="main p-0">
             <div class="row m-0 p-3">
+            {{-- header --}}
                 <div class="row my-3">
                     <div class="col-2">
                         <img src="{{"https://www.gravatar.com/avatar/" . md5(strtolower(trim(Auth::user()->email))) . "?d=mp"}}" alt="Profile" class="rounded-circle">
@@ -12,6 +13,9 @@
                         <h3 class="text-end me-2">{{Auth::user()->name}}</h3>
                     </div>  
                 </div>
+            {{-- header --}}
+
+            {{-- profile-navigation --}}
                 <div class="row mt-5">
                     <div class="col-11 profile-navigation">
                         <ul class="d-flex list-unstyled justify-content-start gap-5">
@@ -24,6 +28,9 @@
                         <hr>
                     </div>
                 </div>
+            {{-- profile-navigation --}}
+            
+            {{-- Sections --}}
                 <div class="row my-3 justify-content-center sections-container">
                     <div class="col-11 d-flex justify-content-center">
                         <div id="user-profile" class="col-6 user-profile {{ $section === 'user_profile' ? '' : 'd-none' }} py-5 profile-section">
@@ -118,6 +125,8 @@
                         </div>
                     </div>
                 </div>
+            {{-- Sections --}}
+
             </div>
 
         <script>

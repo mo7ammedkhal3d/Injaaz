@@ -26,7 +26,7 @@
                             <div class="">
                                 <button class="btn fw-bold injaaz-btn" onclick="showChangePhotoModal()">تغيير الصورة</button>
                             </div>
-                            <!--#region Add Memeber Modal-->
+                            {{-- change-photo-modal --}}
                                 <div id="change-photo-modal" class="modal change-photo-modal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-center" role="document">
                                         <div class="modal-content">
@@ -44,10 +44,11 @@
                                         </div>
                                     </div>
                                 </div>
-                            <!--#endregion Add Memeber Modal-->
+                            {{-- change-photo-modal --}}
                         </div>
                     </div>
                     <div class="col-8">
+                    {{-- Start Form --}}
                         <form method="POST" action="{{ route('account.settings.update', ['userId' => $user->id]) }}" class="row g-3 needs-validation" novalidate>
                             @csrf
                             <div class="mb-3">
@@ -105,18 +106,8 @@
                             <div class="mb-3 d-flex justify-content-center align-items-center">
                                 <button class="btn injaaz-btn fw-bold px-5" type="submit">حفظ</button>
                             </div>
-
-                            {{-- <!-- Display validation errors -->
-                            @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif --}}
                         </form>
+                    {{-- Start Form --}}
                     </div>
                 </div>
             </div>

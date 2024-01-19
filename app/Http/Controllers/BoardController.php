@@ -6,10 +6,13 @@ use App\Models\Board;
 use App\Http\Requests\StoreBoardRequest;
 use App\Models\BoardList;
 use App\Models\BoardMember;
+use App\Models\Card;
+use App\Models\CardComment;
 use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB; 
 use App\Mail\InvitationMail;
 use App\Http\Requests\UpdateBoardRequest;
 use Illuminate\Support\Facades\Mail;
@@ -183,6 +186,9 @@ class BoardController extends Controller
     }
 
     public function delelteBoardMember(Request $request ,$user_id){
+
+        $this->deleteBoardMemberRelated($request->member_id,$request->board_id);
+        
         $boardMember = BoardMember::where('board_id', $request->board_id)
         ->where('user_id', $request->member_id)
         ->first();
@@ -216,61 +222,83 @@ class BoardController extends Controller
     public function deleteForMe(Request $request){
 
         $board = Board::findOrFail($request->board_id);
-
+    
         if ($board->user_id == $request->member_id) {
-
-
             $otherBoardMembers = BoardMember::where('board_id', $request->board_id)
                 ->where('user_id', '<>', $request->member_id)
                 ->exists();
-
+    
             if ($otherBoardMembers) {
                 $firstBoardMember = BoardMember::where('board_id', $request->board_id)
-                ->where('user_id', '<>', $request->member_id)
-                ->first();
-
+                    ->where('user_id', '<>', $request->member_id)
+                    ->first();
+    
                 $board->user_id = $firstBoardMember->user_id;
                 $board->save();
+    
+                $this->deleteBoardMemberRelated($request->member_id,$board->id);
 
+                BoardMember::where('board_id', $request->board_id)
+                ->where('user_id', $request->member_id)
+                ->delete();
+
+                return response()->json(['message' => 'تم الحذف']);
             } else {
-                $board->delete();
+
+                $this->deleteBoardAndRelated($board);
+                return response()->json(['message' => 'تم الحذف']);
             }
-
-            BoardMember::where('board_id', $request->board_id)
-                ->where('user_id', $request->member_id)
-                ->delete();
-
-            return response()->json(['message' => 'تم الحذف']);
-
         } else {
+
+            $this->deleteBoardMemberRelated($request->member_id,$board->id);
+
             BoardMember::where('board_id', $request->board_id)
-                ->where('user_id', $request->member_id)
-                ->delete();
+            ->where('user_id', $request->member_id)
+            ->delete();
+    
             return response()->json(['message' => 'تم الحذف']);
         }
     }
 
-    // /**
-    //  * Show the form for editing the specified resource.
-    //  */
-    // public function edit(Board $board)
-    // {
-    //     //
-    // }
+    private function deleteBoardMemberRelated($memberId, $boardId){
+        $board = Board::findOrFail($boardId);
+    
+        $board->lists->each(function ($list) use ($memberId) {
+            $list->cards->each(function ($card) use ($memberId) {
+                $card->cardComments()->where('board_member_id', $memberId)->delete();
+                $card->boardMembers()->where('board_member_id', $memberId)->detach();
+            });
+        });
+    }
+    
+    private function deleteBoardAndRelated(Board $board){
 
-    // /**
-    //  * Update the specified resource in storage.
-    //  */
-    // public function update(UpdateBoardRequest $request, Board $board)
-    // {
-    //     //
-    // }
+        $boardLists = BoardList::where('board_id',$board->id)->get();
 
-    // /**
-    //  * Remove the specified resource from storage.
-    //  */
-    // public function destroy(Board $board)
-    // {
-    //     //
-    // }
+        if($boardLists){
+            foreach ($boardLists as $list) {
+                if($list->cards->count()>0){
+                    foreach ($list->cards as $card){
+                        CardComment::where('card_id',$card->id)
+                        ->delete();
+
+                        DB::table('card_assigned')
+                        ->where('card_id', $card->id)
+                        ->delete();
+                        $card->delete();
+                    }
+                }
+                $list->delete();
+            }
+        }
+
+        Notification::where('board_id',$board->id)
+        ->delete();
+
+        BoardMember::where('board_id', $board->id)
+        ->delete();
+
+        $board->delete();
+    }
+
 }

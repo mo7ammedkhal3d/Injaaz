@@ -1,16 +1,20 @@
 @extends('layouts.mainlayout')
 @section('content')
   <main id="main" class="main p-0 in-bg-srface">
-    <div class="boards-header mb-5">
-      <div class="row mx-0 px-2 py-4">
-        <div class="user-info d-flex justify-content-start gap-4 align-items-center p-5 d-flex">
-          <div class="d-flex w-100 justify-content-start gap-5 align-items-center">
-            <img src="{{"https://www.gravatar.com/avatar/" . md5(strtolower(trim(Auth::user()->email))) . "?d=mp"}}" alt="Profile" class="rounded-circle">
-            <h1 class="m-0">{{Auth::user()->name}}</h1>
+    {{-- Header --}}
+
+      <div class="boards-header mb-5">
+        <div class="row mx-0 px-2 py-4">
+          <div class="user-info d-flex justify-content-start gap-4 align-items-center p-5 d-flex">
+            <div class="d-flex w-100 justify-content-start gap-5 align-items-center">
+              <img src="{{"https://www.gravatar.com/avatar/" . md5(strtolower(trim(Auth::user()->email))) . "?d=mp"}}" alt="Profile" class="rounded-circle">
+              <h1 class="m-0">{{Auth::user()->name}}</h1>
+            </div>
           </div>
-        </div>
-      </div>  
-    </div>
+        </div>  
+      </div>
+
+    {{-- Header --}}
 
     {{-- Add Board Modal --}}
       <div class="modal add-board-modal" id="add-board-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

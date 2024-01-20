@@ -8,7 +8,7 @@
                     <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
                         <div class="section-title position-relative mb-4 pb-2">
                             <h6 class="position-relative edit-text-primary pe-4">عن إنجاز</h6>
-                            <h2 class="mt-2 text-end">أفضل حل مع 10 سنين من الخبرة</h2>
+                            <h2 class="mt-2 text-end">أفضل حل مع سنين من الخبرة</h2>
                         </div>
                         <p class="mb-4 text-end">
                         مرحبًا بك في مشروع إنجاز، حيث نسعى لجعل حياتك أكثر تنظيمًا وإدارة. إنجاز هو تطبيق ويب مبتكر يهدف إلى تسهيل تنظيم المهام اليومية وتحقيق الأهداف بسهولة وفعالية

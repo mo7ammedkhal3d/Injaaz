@@ -6,6 +6,7 @@
 
     <meta content="" name="description">
     <meta content="" name="keywords">
+    
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -25,7 +26,6 @@
   <script src="https://kit.fontawesome.com/16f6ba35a2.js" crossorigin="anonymous"></script>
 
   <!-- Vendor CSS Files -->
-  {{-- <script src="https://kit.fontawesome.com/16f6ba35a2.js" crossorigin="anonymous"></script> --}}
   <link href="{{asset('assets/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
   <link href="{{asset('assets/vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
   <link href="{{asset('assets/vendor/boxicons/css/boxicons.min.css')}}" rel="stylesheet">
@@ -33,6 +33,7 @@
   <link href="{{asset('assets/vendor/quill/quill.bubble.css')}}" rel="stylesheet">
   <link href="{{asset('assets/vendor/remixicon/remixicon.css')}}" rel="stylesheet">
   <link href="{{asset('assets/vendor/simple-datatables/style.css')}}" rel="stylesheet">
+
   <!-- Scripts -->
   @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
@@ -43,14 +44,6 @@
 
   <!-- jquery -->
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-  <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Updated: Nov 17 2023 with Bootstrap v5.3.2
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body>
@@ -62,8 +55,6 @@
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
-  {{-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> --}}
-  {{-- <script src="{{asset('assets/vendor/jquery/jquery-3.7.1.min')}}"></script> --}}
   <script src="{{asset('assets/vendor/apexcharts/apexcharts.min.js')}}"></script>
   <script src="{{asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
   <script src="{{asset('assets/vendor/chart.js/chart.umd.js')}}"></script>

@@ -112,18 +112,5 @@
                 </div>
             </div>
         </div>
-
-        <script>
-            function showChangePhotoModal() {
-                var closeChangePhotoModal = $('.close-change-photo-modal');
-                closeChangePhotoModal.each(function (index, closeBtn) {
-                    $(closeBtn).on('click', function () {
-                        $('#change-photo-modal').modal('hide');
-                    });
-                });
-
-                $('#change-photo-modal').modal('show');
-            }
-        </script>
     </main>
 @endsection

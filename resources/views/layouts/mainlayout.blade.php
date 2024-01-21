@@ -8,8 +8,8 @@
   <title>{{ config('app.name', 'Laravel') }}</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
-  <meta name="csrf-token" content="{{ csrf_token() }}">
 
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <!-- Favicons -->
   <link href="{{asset('assets/img/favicon.ico')}}" rel="icon">
   <link href="{{asset('assets/img/apple-touch-icon.png')}}" rel="apple-touch-icon">
@@ -18,11 +18,7 @@
   <link href="https://fonts.gstatic.com" rel="preconnect">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
-  <!--fontawosme-->
-  {{-- <script src="https://kit.fontawesome.com/16f6ba35a2.js" crossorigin="anonymous"></script> --}}
-
-  <!-- Vendor CSS Files -->
-  {{-- <script src="https://kit.fontawesome.com/16f6ba35a2.js" crossorigin="anonymous"></script> --}}
+  <!--Style and Icon Links-->
   <link href="{{asset('assets/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
   <link href="{{asset('assets/vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
   <link href="{{asset('assets/vendor/boxicons/css/boxicons.min.css')}}" rel="stylesheet">
@@ -38,12 +34,11 @@
   <link href="{{asset('assets/css/custom.css')}}" rel="stylesheet">
   <link href="{{asset('assets/css/main.css')}}" rel="stylesheet">
 
-  <!-- jquery -->
+  <!-- CDN script Links -->
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js" integrity="sha512-WMEKGZ7L5LWgaPeJtw9MBM4i5w5OSBlSjTjCtSnvFJGSVD26gE5+Td12qN5pvWXhuWaWcVwF++F7aqu9cvqP0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
-  <!-- Include moment.js from CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
 </head>
@@ -179,318 +174,7 @@
     <!--End Main-->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-  <script>
-    var baseUrl = '{{asset('')}}';
-        $(document).ready(function() {
-            $('.dropdown-menu li').each(function() {
-                $(this).click(function(e) {
-                    e.stopPropagation();
-                });
-            });
-        });
 
-        // Get new user notification
-          fetch(`${baseUrl}dashboard/{{Auth::user()->id}}/notification/getNew`, {
-                method: 'GET',
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => { 
-                if (data){
-                  if(data.unReaded_notifiction > 0){
-                    $('#notification-no').html(data.unReaded_notifiction);
-                    var notificationTextHeader = `لديك ${data.unReaded_notifiction} اشعارات جديدة`
-                  } else var notificationTextHeader = "ليس لديك أي اشعارات جديدة"
-                  $('#user-notification').append(`
-                      <li class="dropdown-header">
-                        ${notificationTextHeader}
-                        <a href="{{ route('getAllUserNotification', ['userId' => Auth::user()->id]) }}"><span class="badge rounded-pill in-bg-primary py-2 px-4 me-4">عرض الكل</span></a>
-                      </li>
-                      <li>
-                        <hr class="dropdown-divider">
-                      </li>
-                  `);
-
-                  data.notifications.forEach(notification => {
-                    if (notification.status == 'inprogress'){
-                      $('#user-notification').append(`       
-                          <li id="notification-item" class="notification-item p-0 in-transition">
-                            <div class="row m-0 px-0 py-2">
-                              <div class="row m-0 p-0">
-                                <div class="col-12 d-flex justify-content-between">
-                                  <small class="notify-date">${moment(notification.created_at).fromNow()}</small>
-                                  <i class="fa-solid fa-xmark notify-delete-icon" onclick="moveNotification(${notification.id},this)"></i>
-                                </div>
-                              </div>
-                              <div class="row m-0 p-0 my-2">
-                                <div class="col-12">
-                                  <h6 class="m-0 fw-bold text-end">${notification.text}</h6>
-                                </div>
-                              </div>
-                              <div class="row m-0 p-0 justify-content-start">
-                                <div id="notification-state" class="col-7 d-flex gap-1 justify-content-between">
-                                  <button class="btn btn-success fw-bold py-0 px-4" onclick="changeNotificationStatus(${notification.id},this,'confirm')">قبول</button>
-                                  <button class="btn btn-danger fw-bold py-0 px-4" onclick="changeNotificationStatus(${notification.id},this,'reject')">رفض</button>
-                                </div>
-                              </div>
-                            </div>
-                            <hr class="dropdown-divider">
-                          </li> `); 
-                      } else if (notification.status === 'reject'){ 
-                        $('#user-notification').append(`
-                          <li id="notification-item" class="notification-item p-0 in-transition">
-                            <div class="row m-0 px-0 py-2">
-                              <div class="row m-0 p-0">
-                                <div class="col-12 d-flex justify-content-between">
-                                  <small class="notify-date">${moment(notification.created_at).fromNow()}</small>
-                                  <i class="fa-solid fa-xmark notify-delete-icon" onclick="moveNotification(${notification.id},this)"></i>
-                                </div>
-                              </div>
-                              <div class="row m-0 p-0 my-2">
-                                <div class="col-12">
-                                    <h6 class="m-0 fw-bold text-end in-text-secondry">${notification.text}</h6>
-                                </div>
-                              </div>
-                              <div class="row m-0 p-0 justify-content-start">
-                                <div id="notification-state" class="col-7 d-flex gap-1 justify-content-between">
-                                    <button disabled class="btn btn-danger fw-bold py-0 px-4">تم الرفض</button>
-                                </div>
-                              </div>
-                            </div>
-                            <hr class="dropdown-divider">
-                          </li> `);
-                      } else { 
-                        $('#user-notification').append(`
-                          <li id="notification-item" class="notification-item p-0 in-transition">
-                            <div class="row m-0 px-0 py-2">
-                              <div class="row m-0 p-0">
-                                <div class="col-12 d-flex justify-content-between">
-                                  <small class="notify-date">${moment(notification.created_at).fromNow()}</small>
-                                  <i class="fa-solid fa-xmark notify-delete-icon" onclick="moveNotification(${notification.id},this)"></i>
-                                </div>
-                              </div>
-                              <div class="row m-0 p-0 my-2">
-                                <div class="col-12">
-                                  <h6 class="m-0 fw-bold text-end in-text-secondry">${notification.text}</h6>
-                                </div>
-                              </div>
-                              <div class="row m-0 p-0 justify-content-start">
-                                <div id="notification-state" class="col-7 d-flex gap-1 justify-content-between">
-                                  <button disabled class="btn btn-success fw-bold py-0 px-4">تمت الموافقة</button>
-                                </div>
-                              </div>
-                            </div>
-                            <hr class="dropdown-divider">
-                          </li> `);
-                        }
-                  });
-                }
-                $('#user-notification').append(`
-                  <li class="dropdown-footer">
-                    <a href="{{ route('getAllUserNotification', ['userId' => Auth::user()->id]) }}">عرض جميع الاشعارات</a>
-                  </li>
-                  `)      
-            })
-
-            .catch(error => {
-                console.error('Error fetching card details:', error);
-            });
-
-        // Get new user notification
-
-
-        // Move Notification to stack
-          function moveNotification(notificationId,element){
-            const formData = new FormData();
-            formData.append('notification_id',notificationId);
-            fetch(`${baseUrl}dashboard/{{Auth::user()->id}}/notification/moveToStack`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                },
-                body: formData,
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => { 
-                var notificationItem = element.closest('#notification-item');
-                $(notificationItem).css('transform', 'translateX(20rem)');
-
-                setTimeout(() => {
-                  notificationItem.remove();
-                }, 200);   
-            })
-            .catch(error => {
-                console.error('Error fetching card details:', error);
-            });
-          }
-        // Move Notification to stack
-        
-        // changeNotificationStatus
-          function changeNotificationStatus(notificationId,element,updateType){
-            const formData = new FormData();
-            formData.append('notification_id',notificationId);
-            formData.append('update_type',updateType);
-            fetch(`${baseUrl}dashboard/{{Auth::user()->id}}/notification/updateNotificationState`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                },
-                body: formData,
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => { 
-               var notificationState = $(element).closest('#notification-state');
-               if(data.update_type == "reject"){
-                notificationState.html(`
-                  <button disabled class="btn btn-danger fw-bold py-0 px-4">تم الرفض</button>
-                `);
-               } else{
-                notificationState.html(`
-                  <button disabled class="btn btn-success fw-bold py-0 px-4">تمت الموافقة</button>
-                `);
-
-                var boardListsroute = `{{ route('dashboard.lists', ['userId' => Auth::user()->id, 'board_id' => ':boardId']) }}`;
-                boardListsroute = boardListsroute.replace(':boardId', data.board.id);
-                var boardMemebesroute = `{{ route('board.boardMembres', ['userId' => Auth::user()->id, 'board_id' => ':boardId']) }}`;
-                boardMemebesroute = boardMemebesroute.replace(':boardId', data.board.id);
-                var boardSettingsroute = `{{ route('board.generalSettings', ['userId' => Auth::user()->id, 'board_id' => ':boardId']) }}`;
-                boardSettingsroute = boardSettingsroute.replace(':boardId', data.board.id);
-                $('#noting-user-boards').addClass('d-none');
-                $('#user-boards').append(`
-                    <div class="col-lg-4 pe-0 ps-3" role=button>
-                      <div class="board my-3 d-flex flex-row-reverse">
-                        <div class="board-option p-2">
-                          <i class="fa-solid fa-ellipsis board-dropleft-icon" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                          <ul class="dropdown-menu text-end">
-                            <li>
-                              <a href="${boardListsroute}" class="dropdown-item">
-                                <i class="fa-solid fa-list-check m-0 ms-1 dropdwon-board-icon"></i>
-                                <span>عرض اللوحة</span>
-                              </a>
-                            </li>
-                            <li>
-                              <hr class="dropdown-divider">
-                            </li>
-                            <li>
-                              <a href="${boardMemebesroute}" class="dropdown-item">
-                                <i class="fa-solid fa-users m-0 ms-1 dropdwon-board-icon"></i>
-                                <span>الأعضاء</span>
-                              </a>
-                            </li>
-                            <li>
-                              <hr class="dropdown-divider">
-                            </li>
-                            <li>
-                              <a class="dropdown-item">
-                                <i class="fa-solid fa-box-archive m-0 ms-1 dropdwon-board-icon"></i>
-                                <span>أرشفة</span>
-                              </a>
-                            </li>
-                            <li>
-                              <hr class="dropdown-divider">
-                            </li>
-                            <li>
-                              <a href="${boardSettingsroute}" class="dropdown-item">
-                                <i class="fa-solid fa-gear m-0 ms-1 dropdwon-board-icon"></i>
-                                <span>الأعدادت</span>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                        <a class="board-body p-3" href="${boardListsroute}">
-                          <div class="d-flex justify-content-between mb-3">
-                            <h6 class="board-title">${data.board.name}</h6>
-                          </div>
-                          <p class="board-description">${data.board.description}</p>
-                        </a>
-                      </div>  
-                    </div>
-                `);
-               }
-              })
-              .catch(error => {
-                  console.error('Error fetching card details:', error);
-              });
-            
-            }
-
-            function redirectToBoard(boardId,userId) {
-                window.location.href = `${baseUrl}dashboard/${boardId}/lists`
-            }
-
-        // changeNotificationStatus
-        
-        // showNotification
-          function showNotification(element){
-            fetch(`${baseUrl}dashboard/{{Auth::user()->id}}/notification/changeReadState`, {
-                method: 'GET',
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => { 
-                if (data){
-                  var notificationNo = $(element).find('#notification-no');
-                  notificationNo.html("");
-                }
-            })
-
-            .catch(error => {
-                console.error('Error fetching card details:', error);
-            });
-          }
-        // showNotification
-
-        // Delete Notification
-          
-          function deleteNotification(notificationId,element){
-            const formData = new FormData();
-            formData.append('notification_id',notificationId);
-            fetch(`${baseUrl}dashboard/{{Auth::user()->id}}/notification/deleteNotification`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                },
-                body: formData,
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => { 
-                var notificationItem = element.closest('tr');
-                  notificationItem.remove();
-            })
-            .catch(error => {
-                console.error('Error fetching card details:', error);
-            });
-          }
-          
-        // Delete Notification
-  
-  </script>
-  <!-- Vendor JS Files -->
-  {{-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> --}}
-  {{-- <script src="{{asset('assets/vendor/jquery/jquery-3.7.1.min')}}"></script> --}}
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
   <script src="{{asset('assets/vendor/apexcharts/apexcharts.min.js')}}"></script>
   <script src="{{asset('assets/vendor/sweetalert/sweetalert.min.js')}}"></script>
@@ -503,8 +187,8 @@
   <script src="{{asset('assets/vendor/php-email-form/validate.js')}}"></script>
   <script src="{{asset('assets/js/dashboard.js')}}"></script>
 
-  {{-- <script src="{{asset('assets/js/main.js')}}"></script> --}}
-
+  
+  <script src="{{asset('assets/js/main.js')}}"></script>
+  @include('script.mainjs')
 </body>
-
 </html>

@@ -1192,13 +1192,6 @@
 
         // end Get Card Details
 
-        //deal Define Class of ckeditr
-
-
-
-
-        //end 
-
         // Add Card 
             function addCardConfirm(button){
                 var listBody = $(button).closest('.list-body');

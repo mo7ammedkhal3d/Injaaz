@@ -91,7 +91,6 @@
             </div>
           </div>
         {{-- second-modal-content --}}
-
         </div>
       </div>
     {{-- Add Board Modal  --}}

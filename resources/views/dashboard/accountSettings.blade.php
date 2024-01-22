@@ -11,7 +11,7 @@
                             classname: 'swal-IW',
                             timer: 1700,
                             buttons: false,
-                        });
+                    });
                 });
             </script>
         @endif

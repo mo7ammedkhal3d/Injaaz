@@ -30,7 +30,6 @@
             </div>
         {{-- invite Board Memeber Modal --}}       
 
-    
         <div class="row px-5 pt-5 pb-3 justify-content-center mx-0">
         {{-- Board Settings Navigation --}}
             <div class="row mt-5">

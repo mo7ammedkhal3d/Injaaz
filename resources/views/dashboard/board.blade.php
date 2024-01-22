@@ -157,7 +157,7 @@
     {{-- Add Memeber Modal --}}
 
 
-    {{-- Start Board  --}}
+    {{-- Start Board --}}
         <div class="py-2 px-3 board-header">
             <div class="col d-flex flex-row gap-3 align-items-center">
                 <div class="board-name">

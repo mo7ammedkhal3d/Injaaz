@@ -1,6 +1,8 @@
 <script>
 
     var baseUrl = '{{asset('')}}';
+    var descriptionText = null;
+    var commentText = null;
     
 
     $(document).ready(function() {
@@ -30,41 +32,64 @@
 
             // Deal with placeholder of div and ckeditr
 
-                var $descriptionDev = $('#description-confirm');
-                var $commentdev = $('#comment-confirm');
+                var descriptionDev = $('#description-confirm');
+                var commentdev = $('#comment-confirm');
 
-                // Set initial placeholder
-                if (!$descriptionDev.text().trim() && $descriptionDev.data('placeholder')) {
-                    $descriptionDev.text($descriptionDev.data('placeholder'));
+                if(descriptionDev.length){
+                    ClassicEditor.create($('#description-text')[0])
+                .then(ckEditor => {
+                    descriptionText = ckEditor;
+
+                })
+                .catch(error => {
+                    console.error(error);
+                });
                 }
 
-                if (!$commentdev.text().trim() && $commentdev.data('placeholder')) {
-                    $commentdev.text($commentdev.data('placeholder'));
+                if(commentdev.length){
+                    ClassicEditor.create( $( '#comment-text' )[0])
+                    .then(ckEditor => {
+                            commentText = ckEditor;
+                        })
+                    .catch( error => {
+                        console.error( error );
+                    } );
+                }
+
+
+
+                // Set initial placeholder
+                if (!descriptionDev.text().trim() && descriptionDev.data('placeholder')) {
+                    descriptionDev.text(descriptionDev.data('placeholder'));
+                }
+
+                if (!commentdev.text().trim() && commentdev.data('placeholder')) {
+                    commentdev.text(commentdev.data('placeholder'));
                 }
 
                 // Remove placeholder on focus
-                $descriptionDev.on('focus', function() {
-                    if ($descriptionDev.text().trim() === $descriptionDev.data('placeholder')) {
-                        $descriptionDev.text('');
+                descriptionDev.on('focus', function() {
+                    if (descriptionDev.text().trim() === descriptionDev.data('placeholder')) {
+                        descriptionDev.text('');
                     }
                 });
 
-                $commentdev.on('focus', function() {
-                    if ($commentdev.text().trim() === $commentdev.data('placeholder')) {
-                        $commentdev.text('');
+                commentdev.on('focus', function() {
+                    if (commentdev.text().trim() === commentdev.data('placeholder')) {
+                        commentdev.text('');
                     }
                 });
 
                 // Restore placeholder if content is empty on blur
-                $descriptionDev.on('blur', function() {
-                    if (!$descriptionDev.text().trim()) {
-                        $descriptionDev.text($descriptionDev.data('placeholder'));
+                descriptionDev.on('blur', function() {
+                    if (!descriptionDev.text().trim()) {
+                        descriptionDev.text(descriptionDev.data('placeholder'));
                     }
                 });
 
-                $commentdev.on('blur', function() {
-                    if (!$commentdev.text().trim()) {
-                        $commentdev.text($commentdev.data('placeholder'));
+                commentdev.on('blur', function() {
+                    if (!commentdev.text().trim()) {
+                        commentdev.text(commentdev.data('placeholder'));
                     }
                 });
 
@@ -1169,25 +1194,9 @@
 
         //deal Define Class of ckeditr
 
-            var descriptionText = null;
-            var commentText = null;
 
-            ClassicEditor.create($('#description-text')[0])
-                .then(ckEditor => {
-                    descriptionText = ckEditor;
 
-                })
-                .catch(error => {
-                    console.error(error);
-                });
 
-            ClassicEditor.create( $( '#comment-text' )[0])
-                .then(ckEditor => {
-                        commentText = ckEditor;
-                    })
-                .catch( error => {
-                    console.error( error );
-                } );
         //end 
 
         // Add Card 

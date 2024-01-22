@@ -402,7 +402,7 @@
             // may later invite users
 
             // boardFilterOptions
-                function boardFilterOptions() {
+                function CarateBoardFilterOptions() {
                     var input = $('#invite-member-search').val().toLowerCase();
                     var dropdownVisible = false;
 
@@ -411,7 +411,6 @@
                         
                         if (optionText.indexOf(input) > -1) {
                             $(this).show();
-                            console.log("here");
                             dropdownVisible = true;
                         } else {
                             $(this).hide();
@@ -423,7 +422,7 @@
             // boardFilterOptions
 
             // selectUser
-                function selectUser(userId, element){
+                function CarateBoardSelectUser(userId, element){
                     $('#invite-member-search').val($(element).find('#user-name').text());
                     $('#board-dropdownContent').toggleClass('d-none');
                     $('#send-invite-btn').removeClass('d-none');
@@ -545,7 +544,7 @@
                                 const gravatarUrl = `https://www.gravatar.com/avatar/${md5Hash}?d=mp`;
 
                                 $('#board-dropdownContent').append(`
-                                <div class="dropdownOption justify-content-center gap-3 px-4" onclick="selectUser(${user.id},this,{{Auth::user()->id}})">
+                                <div class="dropdownOption justify-content-center gap-3 px-4" onclick="CarateBoardSelectUser(${user.id},this,{{Auth::user()->id}})">
                                 <div class="d-flex justify-content-between align-items-center px-4 w-75">
                                     <img src="${gravatarUrl}" alt="John">
                                     <h6 id="user-name">${user.name}</h6>
@@ -585,7 +584,7 @@
                         })
                         .then(data => {
                             if (data && data.board && data.board.id) {
-                                window.location.href = `${baseUrl}dashboard/${data.board.id}/lists`;
+                                window.location.href = `${baseUrl}dashboard/{{Auth::user()->id}}/lists/${data.board.id}`;
                             }
                         })
                         .catch(error => {
@@ -1583,7 +1582,6 @@
                 
                 if (optionText.indexOf(input) > -1) {
                     $(this).show();
-                    console.log("here");
                     dropdownVisible = true;
                 } else {
                     $(this).hide();

@@ -93,7 +93,7 @@ class BoardController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($board_id)
+    public function show($user_id,$board_id)
     {
         $board = Board::find($board_id);
 

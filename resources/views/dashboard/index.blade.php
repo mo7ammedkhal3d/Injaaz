@@ -74,7 +74,7 @@
                 <div class="row m-0 p-0 my-5 pt-4 invite-section">    
                   <div id="board-add-dropdown"  class="w-100 board-add-dropdown">
                     <label class="form-label mb-4 fw-bold" for="invite-member">قم بدعوة أعضاء</label>  {{--onclick="boardToggleDropdown()"--}}
-                    <input type="text" id="invite-member-search" class="form-control board-name-input" oninput="boardFilterOptions()" placeholder="ابحث عن اعضاء">
+                    <input type="text" id="invite-member-search" class="form-control board-name-input" oninput="CarateBoardFilterOptions()" placeholder="ابحث عن اعضاء">
                     <button id="send-invite-btn" class="btn btn-success btn btn-success w-25 my-3 d-none">دعوة</button>
                     <div id="board-dropdownContent" class="custom-scrollbar rounded d-none">
                       

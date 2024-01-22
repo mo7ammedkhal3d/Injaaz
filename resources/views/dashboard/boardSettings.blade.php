@@ -160,7 +160,10 @@
                                                     <i class="fa-solid fa-trash-can board-ember-delete-icon" onclick="deleteBoardMember(this, {{$board_details['board_id']}}, {{$board_member['member_id']}})"></i>
                                                 </div>   
                                             @endif
+                                            @if ($board_member['member_id'] == $board_details['board_user_id'] )
+                                                <i class="fas fa-user-shield board-manager-icon"></i>
                                             @endif
+                                            @endif    
                                         </div>
                                     @endforeach
                                 </div>

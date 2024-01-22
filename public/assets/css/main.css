@@ -771,6 +771,11 @@ body {
     border-radius: 0.5rem;
 }
 
+.board-manager-icon{
+    color: var(--primary-color);
+    font-size:1.4rem
+}
+
 /*#endregion*/
 
 /*#region dashboard.boardSettings */

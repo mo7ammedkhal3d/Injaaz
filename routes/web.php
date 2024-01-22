@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth', 'checkUserId']], function () {
 Route::get('/dashboard/{userId}', [BoardController::class, 'index'])->name('dashboard.index');
-Route::get('/dashboard/{board_id}/lists', [BoardController::class, 'show'])->name('dashboard.lists');
+Route::get('/dashboard/{userId}/lists/{board_id}', [BoardController::class, 'show'])->name('dashboard.lists');
 Route::get('/dashboard/{userId}/card/{card_id}', [CardController::class, 'index'])->name('dashboard.getCardDetails');
 Route::post('/dashboard/{userId}/cardAssigned/add', [CardAssignedController::class, 'addCardAssigned'])->name('dashboard.addCardAssigned');
 Route::post('/dashboard/{userId}/cardAssigned/delete', [CardAssignedController::class, 'deleteCardAssigned'])->name('dashboard.deleteCardAssigned');

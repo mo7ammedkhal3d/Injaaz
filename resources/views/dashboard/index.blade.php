@@ -115,7 +115,7 @@
                   <i class="fa-solid fa-ellipsis board-dropleft-icon" data-bs-toggle="dropdown" aria-expanded="false"></i>
                   <ul class="dropdown-menu text-end">
                     <li>
-                      <a href="{{ route('dashboard.lists', ['board_id' => $board->id]) }}" class="dropdown-item">
+                      <a href="{{ route('dashboard.lists', ['userId'=>Auth::user()->id,'board_id' => $board->id])}}" class="dropdown-item">
                         <i class="fa-solid fa-list-check m-0 ms-1 dropdwon-board-icon"></i>
                         <span>عرض اللوحة</span>
                       </a>
@@ -149,7 +149,7 @@
                     </li>
                   </ul>
                 </div>
-                <a class="board-body p-3" href="{{ route('dashboard.lists', ['board_id' => $board->id]) }}">
+                <a class="board-body p-3" href="{{ route('dashboard.lists', ['userId'=>Auth::user()->id,'board_id' => $board->id]) }}">
                   <div class="d-flex justify-content-between mb-3">
                     <h6 class="board-title">{{ $board->name }}</h6>
                   </div>

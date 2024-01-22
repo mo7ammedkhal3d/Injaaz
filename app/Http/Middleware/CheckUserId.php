@@ -19,12 +19,10 @@ class CheckUserId
         $authUserId = auth()->id();
 
         if (!$authUserId) {
-            // User is not authenticated, redirect to login
             return redirect('/login');
         }
 
         if ($urlUserId != $authUserId) {
-            // Different user ID, redirect to login
             return redirect('/login');
         }
 

@@ -176,7 +176,7 @@
                         <div class="col-12">
                             <div class="row py-2 justify-content-center">
                                 <div class="col-3 d-flex justify-content-center flex-column">
-                                    <a href="{{route('dashboard.lists',['board_id'=>$board_details['board_id']])}}" class="btn fw-bold injaaz-btn">عرض مساحة العمل</a>
+                                    <a href="{{ route('dashboard.lists', ['userId'=>Auth::user()->id,'board_id' => $board_details['board_id']]) }}" class="btn fw-bold injaaz-btn">عرض مساحة العمل</a>
                                 </div>
                             </div>
                             <div class="row py-2 justify-content-center">

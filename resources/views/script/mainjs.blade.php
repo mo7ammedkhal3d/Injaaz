@@ -765,9 +765,9 @@
         // End Update Card title
     
         // Update Card Description 
-            function editCardDescription(userId){
+            function editCardDescription(element,userId){
                 if (descriptionText){
-                            descriptionText.setData($('#description-confirm').html());
+                        descriptionText.setData($('#description-confirm').html());
                 } else {
                     console.error('CKEditor instance not initialized');
                 }

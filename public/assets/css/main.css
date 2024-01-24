@@ -225,7 +225,7 @@ body {
 }
 
 .board .board-body{
-    height: 10rem;
+    height: 12rem;
     width: -webkit-fill-available;
 }
 
@@ -237,6 +237,10 @@ body {
 
 .board .board-description{
     color: #4d4d4d;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
 }
 
 .board-dropleft-icon{

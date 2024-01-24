@@ -1228,7 +1228,7 @@
                             if (data) {
                                 listBody.find('.mkmk').append(`
                                 <div draggable="true" class="card bg-white p-2 d-flex flex-row justify-content-between" onclick="showCard(this ,{{Auth::user()->id}},${data.card.id})" data-card-id="${data.card.id}"> 
-                                    <div id="card-short-info">
+                                    <div id="card-short-info" class="d-flex justify-content-center gap-3 flex-column">
                                         <h6 id="hcard-title" class="fw-bold m-0">${data.card.title}</h6>
                                     </div>                               
                                     

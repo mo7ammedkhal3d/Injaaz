@@ -11,6 +11,8 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserController;
 use App\Mail\InvitationMail;
 use App\Models\Board;
+use Illuminate\Auth\Middleware\Authenticate;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,7 +27,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['middleware' => ['auth', 'checkUserId'],'prefix'=>'dashboard/{userId}'], function () {
-Route::get('',[BoardController::class, 'index'])->name('dashboard.index');
+Route::get('',[BoardController::class, 'index'])->name('dashboard.index'); 
 Route::get('lists/{board_id}', [BoardController::class, 'show'])->name('dashboard.lists');
 Route::get('card/{card_id}', [CardController::class, 'index'])->name('dashboard.getCardDetails');
 Route::post('cardAssigned/add', [CardAssignedController::class, 'addCardAssigned'])->name('dashboard.addCardAssigned');
@@ -78,10 +80,10 @@ Route::get('/register',function(){
     return view('auth.register');
 })->name('auth.register');
 
-
-
 Route::get('/terms',function(){
     return view('gustes.conditionAndTerms');
 })->name('gustes.terms');
+
+Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');

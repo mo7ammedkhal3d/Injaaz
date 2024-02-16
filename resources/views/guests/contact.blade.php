@@ -1,4 +1,4 @@
-@extends('layouts.gustlayout')
+@extends('layouts.guestsLayout')
 @include('layouts.pageshero')
 @section('content')
             <!-- Contact Start -->

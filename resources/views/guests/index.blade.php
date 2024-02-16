@@ -1,4 +1,4 @@
-@extends('layouts.gustlayout')
+@extends('layouts.guestsLayout')
 @include('layouts.homehero')
 @section('content')
         <!-- About Start -->

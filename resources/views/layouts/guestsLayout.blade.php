@@ -14,7 +14,7 @@
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -54,7 +54,7 @@
                         @auth
                             <div class="px-4 mx-3">
                                 <a href="{{ route('dashboard.index') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500 btn btn-primary edit-bg-secondry">لوحة التحكم</a>
-                            </div> 
+                            </div>
                         @else
                             <div class="px-4 mx-3">
                                 <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500 btn btn-primary edit-bg-secondry">تسجيل الدخول</a>
@@ -67,12 +67,12 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarCollapse">
                         <div class="navbar-nav me-auto py-0">
-                            <a href="{{route('gustes.index')}}" class="nav-item nav-link fw-bold">الرئيسية</a>
-                            <a href="{{route('gustes.about')}}" class="nav-item nav-link fw-bold">عن إنجاز</a>
-                            <a href="{{route('gustes.services')}}" class="nav-item nav-link fw-bold">الخدمات</a>
-                            <a href="{{route('gustes.testimonial')}}" class="nav-item nav-link fw-bold">عملائنا</a>
-                            <a href="{{route('gustes.team')}}" class="nav-item nav-link fw-bold">الأعضاء</a>
-                            <a href="{{route('gustes.contact')}}" class="nav-item nav-link fw-bold">تواصل معنا</a>
+                            <a href="{{route('guests.index')}}" class="nav-item nav-link fw-bold">الرئيسية</a>
+                            <a href="{{route('guests.about')}}" class="nav-item nav-link fw-bold">عن إنجاز</a>
+                            <a href="{{route('guests.services')}}" class="nav-item nav-link fw-bold">الخدمات</a>
+                            <a href="{{route('guests.testimonial')}}" class="nav-item nav-link fw-bold">عملائنا</a>
+                            <a href="{{route('guests.team')}}" class="nav-item nav-link fw-bold">الأعضاء</a>
+                            <a href="{{route('guests.contact')}}" class="nav-item nav-link fw-bold">تواصل معنا</a>
                         </div>
                         <button type="button" class="btn edit-text-secondary me-3" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fa fa-search"></i></button>
                     </div>
@@ -100,9 +100,9 @@
                 </div>
             </div>
         <!-- Full Screen Search End -->
-        
+
         <main>
-            @yield('content')  
+            @yield('content')
         </main>
 
         <!-- Footer Start -->
@@ -156,7 +156,7 @@
                         <div class="col-md-6 col-lg-3">
                             <h5 class="text-white mb-4">إنجاز</h5>
                             <p>اكتشف تجربة إدارة مشاريع فائقة السلاسة مع نظامنا المبتكر. استمتع بتنظيم مهامك، وتعاون بفعالية، وتتبع تقدمك بسهولة
-                                ولكن بمزايا وإمكانيات محسّنة ومتقدمة. جاهز لتحقيق أهدافك بكفاءة وبأسلوب يلبي تطلعاتك 
+                                ولكن بمزايا وإمكانيات محسّنة ومتقدمة. جاهز لتحقيق أهدافك بكفاءة وبأسلوب يلبي تطلعاتك
                             </p>
                             <div class="position-relative w-100 mt-3">
                                 <input class="form-control border-0 rounded-pill w-100 pe-4 ps-5" type="text" placeholder="إيميلك" style="height: 48px;">
@@ -169,7 +169,7 @@
                     <div class="copyright">
                         <div class="row">
                             <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                                &copy; <a class="border-bottom" href="#">MKZ.com</a>, جميع الحقوق محفوظة.  
+                                &copy; <a class="border-bottom" href="#">MKZ.com</a>, جميع الحقوق محفوظة.
                                 تم التصميم بواسطة <a class="border-bottom" href="https://htmlcodex.com">Mohammed Khaled</a>
                                 <br>تم نشرة بواسطة : <a class="border-bottom" href="https://themewagon.com" target="_blank">MKZ</a>
                             </div>

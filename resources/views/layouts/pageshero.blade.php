@@ -7,7 +7,7 @@
                     <hr class="bg-white mx-auto mt-0" style="width: 90px;">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb justify-content-center">
-                            <li class="breadcrumb-item"><a class="text-white" href="{{route('gustes.index')}}">الرئيسية</a></li>
+                            <li class="breadcrumb-item"><a class="text-white" href="{{route('guests.index')}}">الرئيسية</a></li>
                             <li class="breadcrumb-item text-white active" aria-current="page">{{$pageName}}</li>
                         </ol>
                     </nav>

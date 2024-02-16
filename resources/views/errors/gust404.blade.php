@@ -1,4 +1,4 @@
-@extends('layout.gustlayout')
+@extends('layouts.guestsLayout')
 @include('pageshero')
 @section('content')
     <!-- 404 Start -->

@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-11">
                 <div class="terms-header">
-                    <a href="{{route('gustes.index')}}">
+                    <a href="{{route('guests.index')}}">
                         <div class="terms-img">
                             <img src="{{asset('assets/img/logo-2.png')}}" alt="loading">
                         </div>

@@ -1,5 +1,5 @@
 @extends('layouts.guestsLayout')
-@section('page_title','أعضاء الفريق')
+@section('page_title','الاعضاء')
 @include('layouts.pageshero')
 @section('content')
     <!-- Team Start -->

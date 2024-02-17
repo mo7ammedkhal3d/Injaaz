@@ -1,5 +1,5 @@
 @extends('layouts.guestsLayout')
-@section('page_title','عن إنجاز')
+@section('page_title','نبدة عنا')
 @include('layouts.pageshero')
 @section('content')
     <!-- About Start -->

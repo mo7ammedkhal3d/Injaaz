@@ -1,4 +1,5 @@
 @extends('layouts.guestsLayout')
+@section('page_title','الرئيسية')
 @include('layouts.homehero')
 @section('content')
         <!-- About Start -->

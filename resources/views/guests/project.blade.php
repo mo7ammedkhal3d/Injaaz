@@ -1,4 +1,5 @@
 @extends('layouts.guestsLayout')
+@section('page_title','المشاريع')
 @include('layouts.pageshero')
 @section('content')
         <!-- Portfolio Start -->

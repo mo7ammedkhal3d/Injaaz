@@ -1,4 +1,5 @@
 @extends('layouts.guestsLayout')
+@section('page_title','عملائنا')
 @include('layouts.pageshero')
 @section('content')
     <!-- Testimonial Start -->

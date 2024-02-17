@@ -67,12 +67,12 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarCollapse">
                         <div class="navbar-nav me-auto py-0">
-                            <a href="{{route('guests.index')}}" class="nav-item nav-link fw-bold">الرئيسية</a>
-                            <a href="{{route('guests.about')}}" class="nav-item nav-link fw-bold">عن إنجاز</a>
-                            <a href="{{route('guests.services')}}" class="nav-item nav-link fw-bold">الخدمات</a>
-                            <a href="{{route('guests.testimonial')}}" class="nav-item nav-link fw-bold">عملائنا</a>
-                            <a href="{{route('guests.team')}}" class="nav-item nav-link fw-bold">الأعضاء</a>
-                            <a href="{{route('guests.contact')}}" class="nav-item nav-link fw-bold">تواصل معنا</a>
+                            <a href="{{route('guests.index')}}" class="nav-item nav-link fw-bold {{(Route::is('guests.index') ? 'active' : '')}}">الرئيسية</a>
+                            <a href="{{route('guests.about')}}" class="nav-item nav-link fw-bold {{Route::is('guests.about') ? 'active' : ''}}">عن إنجاز</a>
+                            <a href="{{route('guests.services')}}" class="nav-item nav-link fw-bold {{Route::is('guests.services') ? 'active' : ''}}">الخدمات</a>
+                            <a href="{{route('guests.testimonial')}}" class="nav-item nav-link fw-bold {{Route::is('guests.testimonial') ? 'active' : ''}}">عملائنا</a>
+                            <a href="{{route('guests.team')}}" class="nav-item nav-link fw-bold {{Route::is('guests.team') ? 'active' : ''}}">الأعضاء</a>
+                            <a href="{{route('guests.contact')}}" class="nav-item nav-link fw-bold {{Route::is('guests.contact') ? 'active' : ''}}">تواصل معنا</a>
                         </div>
                         <button type="button" class="btn edit-text-secondary me-3" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fa fa-search"></i></button>
                     </div>
@@ -81,7 +81,6 @@
                 @yield('pageshero')
             </div>
         <!-- Navbar & Hero End -->
-
 
         <!-- Full Screen Search Start -->
             <div class="modal fade" id="searchModal" tabindex="-1">
@@ -176,7 +175,7 @@
                             <div class="col-md-6 text-center text-md-end">
                                 <div class="footer-menu">
                                     <a href="">الرئيسية</a>
-                                    <a href="">Cookies</a>
+                                    <a href="">التفضيلات</a>
                                     <a href="">مساعدة</a>
                                     <a href="">FQAs</a>
                                 </div>
@@ -186,7 +185,6 @@
                 </div>
             </div>
         <!-- Footer End -->
-
 
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg edit-bg-secondry edit-text-primary btn-lg-square back-to-top pt-2"><i class="bi bi-arrow-up"></i></a>
@@ -205,12 +203,5 @@
     <!-- Template Javascript -->
     <script src="{{asset('assets/js/gustmain.js')}}"></script>
 
-
-    <script>
-        // Corrected script to add 'active' class to the active link
-        $(document).ready(function() {
-            $('.navbar-nav .nav-link').eq({{ $activeLink - 1 }}).addClass('active');
-        });
-    </script>
 </body>
 </html>

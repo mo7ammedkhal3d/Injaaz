@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['middleware' => ['auth', 'checkUserId'],'prefix'=>'dashboard/{userId}'], function () {
-Route::get('',[BoardController::class, 'index'])->name('dashboard.index'); 
+Route::get('',[BoardController::class, 'index'])->name('dashboard.index');
 Route::get('lists/{board_id}', [BoardController::class, 'show'])->name('dashboard.lists');
 Route::get('card/{card_id}', [CardController::class, 'index'])->name('dashboard.getCardDetails');
 Route::post('cardAssigned/add', [CardAssignedController::class, 'addCardAssigned'])->name('dashboard.addCardAssigned');
@@ -71,19 +71,5 @@ Route::get('/dashboard/board', function (){
 Route::fallback(FUNCTION(){
     return view('errors.404');
 })->name('errors.404');
-
-Route::get('/login',function(){
-    return view('auth.login');
-})->name('auth.login');
-
-Route::get('/register',function(){
-    return view('auth.register');
-})->name('auth.register');
-
-Route::get('/terms',function(){
-    return view('gustes.conditionAndTerms');
-})->name('gustes.terms');
-
-Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');

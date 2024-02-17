@@ -1,4 +1,5 @@
 @extends('layouts.secondry')
+@section('page_title','الشروط والاحكام')
 @section('content')
     <div class="container">
         <div class="row">

@@ -1,4 +1,5 @@
 @extends('layouts.guestsLayout')
+@section('page_title','الخدمات')
 @include('layouts.pageshero')
 @section('content')
     <!-- Service Start -->

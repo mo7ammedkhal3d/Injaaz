@@ -1,4 +1,5 @@
 @extends('layouts.guestsLayout')
+@section('page_title','تواصل معنا')
 @include('layouts.pageshero')
 @section('content')
             <!-- Contact Start -->

@@ -1,4 +1,5 @@
 @extends('layouts.secondry')
+@section('page_title','تسجيل الدخول')
 @section('content')
 <div class="row m-0 justify-content-center">
   <div class="col-11 d-flex justify-content-center">
@@ -25,7 +26,6 @@
                     <div class="input-group has-validation">
                       <span class="edit-border-raduis input-group-text" id="inputGroupPrepend">@</span>
                       <input id="email" type="email" class="form-control py-1 edit-input-border-raduis @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-                      <div class="invalid-feedback">ادخل اسم المستخدم</div>
                       @error('email')
                       <span class="invalid-feedback" role="alert">
                           <strong>{{ $message }}</strong>
@@ -37,8 +37,6 @@
                   <div class="col-12">
                     <label for="yourPassword" class="form-label">كلمة السر</label>
                     <input id="password" type="password" class="form-control py-1 @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-                    <div class="invalid-feedback">ادخل كلمة السر</div>
-
                     @error('password')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>

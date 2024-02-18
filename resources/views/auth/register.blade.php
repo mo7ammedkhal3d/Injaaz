@@ -29,7 +29,6 @@
                   <div class="col-12">
                     <label for="name" class="form-label">اسمك الكامل</label>
                     <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-                    <div class="invalid-feedback">قم بادخال اسمك</div>
                     @error('name')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -40,7 +39,6 @@
                   <div class="col-12">
                     <label for="phone" class="form-label">رقم الهاتف</label>
                     <input id="phone" type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone">
-                    <div class="invalid-feedback">قم بادخال رقم هاتفك</div>
                     @error('phone')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -51,7 +49,6 @@
                   <div class="col-12">
                     <label for="email" class="form-label">ايميلك</label>
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
-                    <div class="invalid-feedback">قم بادخال الايميل الخاص بك</div>
                     @error('email')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -62,7 +59,6 @@
                   <div class="col-12">
                     <label for="password" class="form-label">كلمة السر</label>
                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-                    <div class="invalid-feedback">قم بادخال كلمة السر</div>
                     @error('password')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -73,7 +69,6 @@
                   <div class="col-12">
                     <label for="yourPassword" class="form-label">تأكيد كلمة السر</label>
                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                    <div class="invalid-feedback">قم بادخال تأكيد كلمة السر</div>
                   </div>
 
                   <div class="col-12">

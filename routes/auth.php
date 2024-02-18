@@ -12,7 +12,7 @@ Route::get('/register',function(){
 })->name('auth.register');
 
 Route::get('/terms',function(){
-    return view('gustes.conditionAndTerms');
+    return view('guests.conditionAndTerms');
 })->name('gustes.terms');
 
 Auth::routes();

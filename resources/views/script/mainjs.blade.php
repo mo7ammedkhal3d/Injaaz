@@ -3,7 +3,7 @@
     var baseUrl = '{{asset('')}}';
     var descriptionText = null;
     var commentText = null;
-    
+
 
     $(document).ready(function() {
 
@@ -19,14 +19,14 @@
         // Main-Layout Pervent dropdwon disapper inclick
 
 
-        // Dashboard Index remove modal-open class 
+        // Dashboard Index remove modal-open class
             $('#add-board-modal').on('shown.bs.modal', function (e) {
             $('body').removeClass('modal-open');
             $('body').css({'overflow': 'auto', 'padding-right': '0'});
             })
-        // Dashboard Index remove modal-open class 
+        // Dashboard Index remove modal-open class
 
-        // Dashboard Board 
+        // Dashboard Board
 
             setupDragAndDrop();
 
@@ -94,17 +94,17 @@
                 });
 
             // Deal with placeholder of div and ckeditr
-        // Dashboard Board 
+        // Dashboard Board
 
     });
-    
-    
-    //#region Main-Layout 
-    
-        //#region Notification 
-    
+
+
+    //#region Main-Layout
+
+        //#region Notification
+
             //#region Get new user notification
-    
+
                 fetch(`${baseUrl}dashboard/{{Auth::user()->id}}/notification/getNew`, {
                     method: 'GET',
                     })
@@ -114,7 +114,7 @@
                     }
                     return response.json();
                 })
-                .then(data => { 
+                .then(data => {
                     if (data){
                     if(data.unReaded_notifiction > 0){
                         $('#notification-no').html(data.unReaded_notifiction);
@@ -129,10 +129,10 @@
                             <hr class="dropdown-divider">
                         </li>
                     `);
-    
+
                 data.notifications.forEach(notification => {
                     if (notification.status == 'inprogress'){
-                    $('#user-notification').append(`       
+                    $('#user-notification').append(`
                         <li id="notification-item" class="notification-item p-0 in-transition">
                             <div class="row m-0 px-0 py-2">
                             <div class="row m-0 p-0">
@@ -154,8 +154,8 @@
                             </div>
                             </div>
                             <hr class="dropdown-divider">
-                        </li> `); 
-                    } else if (notification.status === 'reject'){ 
+                        </li> `);
+                    } else if (notification.status === 'reject'){
                         $('#user-notification').append(`
                         <li id="notification-item" class="notification-item p-0 in-transition">
                             <div class="row m-0 px-0 py-2">
@@ -178,7 +178,7 @@
                             </div>
                             <hr class="dropdown-divider">
                         </li> `);
-                    } else { 
+                    } else {
                         $('#user-notification').append(`
                         <li id="notification-item" class="notification-item p-0 in-transition">
                             <div class="row m-0 px-0 py-2">
@@ -208,15 +208,15 @@
                     <li class="dropdown-footer">
                         <a href="{{ route('getAllUserNotification', ['userId' => Auth::user()->id]) }}">عرض جميع الاشعارات</a>
                     </li>
-                    `)      
+                    `)
                 })
-    
+
                 .catch(error => {
                     console.error('Error fetching card details:', error);
                 });
-    
+
             //#endregion Get new user notification
-    
+
             //#region Move Notification to stack
                 function moveNotification(notificationId,element){
                 const formData = new FormData();
@@ -234,20 +234,20 @@
                     }
                     return response.json();
                 })
-                .then(data => { 
+                .then(data => {
                     var notificationItem = element.closest('#notification-item');
                     $(notificationItem).css('transform', 'translateX(20rem)');
-    
+
                     setTimeout(() => {
                     notificationItem.remove();
-                    }, 200);   
+                    }, 200);
                 })
                 .catch(error => {
                     console.error('Error fetching card details:', error);
                 });
                 }
             //#endregion Move Notification to stack
-    
+
             //#region change Notification Status
                 function changeNotificationStatus(notificationId,element,updateType){
                 const formData = new FormData();
@@ -266,7 +266,7 @@
                     }
                     return response.json();
                 })
-                .then(data => { 
+                .then(data => {
                 var notificationState = $(element).closest('#notification-state');
                 if(data.update_type == "reject"){
                     notificationState.html(`
@@ -276,7 +276,7 @@
                     notificationState.html(`
                     <button disabled class="btn btn-success fw-bold py-0 px-4">تمت الموافقة</button>
                     `);
-    
+
                     var boardListsroute = `{{ route('dashboard.lists', ['userId' => Auth::user()->id, 'board_id' => ':boardId']) }}`;
                     boardListsroute = boardListsroute.replace(':boardId', data.board.id);
                     var boardMemebesroute = `{{ route('board.boardMembres', ['userId' => Auth::user()->id, 'board_id' => ':boardId']) }}`;
@@ -331,7 +331,7 @@
                             </div>
                             <p class="board-description">${data.board.description}</p>
                             </a>
-                        </div>  
+                        </div>
                         </div>
                     `);
                 }
@@ -339,17 +339,17 @@
                 .catch(error => {
                     console.error('Error fetching card details:', error);
                 });
-    
+
                 }
-    
+
                 function redirectToBoard(boardId,userId) {
                     window.location.href = `${baseUrl}dashboard/${boardId}/lists`
                 }
-    
+
             //#endregion change Notification Status
-    
+
             //#region show Notification
-    
+
                 function showNotification(element){
                 fetch(`${baseUrl}dashboard/{{Auth::user()->id}}/notification/changeReadState`, {
                     method: 'GET',
@@ -360,19 +360,19 @@
                     }
                     return response.json();
                 })
-                .then(data => { 
+                .then(data => {
                     if (data){
                     var notificationNo = $(element).find('#notification-no');
                     notificationNo.html("");
                     }
                 })
-    
+
                 .catch(error => {
                     console.error('Error fetching card details:', error);
                 });
                 }
             //#endregion show Notification
-    
+
             //#region Delete Notification
                 function deleteNotification(notificationId,element){
                 const formData = new FormData();
@@ -390,7 +390,7 @@
                     }
                     return response.json();
                 })
-                .then(data => { 
+                .then(data => {
                     var notificationItem = element.closest('tr');
                     notificationItem.remove();
                 })
@@ -399,14 +399,14 @@
                 });
                 }
             //#endregion Delete Notification
-    
+
         //#endregion
-    
+
     //#endregion
 
     //#region Dashboard index
 
-        // Add board 
+        // Add board
 
             var inviteUsers = [];
 
@@ -433,7 +433,7 @@
 
                     $('.dropdownOption').each(function() {
                         var optionText = $(this).find('#user-name').text().toLowerCase();
-                        
+
                         if (optionText.indexOf(input) > -1) {
                             $(this).show();
                             dropdownVisible = true;
@@ -498,7 +498,7 @@
                         },
                         submitHandler: function (form) {
                             continueCreateBoard();
-                            return false; 
+                            return false;
                         }
                     });
 
@@ -506,7 +506,7 @@
                     $('#btn-continue').on('click', function () {
                         if ($('#board-info-form').valid()) {
                             continueCreateBoard();
-                            return false; 
+                            return false;
                         }
                     });
 
@@ -517,7 +517,7 @@
                     while (inviteUsers.length > 0) {
                         inviteUsers.pop();
                     }
-                    $('#add-board-modal').modal('hide'); 
+                    $('#add-board-modal').modal('hide');
                     });
 
                     $('#close-add-board-modal-2').on('click', function(){
@@ -531,7 +531,7 @@
                     while (inviteUsers.length > 0) {
                         inviteUsers.pop();
                     }
-                    $('#add-board-modal').modal('hide'); 
+                    $('#add-board-modal').modal('hide');
                     });
 
                     $('#back-to-previous').on('click', function(){
@@ -545,7 +545,7 @@
                         inviteUsers.pop();
                     }
                     });
-                
+
                 // continueCreateBoard
                     function continueCreateBoard() {
                         $('#btn-create-board').on('click', createboard);
@@ -561,7 +561,7 @@
                             }
                             return response.json();
                         })
-                        .then(data => { 
+                        .then(data => {
                             if (data){
                             data.users.forEach(user =>{
                                 const email = user.email.toLowerCase().trim();
@@ -574,7 +574,7 @@
                                     <img src="${gravatarUrl}" alt="John">
                                     <h6 id="user-name">${user.name}</h6>
                                 </div>
-                                </div>              
+                                </div>
                                 `);
                             });
                             }
@@ -583,7 +583,7 @@
                         .catch(error => {
                             console.error('Error fetching card details:', error);
                         });
-                    }  
+                    }
                 // continueCreateBoard
 
                 // createboard
@@ -621,15 +621,15 @@
 
             // addBoardConfirm
 
-        // Add board 
+        // Add board
 
     //#region Dashboard index
 
     //#region Dashboard board
-      
+
         var selectedCard;
 
-        // Add member to card 
+        // Add member to card
             function toggleDropdown() {
             $('#dropdownContent').toggle();
             }
@@ -683,7 +683,7 @@
                                     <img class="comment-img" src="${gravatarUrl}" alt="loading">
                                     <h6 class="m-0">${data.user_name}</h6>
                                     <i class="fa-solid fa-trash delete-member-icon" onclick="deleteCardMember(this,${data.board_member_id},{{Auth::user()->id}})" ></i>
-                                </div>              
+                                </div>
                             `);
                         }
                     })
@@ -692,9 +692,9 @@
                     });
                 }
             }
-            
 
-        // Add member to card 
+
+        // Add member to card
 
         // Delte Card member
             function deleteCardMember(element,boardMemberId,userId){
@@ -734,8 +734,8 @@
             function markComplete(element){
                 element.html("Complete");
                 element.css({
-                color: "white",            
-                backgroundColor: "green"    
+                color: "white",
+                backgroundColor: "green"
             });
             }
         // mark Complete
@@ -788,8 +788,8 @@
             }
 
         // End Update Card title
-    
-        // Update Card Description 
+
+        // Update Card Description
             function editCardDescription(element,userId){
                 if (descriptionText){
                         descriptionText.setData($('#description-confirm').html());
@@ -863,7 +863,7 @@
                 }
             }
 
-        // End Update Card Description 
+        // End Update Card Description
 
         // Add Card comment
             function AddComment(userId,boardId){
@@ -943,7 +943,7 @@
                         });
                     }
                 }
-            
+
 
                 function cancelAddComment(){
                     commentText.setData("");
@@ -952,7 +952,7 @@
                     $('#comment-confirm').removeClass('d-none');
                     $('#input-comment').addClass('d-none');
                 }
-                    
+
             }
 
         // End Add Card comment
@@ -967,7 +967,7 @@
                 if(type=="start_date"){
                     formData.append('update_type', 'card_start_date');
                 } else formData.append('update_type', 'card_due_date');
-                
+
 
                 fetch(`${baseUrl}dashboard/${userId}/card/update`, {
                     method: 'POST',
@@ -1004,7 +1004,7 @@
                                     </div>
                                 `);
                             }
-                        }              
+                        }
                     }
                 })
                 .catch(error => {
@@ -1037,30 +1037,30 @@
                 })
                 .then(data => {
                     if (data) {
-                                
+
                     }
                 })
                 .catch(error => {
                     console.error('Error fetching card details:', error);
                 });
             }
-            
+
         // Update Card Progress
 
         // showAddMember
             function showAddMember(){
                     $('#close-add-member-modal').on('click', function(){
                         $('#member-email').val("");
-                        $('#add-card-member').modal('hide'); 
+                        $('#add-card-member').modal('hide');
                     });
                     $('#member-email').focus();
-                $('#add-card-member').modal('show'); 
+                $('#add-card-member').modal('show');
             }
         // showAddMember
 
         // Get Card Details
-            function showCard(card,userId,cardId) {  
-                selectedCard = $(card);    
+            function showCard(card,userId,cardId) {
+                selectedCard = $(card);
                         $('#close-card-modal').on('click', function(){
                         $('#card-title').html("");
                         $('#description-confirm').html();
@@ -1072,22 +1072,22 @@
                         $('#card_assigneds').html("");
                         $('#member-photos').html("");
                         $('#dropdownContent').html("");
-                        $('#card-modal').modal('hide'); 
+                        $('#card-modal').modal('hide');
                     });
                 $('#card-loadingSpinner').fadeIn(100);
-                $('#card-modal').modal('show'); 
-                
-                
+                $('#card-modal').modal('show');
+
+
                 fetch(`${baseUrl}dashboard/${userId}/card/${cardId}`, {
                     method: 'GET',
                 })
-                .then(response => {  
+                .then(response => {
                     if (!response.ok) {
                     throw new Error('Network response was not ok');
                     }
                     return response.json();
                 })
-                .then(cardDetails => { 
+                .then(cardDetails => {
                     setTimeout(() => {
                         $('#card-loadingSpinner').fadeOut(500);
                         $('#card-title').html("");
@@ -1137,7 +1137,7 @@
                                         </div>
                                         <div class="card-comment-item w-100 my-1" role="button">${comment.comment_text}</div>
                                     </div>
-                                </div>                
+                                </div>
                             `);
                         });
 
@@ -1155,7 +1155,7 @@
                                     <img class="comment-img" src="${gravatarUrl}" alt="loading">
                                     <h6 class="m-0">${card_assigned.user_name}</h6>
                                     <i class="fa-solid fa-trash delete-member-icon" onclick="deleteCardMember(this,${card_assigned.board_member_id},{{Auth::user()->id}})" ></i>
-                                </div>               
+                                </div>
                             `);
                         });
 
@@ -1170,7 +1170,7 @@
                                         <img src="${gravatarUrl}" alt="John">
                                         <h6 id="member-name">${board_member.name}</h6>
                                     </div>
-                                </div>                
+                                </div>
                             `);
                         });
 
@@ -1187,12 +1187,12 @@
                         // Handle the error, e.g., show an error message
                         alert('Failed to fetch card details. Please try again.');
                     }, 1000);
-                });   
+                });
             }
 
         // end Get Card Details
 
-        // Add Card 
+        // Add Card
             function addCardConfirm(button){
                 var listBody = $(button).closest('.list-body');
                 listBody.find('.mkmk').removeClass('list-body-conetnt');
@@ -1218,7 +1218,7 @@
                             },
                             body: formData,
                         })
-                        .then(response => {  
+                        .then(response => {
                             if (!response.ok) {
                             throw new Error('Network response was not ok');
                             }
@@ -1227,15 +1227,15 @@
                         .then(data => {
                             if (data) {
                                 listBody.find('.mkmk').append(`
-                                <div draggable="true" class="card bg-white p-2 d-flex flex-row justify-content-between" onclick="showCard(this ,{{Auth::user()->id}},${data.card.id})" data-card-id="${data.card.id}"> 
+                                <div draggable="true" class="card bg-white p-2 d-flex flex-row justify-content-between" onclick="showCard(this ,{{Auth::user()->id}},${data.card.id})" data-card-id="${data.card.id}">
                                     <div id="card-short-info" class="d-flex justify-content-center gap-3 flex-column">
                                         <h6 id="hcard-title" class="fw-bold m-0">${data.card.title}</h6>
-                                    </div>                               
-                                    
+                                    </div>
+
                                     <div class="edit-confirm d-flex align-items-start">
                                         <i class="fa-solid fa-marker edit-card-title"></i>
                                     </div>
-                                            
+
                                 </div>
                                 `);
                                 listBody.scrollTop(listBody.prop('scrollHeight'));
@@ -1261,7 +1261,7 @@
 
         // end
 
-        // Add List & other operation 
+        // Add List & other operation
 
             $('.new-list').on('click','.add-list-confirm' , function(){
                 $('.add-list-confirm').addClass('d-none');
@@ -1270,7 +1270,7 @@
                 $('.new-list').find('input').focus();
             })
 
-            function addList(button,userId,boardId){ 
+            function addList(button,userId,boardId){
                 var newListTitle = $('.new-list').find('input').val()
                 if (newListTitle.trim() !== "") {
                     const formData = new FormData();
@@ -1283,13 +1283,13 @@
                         },
                         body: formData,
                     })
-                    .then(response => {  
+                    .then(response => {
                         if (!response.ok) {
                         throw new Error('Network response was not ok');
                         }
                         return response.json();
                     })
-                    .then( data => { 
+                    .then( data => {
                         if (data) {
                             $('.new-list').before(`
                                 <div class="col-3 rounded board-list p-0" data-list-id="${data.boardList.id}">
@@ -1328,7 +1328,7 @@
                 }
             }
 
-                    
+
 
             $('.new-list').on('click','.btn-cancel-add' , function(){
                 $('.new-list').find('input').val("")
@@ -1338,15 +1338,15 @@
                 $('.new-list').find('input').addClass('d-none');
             })
 
-        // End Add List & other operation 
+        // End Add List & other operation
 
-        // Card Operation     
+        // Card Operation
 
-            // show member Details 
+            // show member Details
 
                 function showMemberDetails() {
                 $('.member-details').toggleClass('d-none');
-                
+
                 }
             // end show member Details
 
@@ -1374,7 +1374,7 @@
 
 
             var oldListId;
-            var cardId; 
+            var cardId;
             var newListId;
             var oldPosition;
             var newPosition;
@@ -1428,8 +1428,8 @@
                         }
                         return response.json();
                     })
-                    .then(data => { 
-                    
+                    .then(data => {
+
                     })
                     .catch(error => {
                         console.error('Error fetching card details:', error);
@@ -1452,7 +1452,7 @@
                             }
                             return response.json();
                         })
-                        .then(data => { 
+                        .then(data => {
                         })
                         .catch(error => {
                             console.error('Error fetching card details:', error);
@@ -1460,7 +1460,7 @@
                         }
             }
 
-        // Drag and drop 
+        // Drag and drop
 
     //#endregion Dashboard board
 
@@ -1501,7 +1501,7 @@
                     }
                     return response.json();
                 })
-                .then(data => { 
+                .then(data => {
                     swal({
                         //  title: title,
                             text: data.message,
@@ -1522,7 +1522,7 @@
             }
         // updateGeneralSettings
 
-        // delete board member          
+        // delete board member
             function deleteBoardMember(element,boardId,memberId){
                 swal({
                     // title: "Are you sure?",
@@ -1550,7 +1550,7 @@
                             }
                             return response.json();
                         })
-                        .then(data => { 
+                        .then(data => {
                             swal({
                                 //  title: title,
                                     text: data.message,
@@ -1581,7 +1581,7 @@
 
             $('.dropdownOption').each(function() {
                 var optionText = $(this).find('#user-name').text().toLowerCase();
-                
+
                 if (optionText.indexOf(input) > -1) {
                     $(this).show();
                     dropdownVisible = true;
@@ -1621,7 +1621,7 @@
                         }
                         return response.json();
                     })
-                    .then(data => { 
+                    .then(data => {
                         swal({
                             //  title: title,
                                 text: data.message,
@@ -1650,12 +1650,12 @@
                 $('#invite-toboard-modal').modal('show');
                 selectedBoardId = boardId;
                 $('#close-invite-toboard-modal').on('click', function(){
-                    $('#invite-toboard-modal').modal('hide'); 
+                    $('#invite-toboard-modal').modal('hide');
                     $('#board-dropdownContent').html("");
                     $('#send-invite-btn').addClass('d-none');
                     $('#invite-member-search').val("");
                 });
-                
+
                 fetch(`${baseUrl}dashboard/{{Auth::user()->id}}/users/getUninvite/${boardId}`, {
                 method: 'GET',
                 })
@@ -1666,7 +1666,7 @@
                     }
                     return response.json();
                 })
-                .then(data => { 
+                .then(data => {
                     if (data){
                     data.users.forEach(user =>{
                         const email = user.email.toLowerCase().trim();
@@ -1679,7 +1679,7 @@
                             <img src="${gravatarUrl}" alt="John">
                             <h6 id="user-name">${user.name}</h6>
                         </div>
-                        </div>              
+                        </div>
                         `);
                     });
                     }
@@ -1689,11 +1689,11 @@
                     console.error('Error fetching card details:', error);
                 });
 
-            }  
+            }
         // invite board membres
 
 
-        // delete board          
+        // delete board
             function deleteBoard(boardId,userId){
                 swal({
                         // title: "Are you sure?",
@@ -1721,7 +1721,7 @@
                                 }
                                 return response.json();
                             })
-                            .then(data => { 
+                            .then(data => {
                                 swal({
                                         text: data.message,
                                         content: true,
@@ -1743,7 +1743,7 @@
                     })
             }
 
-        // delete board 
+        // delete board
 
     //#endregion board-settings
 
@@ -1775,7 +1775,7 @@
                 }
                 return response.json();
             })
-            .then(data => { 
+            .then(data => {
                 $('#user-name').val(data.user_name);
                 if(data.user_bio != ""){
                     $('#user-bio').val(data.user_bio);
@@ -1809,7 +1809,7 @@
                     }
                     return response.json();
                 })
-                .then(data => { 
+                .then(data => {
                     swal({
                         //  title: title,
                             text: data.message,
@@ -1843,7 +1843,7 @@
                     }
                     return response.json();
                 })
-                .then(data => { 
+                .then(data => {
                     if(data){
                         $('#boards-container').html("");
                         $.each(data.boards, function(index, board) {
@@ -1867,7 +1867,7 @@
                                 </div>
                             `);
                         }
-                        
+
                         var route = `{{ route('board.generalSettings', ['userId' => Auth::user()->id, 'board_id' => ':boardId']) }}`;
                         route = route.replace(':boardId', board.id);
 
@@ -1888,7 +1888,7 @@
                     changeActiveLink(element,section);
                     }
                 })
-            
+
 
                 .catch(error => {
                     console.error('Error fetching card details:', error);
@@ -1896,7 +1896,7 @@
             }
         // getUserBoards
 
-        // getUserCards       
+        // getUserCards
             function getUserCards(element,section){
                 fetch(`${baseUrl}dashboard/{{Auth::user()->id}}/getUserCards/local`, {
                     method: 'GET',
@@ -1908,7 +1908,7 @@
                     }
                     return response.json();
                 })
-                .then(data => { 
+                .then(data => {
                     if(data){
                         $.each(data.cards, function(index, card) {
                             $('#user-cards').find('tbody').append(`
@@ -1923,7 +1923,7 @@
                         changeActiveLink(element,section);
                     }
                 })
-            
+
 
                 .catch(error => {
                     console.error('Error fetching card details:', error);

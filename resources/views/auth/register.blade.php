@@ -1,4 +1,5 @@
 @extends('layouts.secondry')
+@section('page_title','تسجيل الأشتراك')
 @section('content')
 <div class="row mx-0 justify-content-center">
   <div class="col-11">

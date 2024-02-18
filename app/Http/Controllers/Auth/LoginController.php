@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
@@ -36,5 +37,28 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+   /**
+     * Get a validator for an incoming registration request.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8',],
+        ],
+        [
+            'email.required' => 'قم بادخال الأيميل',
+            'email.string' => 'يجب أن يكون نص ليس أرقام',
+            'email.email' => 'هذا ليست صياغة إيميل صحيحة',
+            'email.max' => 'البريد الإلكتروني طويل جدًا، يجب أن يحتوي على 255 حرفًا كحد أقصى',
+            'password.required' => 'الرجاء إدخال كلمة مرور',
+            'password.string' => 'يجب أن تكون كلمة المرور نصًا',
+            'password.min' => 'يجب أن تحتوي كلمة المرور على الأقل 8 أحرف',
+        ]);
     }
 }

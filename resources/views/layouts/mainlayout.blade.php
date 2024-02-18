@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>{{ config('app.name', 'Laravel') }}</title>
+  <title>{{ config('app.name') }} | @yield('page_title')</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -187,7 +187,7 @@
   <script src="{{asset('assets/vendor/php-email-form/validate.js')}}"></script>
   <script src="{{asset('assets/js/dashboard.js')}}"></script>
 
-  
+
   <script src="{{asset('assets/js/main.js')}}"></script>
   @include('script.mainjs')
 </body>

@@ -76,7 +76,11 @@
                     <div class="form-check">
                       <input class="float-end form-check-input  @error('terms') is-invalid @enderror" name="terms" type="checkbox" id="acceptTerms" required>
                       <label class="me-4 form-check-label" for="acceptTerms">اوافق على جميع  <a href="{{route('gustes.terms')}}">الاحكام والشروط</a></label>
-                      <div class="invalid-feedback">يجيب عليك الموافقة قبل انشاء الحساب</div>
+                      @error('terms')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                      @enderror
                     </div>
                   </div>
                   <div class="col-12">

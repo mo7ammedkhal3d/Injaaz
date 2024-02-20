@@ -1,4 +1,5 @@
 @extends('layouts.dashboard.mainlayout')
+@section('page_title','لوحة التحكم')
 @section('content')
     <main id="main" class="main p-0 in-bg-srface">
         {{-- Header --}}

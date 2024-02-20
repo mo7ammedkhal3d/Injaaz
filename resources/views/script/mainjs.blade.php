@@ -417,7 +417,7 @@
 
                 jQuery.validator.addMethod("noWhitespaceStart", function(value, element) {
                     return this.optional(element) || !/^\s/.test(value);
-                }, "لا يجب أن يبدأ بمسافة");
+                }, "لا يجب أن يبدأ بمسافة فارغة");
 
 
             // may later invite users
@@ -491,7 +491,7 @@
                                 noWhitespaceStart: "أسم اللوحة لا يجب أن يبدأ بمسافة"
                             },
                             boardDescription: {
-                                required: "فم بادخال وصف للوحة",
+                                required: "قم بادخال وصف للوحة",
                                 minlength: "وصف اللوحة يجب أن يكون 10 احرف على الاقل",
                                 noWhitespaceStart: "وصف اللوحة لا يجب أن يبدأ بمسافة"
                             }

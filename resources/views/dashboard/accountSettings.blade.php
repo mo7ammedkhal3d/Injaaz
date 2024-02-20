@@ -1,4 +1,5 @@
 @extends('layouts.dashboard.mainlayout')
+@section('page_title','أعدادت الحساب')
 @section('content')
     <main id="main" class="main p-0">
         @if (session('success'))

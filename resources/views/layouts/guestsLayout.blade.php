@@ -8,6 +8,9 @@
     <meta content="" name="keywords">
     <meta content="" name="description">
 
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- Favicon -->
     <link href="{{ asset('assets/img/favicon.ico') }}" rel="icon">
 
@@ -46,76 +49,11 @@
 
 
         <!-- Navbar & Hero Start -->
-        <div class="container-xxl position-relative p-0">
-            <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
-                <a href="{{ route('guests.index') }}" class="navbar-brand p-0" title="الرئيسية">
-                    <img id="nav-logo" alt="home" src="{{ asset('assets/img/logo.png') }}">
-                </a>
-                @if (Route::has('login'))
-                    <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
-                        @auth
-                            <div class="px-4 mx-3">
-                                <a href="{{ route('dashboard.index') }}"
-                                    class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500 btn btn-primary edit-bg-secondry">لوحة
-                                    التحكم</a>
-                            </div>
-                        @else
-                            <div class="px-4 mx-3">
-                                <a href="{{ route('login') }}"
-                                    class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500 btn btn-primary edit-bg-secondry">تسجيل
-                                    الدخول</a>
-                            </div>
-                        @endauth
-                    </div>
-                @endif
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarCollapse">
-                    <span class="fa fa-bars"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <div class="navbar-nav me-auto py-0">
-                        <a href="{{ route('guests.index') }}"
-                            class="nav-item nav-link fw-bold {{ Route::is('guests.index') ? 'active' : '' }}">الرئيسية</a>
-                        <a href="{{ route('guests.about') }}"
-                            class="nav-item nav-link fw-bold {{ Route::is('guests.about') ? 'active' : '' }}">عن
-                            إنجاز</a>
-                        <a href="{{ route('guests.services') }}"
-                            class="nav-item nav-link fw-bold {{ Route::is('guests.services') ? 'active' : '' }}">الخدمات</a>
-                        <a href="{{ route('guests.testimonial') }}"
-                            class="nav-item nav-link fw-bold {{ Route::is('guests.testimonial') ? 'active' : '' }}">عملائنا</a>
-                        <a href="{{ route('guests.team') }}"
-                            class="nav-item nav-link fw-bold {{ Route::is('guests.team') ? 'active' : '' }}">الأعضاء</a>
-                        <a href="{{ route('guests.contact') }}"
-                            class="nav-item nav-link fw-bold {{ Route::is('guests.contact') ? 'active' : '' }}">تواصل
-                            معنا</a>
-                    </div>
-                    <button type="button" class="btn edit-text-secondary me-3" data-bs-toggle="modal"
-                        data-bs-target="#searchModal"><i class="fa fa-search"></i></button>
-                </div>
-            </nav>
-            @yield('homehero')
-            @yield('pageshero')
-        </div>
+        @include('layouts.navAndHero')
         <!-- Navbar & Hero End -->
 
         <!-- Full Screen Search Start -->
-        <div class="modal fade" id="searchModal" tabindex="-1">
-            <div class="modal-dialog modal-fullscreen">
-                <div class="modal-content" style="background: rgba(29, 29, 39, 0.7);">
-                    <div class="modal-header border-0">
-                        <button type="button" class="btn bg-white btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body d-flex align-items-center justify-content-center">
-                        <div class="input-group" style="max-width: 600px;">
-                            <input type="text" class="form-control bg-transparent border-light p-3"
-                                placeholder="ادخل كلمة مفتاحية">
-                            <button class="btn btn-light px-4"><i class="bi bi-search"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @include('layouts.guestSearsh')
         <!-- Full Screen Search End -->
 
         <main>
@@ -123,102 +61,7 @@
         </main>
 
         <!-- Footer Start -->
-        <div class="container-fluid text-light footer mt-5 pt-5 wow fadeIn edit-bg-primary" data-wow-delay="0.1s">
-            <div class="container py-5 px-lg-5">
-                <div class="row g-5">
-                    <div class="col-md-6 col-lg-3">
-                        <h5 class="text-white mb-4">كن على اتصال</h5>
-                        <p><i class="fa fa-map-marker-alt ms-3"></i>123 الشارع العام , المكلا, اليمن</p>
-                        <p><i class="fa fa-phone-alt ms-3"></i>+967 770485277</p>
-                        <p><i class="fa fa-envelope ms-3"></i>mo7am@gmail.com</p>
-                        <div class="d-flex pt-2">
-                            <a class="btn btn-outline-light btn-social" href=""><i
-                                    class="fab fa-twitter"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i
-                                    class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i
-                                    class="fab fa-youtube"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i
-                                    class="fab fa-instagram"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i
-                                    class="fab fa-linkedin-in"></i></a>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <h5 class="text-white mb-4">روابط مهمة</h5>
-                        <a class="btn btn-link" href="">عن إنجاز</a>
-                        <a class="btn btn-link" href="">تواصل معنا</a>
-                        <a class="btn btn-link" href="">التراخيص والحماية</a>
-                        <a class="btn btn-link" href="">الخدمات</a>
-                        <a class="btn btn-link" href="">ألمشاريع</a>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <h5 class="text-white mb-4">معرض المشاريع</h5>
-                        <div class="row g-2">
-                            <div class="col-4">
-                                <img class="img-fluid" src="{{ asset('assets/img/portfolio-1.jpg') }}"
-                                    alt="Image">
-                            </div>
-                            <div class="col-4">
-                                <img class="img-fluid" src="{{ asset('assets/img/portfolio-2.jpg') }}"
-                                    alt="Image">
-                            </div>
-                            <div class="col-4">
-                                <img class="img-fluid" src="{{ asset('assets/img/portfolio-3.jpg') }}"
-                                    alt="Image">
-                            </div>
-                            <div class="col-4">
-                                <img class="img-fluid" src="{{ asset('assets/img/portfolio-4.jpg') }}"
-                                    alt="Image">
-                            </div>
-                            <div class="col-4">
-                                <img class="img-fluid" src="{{ asset('assets/img/portfolio-5.jpg') }}"
-                                    alt="Image">
-                            </div>
-                            <div class="col-4">
-                                <img class="img-fluid" src="{{ asset('assets/img/portfolio-6.jpg') }}"
-                                    alt="Image">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <h5 class="text-white mb-4">إنجاز</h5>
-                        <p>اكتشف تجربة إدارة مشاريع فائقة السلاسة مع نظامنا المبتكر. استمتع بتنظيم مهامك، وتعاون
-                            بفعالية، وتتبع تقدمك بسهولة
-                            ولكن بمزايا وإمكانيات محسّنة ومتقدمة. جاهز لتحقيق أهدافك بكفاءة وبأسلوب يلبي تطلعاتك
-                        </p>
-                        <div class="position-relative w-100 mt-3">
-                            <input class="form-control border-0 rounded-pill w-100 pe-4 ps-5" type="text"
-                                placeholder="إيميلك" style="height: 48px;">
-                            <button type="button"
-                                class="btn shadow-none position-absolute top-0 start-0 mt-1 me-2"><i
-                                    class="fa fa-paper-plane edit-text-primary fe-4"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container px-lg-5">
-                <div class="copyright">
-                    <div class="row">
-                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                            &copy; <a class="border-bottom" href="#">MKZ.com</a>, جميع الحقوق محفوظة.
-                            تم التصميم بواسطة <a class="border-bottom" href="https://htmlcodex.com">Mohammed
-                                Khaled</a>
-                            <br>تم نشرة بواسطة : <a class="border-bottom" href="https://themewagon.com"
-                                target="_blank">MKZ</a>
-                        </div>
-                        <div class="col-md-6 text-center text-md-end">
-                            <div class="footer-menu">
-                                <a href="">الرئيسية</a>
-                                <a href="">التفضيلات</a>
-                                <a href="">مساعدة</a>
-                                <a href="">FQAs</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @include('layouts.footer')
         <!-- Footer End -->
 
         <!-- Back to Top -->

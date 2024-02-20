@@ -49,7 +49,7 @@
         <div class="container-xxl position-relative p-0">
             <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
                 <a href="{{ route('guests.index') }}" class="navbar-brand p-0" title="الرئيسية">
-                    <img id="nav-logo" alt="home" src="{{asset('assets/img/logo.png')}}">
+                    <img id="nav-logo" alt="home" src="{{ asset('assets/img/logo.png') }}">
                 </a>
                 @if (Route::has('login'))
                     <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">

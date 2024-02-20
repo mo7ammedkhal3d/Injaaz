@@ -45,7 +45,7 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (auth()->attempt($credentials)) {
-            return redirect()->route('dashboard.index');
+            return redirect()->route('dashboard.index',auth()->user()->id);
         }
 
         return back()->withErrors([

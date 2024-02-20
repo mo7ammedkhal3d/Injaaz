@@ -3,7 +3,7 @@
 
 <head>
     {{-- style files and meta and ... --}}
-    @include('layouts.dashboard.headDashboard')
+    @include('layouts.dashboard.head')
 </head>
 
 <body class="toggle-sidebar">
@@ -26,7 +26,7 @@
         </div>
         <!-- End Search Bar -->
 
-        @include('layouts.dashboard.navDashboard')
+        @include('layouts.dashboard.nav')
         <!-- End Icons Navigation -->
 
     </header>
@@ -42,7 +42,7 @@
             class="bi bi-arrow-up-short"></i></a>
 
     {{-- Scripts --}}
-    @include('layouts.dashboard.scriptsDashboard')
+    @include('layouts.dashboard.scripts')
 </body>
 
 </html>

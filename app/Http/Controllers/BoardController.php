@@ -12,18 +12,13 @@ use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Facades\DB;
 use App\Mail\InvitationMail;
 use App\Http\Requests\UpdateBoardRequest;
 use Illuminate\Support\Facades\Mail;
 
 class BoardController extends Controller
 {
-
-
-    /**
-     * Display a listing of the resource.
-     */
     public function index($userId)
     {
 
@@ -31,30 +26,15 @@ class BoardController extends Controller
             ->orWhereHas('boardMembers', function ($query) use ($userId) {
                 $query->where('user_id', $userId);
             })
-            ->with('boardMembers') 
+            ->with('boardMembers')
             ->get();
 
         return view('dashboard.index', ['boards' => $boards]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreBoardRequest $request)
     {
-        $validatedData = $request->validate([
-            'board_name' => 'required|string|max:255',
-            'board_description' => 'required|string',
-            'user_id' => 'required|exists:users,id',
-        ]);
+        $validatedData = $request->validated();
 
         $board = Board::create([
             'name' => $validatedData['board_name'],
@@ -77,22 +57,19 @@ class BoardController extends Controller
                     'sender_user_id' => $validatedData['user_id'],
                     'recipient_user_id' => $inviteUserId,
                     'board_id'=>$board->id,
-                    'text' => auth()->user()->name . '  قام بدعوتك للإنضمام الى  <span class="invited-to-board">'. $board->name.'<span>',                    
+                    'text' => auth()->user()->name . '  قام بدعوتك للإنضمام الى  <span class="invited-to-board">'. $board->name.'<span>',
                 ]);
 
                 // Send mail invitation
                 $reciver_user = User::find($inviteUserId);
 
-                Mail::to($reciver_user->email)->send(new InvitationMail($reciver_user->name,$sender_user,$board->name));
+                // Mail::to($reciver_user->email)->send(new InvitationMail($reciver_user->name,$sender_user,$board->name));
             }
         }
 
         return response()->json(['board' => $board], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($user_id,$board_id)
     {
         $board = Board::find($board_id);
@@ -176,19 +153,19 @@ class BoardController extends Controller
     public function updategeneralSettings(Request $request ,$user_id){
 
         $board = Board::find($request->board_id);
-    
+
         $board->update([
             'name' => $request->board_name,
             'description' => $request->board_description,
         ]);
-    
+
         return response()->json(['message'=>'تم التعديل','user'=>$board], 200);
     }
 
     public function delelteBoardMember(Request $request ,$user_id){
 
         $this->deleteBoardMemberRelated($request->member_id,$request->board_id);
-        
+
         $boardMember = BoardMember::where('board_id', $request->board_id)
         ->where('user_id', $request->member_id)
         ->first();
@@ -210,7 +187,7 @@ class BoardController extends Controller
             'sender_user_id' => $user_id,
             'recipient_user_id' => $request->recipient_userId,
             'board_id'=>$request->board_id,
-            'text' => auth()->user()->name . '  قام بدعوتك للإنضمام الى  <span class="invited-to-board">'. $board->name.'<span>',                    
+            'text' => auth()->user()->name . '  قام بدعوتك للإنضمام الى  <span class="invited-to-board">'. $board->name.'<span>',
         ]);
 
         $reciver_user = User::find($request->recipient_userId);
@@ -222,20 +199,20 @@ class BoardController extends Controller
     public function deleteForMe(Request $request){
 
         $board = Board::findOrFail($request->board_id);
-    
+
         if ($board->user_id == $request->member_id) {
             $otherBoardMembers = BoardMember::where('board_id', $request->board_id)
                 ->where('user_id', '<>', $request->member_id)
                 ->exists();
-    
+
             if ($otherBoardMembers) {
                 $firstBoardMember = BoardMember::where('board_id', $request->board_id)
                     ->where('user_id', '<>', $request->member_id)
                     ->first();
-    
+
                 $board->user_id = $firstBoardMember->user_id;
                 $board->save();
-    
+
                 $this->deleteBoardMemberRelated($request->member_id,$board->id);
 
                 BoardMember::where('board_id', $request->board_id)
@@ -255,14 +232,14 @@ class BoardController extends Controller
             BoardMember::where('board_id', $request->board_id)
             ->where('user_id', $request->member_id)
             ->delete();
-    
+
             return response()->json(['message' => 'تم الحذف']);
         }
     }
 
     private function deleteBoardMemberRelated($memberId, $boardId){
         $board = Board::findOrFail($boardId);
-    
+
         $board->lists->each(function ($list) use ($memberId) {
             $list->cards->each(function ($card) use ($memberId) {
                 $card->cardComments()->where('board_member_id', $memberId)->delete();
@@ -270,7 +247,7 @@ class BoardController extends Controller
             });
         });
     }
-    
+
     private function deleteBoardAndRelated(Board $board){
 
         $boardLists = BoardList::where('board_id',$board->id)->get();

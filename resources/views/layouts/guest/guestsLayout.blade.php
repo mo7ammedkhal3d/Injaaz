@@ -49,11 +49,11 @@
 
 
         <!-- Navbar & Hero Start -->
-        @include('layouts.navAndHero')
+        @include('layouts.guest.navAndHero')
         <!-- Navbar & Hero End -->
 
         <!-- Full Screen Search Start -->
-        @include('layouts.guestSearsh')
+        @include('layouts.guest.guestSearsh')
         <!-- Full Screen Search End -->
 
         <main>
@@ -61,7 +61,7 @@
         </main>
 
         <!-- Footer Start -->
-        @include('layouts.footer')
+        @include('layouts.guest.footer')
         <!-- Footer End -->
 
         <!-- Back to Top -->

@@ -1,4 +1,4 @@
-@extends('layouts.secondry')
+@extends('layouts.auth.secondry')
 @section('page_title','تسجيل الأشتراك')
 @section('content')
 <div class="row mx-0 justify-content-center">

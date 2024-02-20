@@ -1,4 +1,5 @@
 @extends('layouts.dashboard.mainlayout')
+@section('page_title','الاشعارات')
 @section('content')
     <main id="main" class="main p-0">
         <div class="container">

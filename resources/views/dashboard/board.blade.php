@@ -1,8 +1,8 @@
 @extends('layouts.dashboard.mainlayout')
+@section('page_title',$board->name )
 @section('content')
-    <main id="main" class="main p-0">
-
-        {{-- card-modal Modal --}}
+<main id="main" class="main p-0">
+    {{-- card-modal Modal --}}
         <div class="modal card-modal" id="card-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-center" role="document">
@@ -143,10 +143,9 @@
                 </div>
             </div>
         </div>
-        {{-- Card Modal --}}
 
 
-        {{-- Add Memeber Modal --}}
+    {{-- Add Memeber Modal --}}
         <div id="add-card-member" class="modal add-member-modal" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-center" role="document">
@@ -177,110 +176,99 @@
                 </div>
             </div>
         </div>
-        {{-- Add Memeber Modal --}}
 
 
-        {{-- Start Board --}}
-        <div class="py-2 px-3 board-header">
-            <div class="col d-flex flex-row gap-3 align-items-center">
-                <div class="board-name">
-                    <h3 class="fw-bold">{{ $board->name }}</h3>
-                </div>
-                <a href="{{ route('board.generalSettings', ['userId' => Auth::user()->id, 'board_id' => $board->id]) }}"
-                    class="link-board-general" role="button">
-                    <i class="fa-solid fa-gear board-general-icon"></i>
-                </a>
-                <a href="{{ route('board.boardMembres', ['userId' => Auth::user()->id, 'board_id' => $board->id]) }}"
-                    class="link-board-membres" role="button">
-                    <i class="fa-solid fa-users board-membres-icon"></i>
-                </a>
+    {{-- Start Board --}}
+    <div class="py-2 px-3 board-header">
+        <div class="col d-flex flex-row gap-3 align-items-center">
+            <div class="board-name">
+                <h3 class="fw-bold">{{ $board->name }}</h3>
             </div>
+            <a href="{{ route('board.generalSettings', ['userId' => Auth::user()->id, 'board_id' => $board->id]) }}"
+                class="link-board-general" role="button">
+                <i class="fa-solid fa-gear board-general-icon"></i>
+            </a>
+            <a href="{{ route('board.boardMembres', ['userId' => Auth::user()->id, 'board_id' => $board->id]) }}"
+                class="link-board-membres" role="button">
+                <i class="fa-solid fa-users board-membres-icon"></i>
+            </a>
         </div>
+    </div>
 
-        {{-- Show Listes and Cards --}}
-
-        <div
-            class="row pt-2 mt-2 gap-5 mx-0 board-body algin-itmes-center overflow-x-auto flex-nowrap custom-scrollbar-x custom-row-changes">
-            @if ($board->lists->count() > 0)
-                @foreach ($board->lists->sortBy('created_at') as $list)
-                    <div class="col-3 rounded board-list p-0" data-list-id="{{ $list->id }}">
-                        <div class="list-header p-3">
-                            <div class="list-title d-flex align-items-center justify-content-between" role="button">
-                                <h5 class="fw-bold">{{ $list->title }}</h5>
-                                <i class="fa-solid fa-ellipsis list-links"></i>
-                            </div>
-                        </div>
-                        <div class="list-body custom-scrollbar">
-                            <div class="list-body-conetnt mkmk custom-scrollbar px-3">
-                                @if ($list->cards && $list->cards->count() > 0)
-                                    @foreach ($list->cards->sortBy('position') as $card)
-                                        <div draggable="true"
-                                            class="card bg-white p-2 d-flex flex-row justify-content-between"
-                                            onclick="showCard(this,{{ Auth::user()->id }},{{ $card->id }})"
-                                            data-card-id="{{ $card->id }}">
-                                            <div id="card-short-info"
-                                                class="d-flex justify-content-center gap-3 flex-column">
-                                                <h6 id="hcard-title" class="fw-bold m-0">{{ $card->title }}</h6>
-                                                @if (\Carbon\Carbon::parse($card->due_date)->format('Y-m-d') == date('Y-m-d') || $card->description != null)
-                                                    <div id="card-notification" class="d-flex gap-3 align-items-center">
-                                                        @if ($card->due_date == date('Y-m-d'))
-                                                            <small id="date-notify"
-                                                                style="background-color: #EF4040 ;color:white"
-                                                                title="أنجز بسرعة" class="fw-bold rounded p-1"
-                                                                onclick="markComplete(this)">تنتهي قريبا <i
-                                                                    class="fa-regular fa-clock me-2"></i></small>
-                                                        @endif
-                                                        @if ($card->description != null)
-                                                            <i id="description-notify" title="هذه الكارد تحتوي على وصف"
-                                                                class="fa-solid fa-align-left"></i>
-                                                        @endif
-                                                    </div>
-                                                @endif
-                                            </div>
-                                            <div class="edit-confirm d-flex align-items-start">
-                                                <i class="fa-solid fa-marker edit-card-title"></i>
-                                            </div>
+    {{-- Show Listes and Cards --}}
+    <div
+        class="row pt-2 mt-2 gap-5 mx-0 board-body algin-itmes-center overflow-x-auto flex-nowrap custom-scrollbar-x custom-row-changes">
+        @forelse ($board->lists->sortBy('created_at') as $list)
+            <div class="col-3 rounded board-list p-0" data-list-id="{{ $list->id }}">
+                <div class="list-header p-3">
+                    <div class="list-title d-flex align-items-center justify-content-between" role="button">
+                        <h5 class="fw-bold">{{ $list->title }}</h5>
+                        <i class="fa-solid fa-ellipsis list-links"></i>
+                    </div>
+                </div>
+                <div class="list-body custom-scrollbar">
+                    <div class="list-body-conetnt mkmk custom-scrollbar px-3">
+                        @forelse ($list->cards->sortBy('position') as $card)
+                            <div draggable="true" class="card bg-white p-2 d-flex flex-row justify-content-between"
+                                onclick="showCard(this,{{ Auth::user()->id }},{{ $card->id }})"
+                                data-card-id="{{ $card->id }}">
+                                <div id="card-short-info" class="d-flex justify-content-center gap-3 flex-column">
+                                    <h6 id="hcard-title" class="fw-bold m-0">{{ $card->title }}</h6>
+                                    @if (\Carbon\Carbon::parse($card->due_date)->format('Y-m-d') == date('Y-m-d') || $card->description != null)
+                                        <div id="card-notification" class="d-flex gap-3 align-items-center">
+                                            @if ($card->due_date == date('Y-m-d'))
+                                                <small id="date-notify" style="background-color: #EF4040 ;color:white"
+                                                    title="أنجز بسرعة" class="fw-bold rounded p-1"
+                                                    onclick="markComplete(this)">تنتهي قريبا <i
+                                                        class="fa-regular fa-clock me-2"></i></small>
+                                            @endif
+                                            @if ($card->description != null)
+                                                <i id="description-notify" title="هذه الكارد تحتوي على وصف"
+                                                    class="fa-solid fa-align-left"></i>
+                                            @endif
                                         </div>
-                                    @endforeach
-                                @endif
-                            </div>
-                            <div class="list-footer px-3">
-                                <input class="title-card d-none w-100 px-2" type="text" name="" id=""
-                                    placeholder="أدخل عنوان المهمة">
-                                <button class="btn my-2 w-100 px-3 text-end injaaz-btn add-card-confirm"
-                                    onclick="addCardConfirm(this)"> أضافة مهمة<i
-                                        class="fa-solid fa-plus plus-icon"></i></button>
-                                <div class="add-confirm p-2 d-flex align-items-center justify-content-between d-none">
-                                    <i class="fa-solid fa-xmark close-icon btn-cancel-add" onclick="cancelAdd(this)"></i>
-                                    <button class="btn my-2 px-3 text-end injaaz-btn btn-add"
-                                        onclick="addCard(this,{{ Auth::user()->id }},{{ $list->id }})">أضافة</button>
+                                    @endif
+                                </div>
+                                <div class="edit-confirm d-flex align-items-start">
+                                    <i class="fa-solid fa-marker edit-card-title"></i>
                                 </div>
                             </div>
+                        @empty
+                        @endforelse
+                    </div>
+                    <div class="list-footer px-3">
+                        <input class="title-card d-none w-100 px-2" type="text" name="" id=""
+                            placeholder="أدخل عنوان المهمة">
+                        <button class="btn my-2 w-100 px-3 text-end injaaz-btn add-card-confirm"
+                            onclick="addCardConfirm(this)"> أضافة مهمة<i
+                                class="fa-solid fa-plus plus-icon"></i></button>
+                        <div class="add-confirm p-2 d-flex align-items-center justify-content-between d-none">
+                            <i class="fa-solid fa-xmark close-icon btn-cancel-add" onclick="cancelAdd(this)"></i>
+                            <button class="btn my-2 px-3 text-end injaaz-btn btn-add"
+                                onclick="addCard(this,{{ Auth::user()->id }},{{ $list->id }})">أضافة</button>
                         </div>
-                    </div>
-                @endforeach
-            @endif
-
-            <div class="col-3 rounded new-list p-0">
-                <div class="new-list-header p-3">
-                    <h5>أضافة قائمة جديدة</h5>
-                </div>
-                <div class="new-list-body mx-3">
-                    <input class="w-100 px-2 list-title d-none" type="text" placeholder="عنوان القائمة ">
-                    <div class="new-list-conetnt my-2 d-flex align-items-center justify-content-between d-none">
-                        <button class="btn injaaz-btn add-list"
-                            onclick="addList(this,{{ Auth::user()->id }},{{ $board->id }})">أضافة</button>
-                        <i class="fa-solid fa-xmark close-icon btn-cancel-add"></i>
-                    </div>
-                    <div class="my-2">
-                        <button class="btn injaaz-btn text-end add-list-confirm"><i
-                                class="fa-solid fa-plus plus-icon"></i>أضافة قائمة</button>
                     </div>
                 </div>
             </div>
+        @empty
+        @endforelse
+        <div class="col-3 rounded new-list p-0">
+            <div class="new-list-header p-3">
+                <h5>أضافة قائمة جديدة</h5>
+            </div>
+            <div class="new-list-body mx-3">
+                <input class="w-100 px-2 list-title d-none" type="text" placeholder="عنوان القائمة ">
+                <div class="new-list-conetnt my-2 d-flex align-items-center justify-content-between d-none">
+                    <button class="btn injaaz-btn add-list"
+                        onclick="addList(this,{{ Auth::user()->id }},{{ $board->id }})">أضافة</button>
+                    <i class="fa-solid fa-xmark close-icon btn-cancel-add"></i>
+                </div>
+                <div class="my-2">
+                    <button class="btn injaaz-btn text-end add-list-confirm"><i
+                            class="fa-solid fa-plus plus-icon"></i>أضافة قائمة</button>
+                </div>
+            </div>
         </div>
-        {{-- Show Listes and Cards --}}
-
-        {{-- Board  --}}
-    </main>
+    </div>
+</main>
 @endsection

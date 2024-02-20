@@ -1,9 +1,8 @@
 @extends('layouts.dashboard.mainlayout')
-@section('page_title','لوحة التحكم')
+@section('page_title', 'لوحة التحكم')
 @section('content')
     <main id="main" class="main p-0 in-bg-srface">
         {{-- Header --}}
-
         <div class="boards-header mb-5">
             <div class="row mx-0 px-2 py-4">
                 <div class="user-info d-flex justify-content-start gap-4 align-items-center p-5 d-flex">
@@ -15,7 +14,6 @@
                 </div>
             </div>
         </div>
-
         {{-- Header --}}
 
         {{-- Add Board Modal --}}
@@ -122,63 +120,61 @@
         </div>
 
         <div id="user-boards" class="row mx-0 my-3 px-4 user-boards">
-            @if ($boards->count() > 0)
-                @foreach ($boards as $board)
-                    <div class="col-lg-4 pe-0 ps-3" role=button>
-                        <div class="board my-3 d-flex flex-row-reverse">
-                            <div class="board-option p-2">
-                                <i class="fa-solid fa-ellipsis board-dropleft-icon" data-bs-toggle="dropdown"
-                                    aria-expanded="false"></i>
-                                <ul class="dropdown-menu text-end">
-                                    <li>
-                                        <a href="{{ route('dashboard.lists', ['userId' => Auth::user()->id, 'board_id' => $board->id]) }}"
-                                            class="dropdown-item">
-                                            <i class="fa-solid fa-list-check m-0 ms-1 dropdwon-board-icon"></i>
-                                            <span>عرض اللوحة</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('board.boardMembres', ['userId' => Auth::user()->id, 'board_id' => $board->id]) }}"
-                                            class="dropdown-item">
-                                            <i class="fa-solid fa-users m-0 ms-1 dropdwon-board-icon"></i>
-                                            <span>الأعضاء</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item">
-                                            <i class="fa-solid fa-box-archive m-0 ms-1 dropdwon-board-icon"></i>
-                                            <span>أرشفة</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('board.generalSettings', ['userId' => Auth::user()->id, 'board_id' => $board->id]) }}"
-                                            class="dropdown-item">
-                                            <i class="fa-solid fa-gear m-0 ms-1 dropdwon-board-icon"></i>
-                                            <span>الأعدادت</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <a class="board-body p-3"
-                                href="{{ route('dashboard.lists', ['userId' => Auth::user()->id, 'board_id' => $board->id]) }}">
-                                <div class="d-flex justify-content-between mb-3">
-                                    <h6 class="board-title">{{ $board->name }}</h6>
-                                </div>
-                                <p class="board-description">{{ $board->description }}</p>
-                            </a>
+            @forelse ($boards as $board)
+                <div class="col-lg-4 pe-0 ps-3" role=button>
+                    <div class="board my-3 d-flex flex-row-reverse">
+                        <div class="board-option p-2">
+                            <i class="fa-solid fa-ellipsis board-dropleft-icon" data-bs-toggle="dropdown"
+                                aria-expanded="false"></i>
+                            <ul class="dropdown-menu text-end">
+                                <li>
+                                    <a href="{{ route('dashboard.lists', ['userId' => Auth::user()->id, 'board_id' => $board->id]) }}"
+                                        class="dropdown-item">
+                                        <i class="fa-solid fa-list-check m-0 ms-1 dropdwon-board-icon"></i>
+                                        <span>عرض اللوحة</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a href="{{ route('board.boardMembres', ['userId' => Auth::user()->id, 'board_id' => $board->id]) }}"
+                                        class="dropdown-item">
+                                        <i class="fa-solid fa-users m-0 ms-1 dropdwon-board-icon"></i>
+                                        <span>الأعضاء</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item">
+                                        <i class="fa-solid fa-box-archive m-0 ms-1 dropdwon-board-icon"></i>
+                                        <span>أرشفة</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a href="{{ route('board.generalSettings', ['userId' => Auth::user()->id, 'board_id' => $board->id]) }}"
+                                        class="dropdown-item">
+                                        <i class="fa-solid fa-gear m-0 ms-1 dropdwon-board-icon"></i>
+                                        <span>الأعدادت</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
+                        <a class="board-body p-3"
+                            href="{{ route('dashboard.lists', ['userId' => Auth::user()->id, 'board_id' => $board->id]) }}">
+                            <div class="d-flex justify-content-between mb-3">
+                                <h6 class="board-title">{{ $board->name }}</h6>
+                            </div>
+                            <p class="board-description">{{ $board->description }}</p>
+                        </a>
                     </div>
-                @endforeach
-            @else
+                </div>
+            @empty
                 <div id="noting-user-boards"
                     class="d-flex align-items-center flex-column justify-content-center noting-user-boards">
                     <h1>
@@ -186,7 +182,7 @@
                     </h1>
                     <h4 class="my-4">قم بأضافة لوحتك الأولى</h4>
                 </div>
-            @endif
+            @endforelse
         </div>
         {{-- show boards --}}
 

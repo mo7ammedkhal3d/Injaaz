@@ -201,6 +201,7 @@ h6,
         left 45% bottom -1px,
         center bottom -1px;
     background-repeat: no-repeat;
+    background-size: auto, auto, auto, auto, 120rem 20rem;
 }
 
 /*** Section Title ***/
@@ -630,3 +631,13 @@ h6,
     float: right;
     padding-left: 0.5rem;
 }
+
+/* Edit media in container-xxl  */
+
+@media (min-width: 1400px) {
+    .container, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
+        max-width: 100%;
+    }
+}
+
+/* Edit media in container-xxl  */
